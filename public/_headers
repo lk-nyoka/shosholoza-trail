@@ -1,0 +1,50 @@
+# Served by Netlify. Three jobs here: let fingerprinted files cache forever,
+# give the manifest and the text files their real content types, and set the
+# headers a security scan looks for.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  # This app needs none of these, so it asks for none of them. Location is
+  # requested at runtime with the passenger's permission, not by policy here.
+  Permissions-Policy: camera=(), microphone=(), payment=(), usb=(), interest-cohort=()
+  X-Frame-Options: SAMEORIGIN
+
+# Vite fingerprints these, so the name changes whenever the bytes do.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/basis/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The shell must never be cached, or a deploy never reaches anyone.
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/manifest.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+
+/.well-known/security.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+# ── Content Security Policy, report-only for now ────────────────────────────
+# Enforcing a wrong CSP kills the satellite imagery, the elevation tiles and
+# every photograph, silently, with no console error the passenger will ever
+# see. So this runs in report-only first: the browser evaluates it and reports
+# violations without blocking anything. Watch for a week, fix what it names,
+# then rename the header to Content-Security-Policy to make it real.
+#
+# blob: is not optional - the vector-tile worker and Three.js both need it.
+/*
+  Content-Security-Policy-Report-Only: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://*.wikimedia.org https://tiles.openfreemap.org; connect-src 'self' https://server.arcgisonline.com https://s3.amazonaws.com https://tiles.openfreemap.org https://*.wikimedia.org https://*.supabase.co wss://*.supabase.co; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; worker-src 'self' blob:; manifest-src 'self'

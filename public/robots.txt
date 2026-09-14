@@ -1,0 +1,11 @@
+# Shosholoza Trail
+# A demonstration build of a passenger companion for the Pretoria–Cape Town
+# corridor. Crawling is welcome; the operator screens are not for indexing.
+
+User-agent: *
+Allow: /
+Disallow: /operator
+Disallow: /trip
+Disallow: /start
+
+Sitemap: https://storied-cendol-2fcdaf.netlify.app/sitemap.xml

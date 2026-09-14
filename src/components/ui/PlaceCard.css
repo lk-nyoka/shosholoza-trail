@@ -1,0 +1,192 @@
+.place-card {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.22s var(--ease-out), box-shadow 0.22s var(--ease-out);
+}
+.place-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Image col */
+.place-card__image {
+  position: relative;
+  overflow: hidden;
+  background: var(--paper-dark);
+  min-height: 120px;
+}
+.place-card__image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease-out);
+}
+.place-card:hover .place-card__image img { transform: scale(1.06); }
+.place-card__image::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(transparent 40%, rgba(20,36,58,0.55));
+}
+
+.place-card__distance {
+  position: absolute; z-index: 2;
+  left: 8px; bottom: 8px;
+  display: flex; align-items: center; gap: 3px;
+  padding: 4px 7px;
+  border-radius: 6px;
+  background: rgba(13,28,46,0.72);
+  color: rgba(255,250,240,0.85);
+  font-size: 9px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.place-card__save {
+  position: absolute; z-index: 3;
+  top: 8px; right: 8px;
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(13,28,46,0.6);
+  color: rgba(255,250,240,0.8);
+  transition: background 0.15s, color 0.15s;
+}
+.place-card__save:hover,
+.place-card__save--saved {
+  background: rgba(244,189,79,0.2);
+  color: var(--gold);
+  border-color: rgba(244,189,79,0.3);
+}
+
+/* Text col */
+.place-card__body {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.place-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.place-card__category { color: var(--gold-dark); font-size: 9px; }
+
+.place-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+
+.place-card__name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.place-card__blurb {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.place-card__price {
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted-warm);
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 500px) {
+  .place-card { grid-template-columns: 110px 1fr; }
+}
+
+/* ── Reachability and reserve ──────────────────────────────────────────────
+   A distance is useless on a train; what matters is whether the return walk
+   fits inside the time the train is standing. */
+.place-card__reach {
+  display: flex; flex-direction: column; gap: 3px;
+  margin-top: 8px; padding: 7px 9px; border-radius: 8px;
+  border-left: 3px solid currentColor;
+  background: rgba(13, 28, 46, .05);
+  font-size: .76rem;
+}
+.place-card__reach-label { font-weight: 600; letter-spacing: .01em; }
+.place-card__reach-detail {
+  display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+  opacity: .78; color: var(--navy, #0d1c2e);
+  font-variant-numeric: tabular-nums;
+}
+.place-card__reach--platform    { color: #2c6a4e; }
+.place-card__reach--comfortable { color: #2c6a4e; }
+.place-card__reach--tight       { color: #9a6212; }
+.place-card__reach--unreachable { color: #9b2f27; }
+
+.place-card__reserve {
+  margin-top: 9px; align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 6px;
+  font: inherit; font-size: .78rem; font-weight: 600;
+  padding: 7px 12px; border-radius: 999px; cursor: pointer;
+  border: 1px solid rgba(13, 28, 46, .3); background: transparent; color: inherit;
+}
+.place-card__reserve:hover { background: var(--sun, #e9a13b); border-color: transparent; }
+
+.place-card__reservation {
+  margin-top: 9px; padding: 10px; border-radius: 10px;
+  background: rgba(13, 28, 46, .06); font-size: .78rem;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.place-card__reservation-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.place-card__reservation-head b { font-size: .95rem; letter-spacing: .06em; }
+.place-card__reservation-head span { opacity: .75; text-align: right; }
+.place-card__reservation p { margin: 0; line-height: 1.5; opacity: .85; }
+
+.place-card__sim {
+  display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+  padding-top: 6px; border-top: 1px dashed rgba(13, 28, 46, .25);
+}
+.place-card__sim small {
+  font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; opacity: .6; width: 100%;
+}
+.place-card__sim button {
+  font: inherit; font-size: .74rem; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+  border: 1px solid rgba(13, 28, 46, .3); background: transparent; color: inherit;
+}
+.place-card__drop {
+  align-self: flex-start; font: inherit; font-size: .72rem; text-decoration: underline;
+  background: none; border: 0; padding: 0; cursor: pointer; color: inherit; opacity: .65;
+}
+
+/* A code this device invented, not one the database issued. It must not look
+   like something a vendor would honour. */
+.place-card__code--pending {
+  opacity: 0.55;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.place-card__pending {
+  margin: 6px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--warn, #9a6b16);
+}

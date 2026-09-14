@@ -1,0 +1,39 @@
+.offline-card {
+  display: flex; flex-direction: column; gap: 14px;
+  border: 1px solid rgba(13, 28, 46, .16);
+  border-radius: 14px; padding: 18px;
+  background: rgba(255, 255, 255, .5);
+}
+.offline-card__head { display: flex; gap: 12px; align-items: flex-start; }
+.offline-card__icon {
+  flex: none; width: 32px; height: 32px; border-radius: 50%;
+  background: var(--sun, #e9a13b); color: #0d1c2e; display: grid; place-items: center;
+}
+.offline-card__title { margin: 0 0 3px; font-size: 1.02rem; font-weight: 600; }
+.offline-card__sub { margin: 0; font-size: .88rem; line-height: 1.55; opacity: .8; max-width: 54ch; }
+
+.offline-card__stats {
+  margin: 0; display: grid; gap: 10px 18px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+.offline-card__stats div { display: flex; flex-direction: column; gap: 2px; }
+.offline-card__stats dt {
+  font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; opacity: .6; font-weight: 600;
+}
+.offline-card__stats dd { margin: 0; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.offline-card__off { display: inline-flex; align-items: center; gap: 5px; color: #9b2f27; }
+
+.offline-card__progress { display: flex; flex-direction: column; gap: 6px; }
+.offline-card__bar {
+  height: 7px; border-radius: 999px; overflow: hidden;
+  background: rgba(13, 28, 46, .12);
+}
+.offline-card__bar span {
+  display: block; height: 100%; background: var(--sun, #e9a13b);
+  transition: width .25s ease;
+}
+.offline-card__progress small { font-size: .8rem; opacity: .78; font-variant-numeric: tabular-nums; }
+
+.offline-card__error { margin: 0; font-size: .86rem; color: #9b2f27; }
+.offline-card__note { margin: 0; font-size: .8rem; opacity: .7; }
+.offline-card__actions { display: flex; gap: 10px; flex-wrap: wrap; }

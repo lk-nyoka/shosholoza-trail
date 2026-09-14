@@ -1,0 +1,282 @@
+/* ============================================================
+   Shosholoza Trail — Global Design System
+   Fraunces (display) + Outfit (body/ui)
+   Palette: warm paper · navy · gold
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* ── Tokens ─────────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --paper:      #f8f2e8;
+  --paper-dark: #ede7d9;
+  --ink:        #1e2635;
+  --navy:       #14243a;
+  --navy-deep:  #0d1c2e;
+  --navy-mid:   #1a2e47;
+  --gold:       #f4bd4f;
+  --gold-dark:  #d4a035;
+  --gold-light: #fad27a;
+  --hero-white: #fffaf0;
+  --muted:      #6b7a94;
+  --muted-warm: #8a8070;
+  --border:     rgba(20, 36, 58, 0.12);
+  --border-light: rgba(255, 250, 240, 0.14);
+
+  /* Map */
+  --track-amber: #f4bd4f;
+  --track-grey:  #4a5568;
+
+  /* Shadows */
+  --shadow-sm:  0 2px 8px rgba(20,36,58,0.08);
+  --shadow-md:  0 8px 32px rgba(20,36,58,0.12);
+  --shadow-lg:  0 20px 60px rgba(20,36,58,0.16);
+  --shadow-xl:  0 32px 80px rgba(20,36,58,0.22);
+
+  /* Radii */
+  --r-sm:  8px;
+  --r-md:  14px;
+  --r-lg:  20px;
+  --r-pill: 999px;
+
+  /* Typography */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body:    'Outfit', system-ui, -apple-system, sans-serif;
+
+  /* Layout */
+  --max-w: 1280px;
+  --nav-h: 72px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#root { min-height: 100vh; display: flex; flex-direction: column; }
+
+img, video { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: inherit; }
+
+/* ── Typography scale ───────────────────────────────────── */
+.t-eyebrow {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.t-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+}
+
+.t-display--xl  { font-size: clamp(52px, 7vw, 96px); }
+.t-display--lg  { font-size: clamp(38px, 5vw, 68px); }
+.t-display--md  { font-size: clamp(28px, 3.5vw, 48px); }
+.t-display--sm  { font-size: clamp(22px, 2.8vw, 36px); }
+
+.t-heading {
+  font-family: var(--font-body);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.t-heading--lg { font-size: clamp(20px, 2.5vw, 28px); }
+.t-heading--md { font-size: clamp(16px, 2vw, 20px); }
+.t-heading--sm { font-size: 14px; }
+
+.t-body      { font-size: 15px; line-height: 1.65; color: var(--muted); }
+.t-body--sm  { font-size: 13px; line-height: 1.6;  color: var(--muted); }
+.t-body--xs  { font-size: 11px; line-height: 1.55; color: var(--muted); }
+
+/* ── Utility layout ─────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+@media (max-width: 760px) { .container { padding: 0 20px; } }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: fixed; z-index: 9999; top: 14px; left: 14px;
+  padding: 10px 18px; border-radius: var(--r-md);
+  background: var(--gold); color: var(--navy);
+  font-weight: 700; font-size: 13px;
+  transform: translateY(-200%); transition: transform 0.2s;
+}
+.skip-link:focus { transform: none; }
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 13px 26px;
+  border-radius: var(--r-pill);
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  letter-spacing: 0.04em; white-space: nowrap;
+  transition: transform 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out), background 0.18s;
+  cursor: pointer;
+}
+.btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background: var(--gold); color: var(--navy);
+  box-shadow: 0 4px 20px rgba(244,189,79,0.28);
+}
+.btn--primary:hover { background: var(--gold-light); box-shadow: 0 8px 28px rgba(244,189,79,0.38); transform: translateY(-1px); }
+
+.btn--outline {
+  background: transparent; color: var(--hero-white);
+  border: 1.5px solid rgba(255,250,240,0.45);
+}
+.btn--outline:hover { border-color: rgba(255,250,240,0.8); background: rgba(255,250,240,0.06); }
+
+.btn--outline-dark {
+  background: transparent; color: var(--navy);
+  border: 1.5px solid var(--border);
+}
+.btn--outline-dark:hover { border-color: var(--navy); background: rgba(20,36,58,0.04); }
+
+.btn--sm { padding: 9px 18px; font-size: 12px; }
+.btn--lg { padding: 16px 34px; font-size: 14px; }
+
+/* ── Cards ──────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* ── Section chrome ─────────────────────────────────────── */
+.section { padding: 96px 0; }
+.section--sm { padding: 64px 0; }
+.section--lg { padding: 128px 0; }
+
+.section__header { margin-bottom: 52px; }
+.section__header--center { text-align: center; }
+
+/* ── Map global overrides ───────────────────────────────── */
+.leaflet-container {
+  background: #0d1c2e !important;
+  font-family: var(--font-body) !important;
+}
+.leaflet-tile-pane {
+  filter: brightness(0.30) saturate(0.45) contrast(1.25) hue-rotate(180deg);
+}
+.leaflet-control-attribution {
+  background: rgba(13,28,46,0.82) !important;
+  color: rgba(255,250,240,0.45) !important;
+  font-size: 9px !important;
+  border-radius: 6px 0 0 0 !important;
+  padding: 3px 8px !important;
+}
+.leaflet-control-attribution a { color: rgba(244,189,79,0.7) !important; }
+.leaflet-marker-icon, .leaflet-marker-shadow {
+  transition: none !important;
+  animation: none !important;
+}
+.leaflet-tooltip {
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 10px !important;
+  background: rgba(13,28,46,0.9) !important;
+  color: var(--hero-white) !important;
+  font-size: 11px; font-weight: 500;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4) !important;
+}
+.leaflet-tooltip::before { border-top-color: rgba(13,28,46,0.9) !important; }
+
+/* ── Custom stop markers ────────────────────────────────── */
+.st-stop {
+  display: grid !important; place-items: center;
+  border: 0 !important; background: transparent !important;
+}
+.st-stop__dot {
+  width: 9px; height: 9px;
+  border: 2px solid rgba(255,250,240,0.85);
+  border-radius: 50%; background: #0d1c2e;
+  box-shadow: 0 0 0 4px rgba(13,28,46,0.5), 0 0 12px rgba(255,250,240,0.15);
+}
+.st-stop--active .st-stop__dot {
+  width: 13px; height: 13px;
+  border-color: var(--gold);
+  background: var(--gold);
+  box-shadow: 0 0 0 5px rgba(244,189,79,0.15), 0 0 18px var(--gold);
+}
+
+/* ── Train marker ───────────────────────────────────────── */
+.st-train { border: 0 !important; background: transparent !important; overflow: visible !important; }
+.st-train-aura::before, .st-train-aura::after {
+  content: ""; position: absolute; inset: 0;
+  border: 1.5px solid rgba(244,189,79,0.7);
+  border-radius: 50%;
+  animation: trainPulse 2.2s infinite ease-out;
+}
+.st-train-aura::after { animation-delay: 1.1s; }
+@keyframes trainPulse {
+  0%   { opacity: 0.85; transform: scale(0.4); }
+  90%, 100% { opacity: 0; transform: scale(2.4); }
+}
+
+/* ── Route polylines ─────────────────────────────────────── */
+.track-travelled {
+  filter: drop-shadow(0 0 5px rgba(244,189,79,0.9)) drop-shadow(0 0 14px rgba(244,189,79,0.4));
+}
+.track-remaining { stroke-dasharray: 2 9; }
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+/* ── Focus ring ─────────────────────────────────────────── */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* ── Reduced motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* ── Nothing on this site scrolls sideways ─────────────────────────────────
+   The fixed header sizes itself from the initial containing block, which on
+   some devices is a few pixels wider than the visible page — enough for an
+   audit to report a horizontally scrolling document even though nothing
+   actually moves. Pin it to the page instead, and clip at the root so a stray
+   panel can never turn into a sideways scroll. `clip` rather than `hidden`,
+   because `hidden` on the root quietly breaks position: sticky. */
+html, body { overflow-x: clip; }
+.st-nav, .st-nav__inner { max-width: 100%; }

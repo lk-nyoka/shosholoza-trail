@@ -1,0 +1,13 @@
+.nf { display: grid; place-items: center; min-height: 62vh; padding: 48px 20px; }
+.nf__inner { max-width: 560px; }
+.nf__eyebrow {
+  margin: 0 0 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gold, #b07c14);
+}
+.nf__body { margin: 14px 0 26px; }
+.nf__links { display: flex; flex-wrap: wrap; gap: 10px; }
+.nf__link {
+  padding: 9px 15px; border: 1px solid var(--rule, #ddd4c6); border-radius: 999px;
+  font-size: 13px; font-weight: 600; text-decoration: none; color: inherit;
+}
+.nf__link:hover { border-color: var(--gold, #b07c14); color: var(--gold, #b07c14); }

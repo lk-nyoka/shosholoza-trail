@@ -1,0 +1,38 @@
+.tabbar {
+  position: fixed;
+  /* the travelling marker is positioned against this */
+  isolation: isolate; left: 0; right: 0; bottom: 0; z-index: 60;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: rgba(9, 20, 33, .94);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(243, 236, 224, .12);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.tabbar__tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 9px 4px 8px; text-decoration: none;
+  color: rgba(243, 236, 224, .58);
+  font-size: .66rem; letter-spacing: .06em; text-transform: uppercase;
+}
+.tabbar__tab.active { color: var(--sun, #e9a13b); }
+.tabbar__tab.active span { font-weight: 700; }
+.tabbar__tab:focus-visible { outline: 2px solid var(--sun, #e9a13b); outline-offset: -3px; }
+
+/* Keep page content clear of the bar. */
+body:has(.tabbar) { padding-bottom: 62px; }
+@media (min-width: 900px) { .tabbar { display: none; } body:has(.tabbar) { padding-bottom: 0; } }
+
+/* The marker that travels between tabs. */
+.tabbar__indicator {
+  position: absolute; top: 0; left: 0; height: 2px;
+  background: var(--sun, #e9a13b);
+  pointer-events: none;
+}
+
+/* A phone on its side has no height to spare: the bar keeps its targets and
+   drops the words, which the icons already carry. */
+@media (max-height: 540px) {
+  .tabbar__tab { padding: 7px 4px; }
+  .tabbar__tab span { display: none; }
+  body:has(.tabbar) { padding-bottom: 38px; }
+}

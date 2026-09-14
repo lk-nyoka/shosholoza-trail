@@ -1,0 +1,94 @@
+.elev-strip {
+  margin: 0;
+  padding: 10px 14px 8px;
+  border-radius: 16px;
+  background: rgba(10, 17, 28, 0.82);
+  border: 1px solid rgba(244, 189, 79, 0.16);
+  backdrop-filter: blur(8px);
+}
+
+.elev-strip--loading {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 250, 240, 0.55);
+}
+
+.elev-strip__caption {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(255, 250, 240, 0.58);
+}
+
+.elev-strip__caption strong {
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: #f4bd4f;
+}
+
+.elev-strip__range { margin-left: auto; }
+
+.elev-strip__svg {
+  display: block;
+  width: 100%;
+  height: 96px;
+  cursor: crosshair;
+}
+
+/* Recessive: the ground still to come. */
+.elev-strip__ahead { fill: rgba(255, 250, 240, 0.09); }
+/* Same series, accented: ground already covered. */
+.elev-strip__done { fill: rgba(244, 189, 79, 0.34); }
+.elev-strip__line {
+  fill: none;
+  stroke: rgba(255, 250, 240, 0.55);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.elev-strip__stop line {
+  stroke: rgba(255, 250, 240, 0.18);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.elev-strip__stop text {
+  fill: rgba(255, 250, 240, 0.42);
+  font-size: 11px;
+  text-anchor: middle;
+}
+
+.elev-strip__now {
+  stroke: #f4bd4f;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.elev-strip__hover {
+  stroke: rgba(255, 250, 240, 0.5);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.elev-strip__marker {
+  fill: #f4bd4f;
+  stroke: #0a111c;
+  stroke-width: 2;
+}
+
+.elev-strip__readout {
+  margin: 4px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: rgba(255, 250, 240, 0.6);
+}
+
+@media (max-width: 640px) {
+  .elev-strip__svg { height: 72px; }
+  .elev-strip__stop text { display: none; }
+}

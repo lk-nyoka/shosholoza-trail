@@ -1,0 +1,252 @@
+.journey-page {
+  position: fixed;
+  inset: 0;
+  background: var(--navy-deep);
+  overflow: hidden;
+}
+
+/* Cinematic overlays */
+.journey-page__vignette {
+  pointer-events: none;
+  position: absolute; z-index: 400; inset: 0;
+  background:
+    radial-gradient(circle at 65% 42%, transparent 22%, rgba(13,28,46,0.1) 52%, rgba(13,28,46,0.68) 105%),
+    linear-gradient(90deg, rgba(13,28,46,0.52), transparent 40%);
+}
+.journey-page__grain {
+  pointer-events: none;
+  position: absolute; z-index: 401; inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Map fills page */
+.journey-page__map { position: absolute !important; inset: 0; }
+
+/* ── Map tools ────────────────────────────────────────── */
+.journey-map-tools {
+  position: absolute; z-index: 600;
+  top: calc(var(--nav-h) + 16px); right: 20px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.journey-map-tools button {
+  width: 42px; height: 42px;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  border: 1px solid rgba(255,250,240,0.1);
+  background: rgba(13,28,46,0.76);
+  backdrop-filter: blur(16px);
+  color: rgba(255,250,240,0.65);
+  box-shadow: var(--shadow-md);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.journey-map-tools button:hover { color: var(--hero-white); background: rgba(13,28,46,0.9); }
+.journey-map-tools button.active {
+  color: var(--gold);
+  background: rgba(100,65,5,0.55);
+  border-color: rgba(244,189,79,0.3);
+  box-shadow: 0 0 20px rgba(244,189,79,0.12);
+}
+
+/* ── Route summary card ───────────────────────────────── */
+.journey-summary-card {
+  position: absolute; z-index: 600;
+  top: calc(var(--nav-h) + 16px); left: 20px;
+  width: 200px;
+  padding: 18px 20px;
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(255,250,240,0.1);
+  background: rgba(13,28,46,0.82);
+  backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: var(--shadow-lg);
+}
+.journey-summary-card__eyebrow { color: var(--gold); margin-bottom: 6px; }
+.journey-summary-card__route {
+  font-family: var(--font-display);
+  font-size: 15px; font-weight: 400;
+  color: var(--hero-white);
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+.journey-summary-card__stats {
+  display: grid; gap: 6px;
+}
+.journey-summary-card__stats > div {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: baseline;
+}
+.journey-summary-card__stats dt {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,250,240,0.4);
+}
+.journey-summary-card__stats dd {
+  font-size: 12px; font-weight: 700;
+  color: var(--hero-white);
+}
+
+/* ── Approaching HUD ──────────────────────────────────── */
+.journey-approaching {
+  position: absolute; z-index: 600;
+  top: calc(var(--nav-h) + 16px);
+  left: 50%; transform: translateX(-50%);
+  min-width: 220px;
+  padding: 9px 14px;
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,250,240,0.1);
+  background: rgba(13,28,46,0.8);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-md);
+}
+.journey-approaching__icon {
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  border-radius: 10px;
+  background: linear-gradient(145deg, var(--gold-light), var(--gold));
+  color: var(--navy);
+}
+.journey-approaching__text {
+  display: grid;
+}
+.journey-approaching__text small {
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,250,240,0.45);
+}
+.journey-approaching__text b {
+  font-size: 12px; color: var(--hero-white);
+  margin-top: 2px;
+}
+.journey-approaching__dist {
+  font-size: 11px; font-weight: 700;
+  color: var(--gold);
+}
+
+/* ── Next-stop editorial card ─────────────────────────── */
+.journey-next-card {
+  position: absolute; z-index: 600;
+  right: 20px; bottom: 120px;
+  width: min(280px, calc(100vw - 40px));
+  padding: 20px;
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(255,250,240,0.1);
+  background: rgba(13,28,46,0.84);
+  backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: var(--shadow-lg);
+}
+.journey-next-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.journey-next-card__header small { color: var(--gold); }
+.journey-next-card__header strong {
+  font-size: 10px; font-weight: 700;
+  color: rgba(255,250,240,0.45);
+}
+.journey-next-card__name {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 400;
+  color: var(--hero-white);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.journey-next-card__teaser {
+  font-size: 11px; line-height: 1.55;
+  color: rgba(255,250,240,0.5);
+  margin-bottom: 14px;
+}
+.journey-next-card__meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(255,250,240,0.35);
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,250,240,0.08);
+}
+
+/* ── OSM badge ────────────────────────────────────────── */
+.journey-osm-badge {
+  position: absolute; z-index: 600;
+  left: 20px; bottom: 120px;
+  padding: 8px 12px;
+  display: flex; align-items: center; gap: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,250,240,0.08);
+  background: rgba(13,28,46,0.72);
+  backdrop-filter: blur(14px);
+  color: rgba(255,250,240,0.55);
+}
+.journey-osm-badge svg { color: #4ade80; }
+.journey-osm-badge span { display: grid; }
+.journey-osm-badge b { font-size: 9px; color: rgba(255,250,240,0.75); }
+.journey-osm-badge small { font-size: 8px; }
+
+/* ── Disruption ───────────────────────────────────────── */
+.journey-disruption-wrap {
+  position: absolute; z-index: 650;
+  right: 20px; bottom: 176px;
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 10px;
+  width: min(420px, calc(100vw - 40px));
+}
+.journey-disruption-toggle {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 13px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,250,240,0.1);
+  background: rgba(13,28,46,0.72);
+  color: rgba(255,250,240,0.55);
+  font-size: 10px; font-weight: 700;
+  backdrop-filter: blur(12px);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.journey-disruption-toggle.active {
+  color: #fdba74;
+  border-color: rgba(251,146,60,0.3);
+  background: rgba(92,38,13,0.45);
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .journey-next-card { display: none; }
+  .journey-osm-badge { display: none; }
+  .journey-approaching { left: auto; right: 72px; transform: none; }
+}
+@media (max-width: 760px) {
+  .journey-summary-card { display: none; }
+  .journey-approaching {
+    top: calc(var(--nav-h) + 8px);
+    right: 56px;
+    min-width: 0;
+    padding: 7px 10px;
+    grid-template-columns: 28px 1fr;
+  }
+  .journey-approaching__dist { display: none; }
+  .journey-map-tools { top: calc(var(--nav-h) + 8px); right: 10px; }
+  .journey-map-tools button + button { display: none; }
+  .journey-disruption-wrap {
+    right: 10px; bottom: 116px;
+    width: calc(100vw - 20px);
+    align-items: stretch;
+  }
+}
+
+/* Quiet, but always there. The summary card is the first thing read on this
+   page, so it is where "scheduled, not live" belongs. */
+.journey-summary-card__note {
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 250, 240, 0.14);
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(255, 250, 240, 0.62);
+}

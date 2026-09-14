@@ -1,0 +1,20 @@
+.upd {
+  position: fixed; z-index: 1200;
+  right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); left: 16px;
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center;
+  max-width: 460px; margin: 0 auto; padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--ink, #0d1c2e); color: var(--hero-white, #fffaf0);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+  font-size: 13px;
+}
+.upd__text { flex: 1 1 auto; }
+.upd__go, .upd__later {
+  padding: 7px 14px; border-radius: 999px; font: inherit; font-size: 12px;
+  font-weight: 700; cursor: pointer;
+}
+.upd__go { border: 0; background: var(--gold, #f1b94d); color: #1a1206; }
+.upd__later { border: 1px solid rgba(255, 250, 240, 0.35); background: none; color: inherit; font-weight: 600; }
+
+/* Above the bottom tab bar where there is one. */
+body:has(.tabbar) .upd { bottom: calc(74px + env(safe-area-inset-bottom, 0px)); }

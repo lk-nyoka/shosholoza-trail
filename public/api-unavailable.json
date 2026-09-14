@@ -1,0 +1,1 @@
+{"error":"api_not_deployed","detail":"This build serves the frontend only. The FastAPI service is not deployed for the public demo, so the app falls back to its offline data."}

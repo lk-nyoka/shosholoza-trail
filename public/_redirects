@@ -1,0 +1,9 @@
+# The API is not part of this static deploy. Answer honestly instead of
+# letting the SPA fallback return index.html to a fetch() expecting JSON.
+/api/*    /api-unavailable.json   503
+# Real files, served as themselves rather than as the app shell.
+/robots.txt     /robots.txt     200!
+/sitemap.xml    /sitemap.xml    200!
+/.well-known/security.txt   /.well-known/security.txt   200!
+
+/*        /index.html             200

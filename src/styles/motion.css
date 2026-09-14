@@ -1,0 +1,75 @@
+/**
+ * Motion.
+ *
+ * The ideas here are the ones Motion (motion.dev) is good at — a page that
+ * arrives rather than appears, lists that reveal in sequence, a tab indicator
+ * that travels between tabs, a confirmation that lands with weight. They are
+ * written against the Web Animations API's own primitives instead of pulling in
+ * the library, because the library would be a dependency to install and keep
+ * current for four effects that CSS can carry.
+ *
+ * Everything is short, everything is opt-out. If someone has asked their system
+ * for less movement, none of it runs.
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* ── A page arrives ─────────────────────────────────────────────────────
+     Keyed on the route, so moving between screens reads as one app rather
+     than a series of separate documents. */
+  .page-enter {
+    animation: page-in 340ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+  @keyframes page-in {
+    from { opacity: 0; transform: translate3d(0, 14px, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ── Something lands ────────────────────────────────────────────────────
+     For the boarding pass: overshoot slightly and settle, the way a spring
+     does. This is the moment the journey becomes real, so it earns weight. */
+  .lands {
+    animation: land 560ms cubic-bezier(.16, 1.16, .3, 1) both;
+  }
+  @keyframes land {
+    from { opacity: 0; transform: scale(.94) translate3d(0, 18px, 0); }
+    60%  { opacity: 1; transform: scale(1.012) translate3d(0, 0, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ── A list reveals in sequence ─────────────────────────────────────────
+     --i is the row's index, set inline. Capped so a long list never leaves
+     the reader waiting on the twentieth item. */
+  .reveal > * {
+    animation: reveal-row 420ms cubic-bezier(.22, 1, .36, 1) both;
+    animation-delay: calc(min(var(--i, 0) * 38ms, 420ms));
+  }
+  @keyframes reveal-row {
+    from { opacity: 0; transform: translate3d(0, 10px, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ── The tab indicator travels ──────────────────────────────────────────
+     One element that moves between tabs, rather than four that switch on and
+     off — the difference between a cursor and a light switch. */
+  .tabbar__indicator {
+    transition: transform 320ms cubic-bezier(.22, 1, .36, 1),
+                width 320ms cubic-bezier(.22, 1, .36, 1);
+  }
+
+  /* ── Pressable things give ──────────────────────────────────────────── */
+  .btn:active, .tabbar__tab:active, .trip-action:active { transform: scale(.985); }
+}
+
+/* With reduced motion the indicator still moves — it simply arrives at once. */
+.tabbar__indicator { will-change: transform, width; }
+
+/* Shown while a map page fetches its own script. Deliberately plain: a
+   spinner that outlives the wait reads worse than a line of type. */
+.route-loading {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  font-size: .92rem;
+  opacity: .7;
+}

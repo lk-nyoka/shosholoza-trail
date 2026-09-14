@@ -1,0 +1,22 @@
+.conf-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.conf-bar__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+.conf-bar__seg {
+  width: 3px;
+  border-radius: 2px;
+  background: rgba(255,250,240,0.15);
+  transition: background 0.25s;
+}
+.conf-bar__seg--on {
+  background: #4ade80;
+  box-shadow: 0 0 5px rgba(74,222,128,0.5);
+}
+.conf-bar__label { color: rgba(255,250,240,0.45); }

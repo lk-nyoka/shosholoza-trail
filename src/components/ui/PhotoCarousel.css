@@ -1,0 +1,41 @@
+.carousel { position: relative; border-radius: 14px; overflow: hidden; background: rgba(13, 28, 46, .08); }
+
+.carousel__track {
+  display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.carousel__track::-webkit-scrollbar { display: none; }
+.carousel__track:focus-visible { outline: 2px solid var(--sun, #e9a13b); outline-offset: -2px; }
+
+.carousel__slide {
+  flex: 0 0 100%; scroll-snap-align: start; margin: 0; position: relative;
+}
+.carousel__slide img {
+  display: block; width: 100%; height: clamp(200px, 42vw, 340px);
+  object-fit: cover; max-width: 100%;
+}
+.carousel__slide figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 26px 14px 12px; font-size: .8rem; color: #f3ece0;
+  background: linear-gradient(to top, rgba(7, 16, 26, .82), transparent);
+}
+
+.carousel__arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+  border: 0; display: grid; place-items: center;
+  background: rgba(8, 18, 30, .6); color: #f3ece0;
+}
+.carousel__arrow:disabled { opacity: 0; pointer-events: none; }
+.carousel__arrow--prev { left: 8px; }
+.carousel__arrow--next { right: 8px; }
+
+.carousel__dots {
+  position: absolute; left: 0; right: 0; bottom: 8px;
+  display: flex; justify-content: center; gap: 6px;
+}
+.carousel__dot {
+  width: 7px; height: 7px; border-radius: 50%; border: 0; cursor: pointer; padding: 0;
+  background: rgba(243, 236, 224, .45);
+}
+.carousel__dot.active { background: var(--sun, #e9a13b); width: 18px; border-radius: 999px; }
