@@ -10,7 +10,10 @@ const BUILD_ID = new Date()
   .replace(/[-:T]/g, "")
   .slice(2, 12);
 
+const githubPages = process.env.GITHUB_PAGES === "true";
+
 export default defineConfig({
+  base: githubPages ? "./" : "/",
   define: { __BUILD_ID__: JSON.stringify(BUILD_ID) },
   server: {
     proxy: { "/api": { target: "http://127.0.0.1:8001", changeOrigin: false } },
@@ -31,7 +34,8 @@ export default defineConfig({
         theme_color: "#0d1c2e",
         background_color: "#f8f2e8",
         display: "standalone",
-        start_url: "/",
+        start_url: "./",
+        scope: "./",
         icons: [
           // Android reads the SVG happily. iOS does not, and Chrome's install
           // prompt wants a 192 and a 512 raster before it will offer to add

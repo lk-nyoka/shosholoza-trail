@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Home        from "./pages/Home";
 const Journey = lazy(() => import("./pages/Journey"));
@@ -24,7 +24,7 @@ import StopExperience from "./pages/StopExperience";
 export default function App() {
   return (
     <ErrorBoundary>
-      <BrowserRouter>
+      <HashRouter>
         <UpdatePrompt />
       <Suspense fallback={<div className="route-loading" role="status">Loading the corridor…</div>}>
       <Routes>
@@ -50,7 +50,7 @@ export default function App() {
         </Route>
       </Routes>
       </Suspense>
-    </BrowserRouter>
+    </HashRouter>
     </ErrorBoundary>
   );
 }
