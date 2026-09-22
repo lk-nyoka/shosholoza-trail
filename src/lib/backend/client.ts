@@ -12,13 +12,16 @@
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-const URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+const URL = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.trim();
+const KEY = (
+  (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined) ??
+  (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)
+)?.trim();
 
 /**
- * Whether this build has somewhere to talk to. The anon key is a public,
- * row-level-security-scoped credential and belongs in the bundle; the service
- * role key must never appear in this repository at all.
+ * Whether this build has somewhere to talk to. Supabase publishable/anon keys
+ * are client credentials scoped by Row Level Security and belong in the bundle;
+ * a service-role key must never appear in this repository or browser code.
  */
 export const backendConfigured = Boolean(URL && KEY);
 

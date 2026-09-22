@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import OfflineJourney from "../components/ui/OfflineJourney";
-import { CALLS, CALL_DAYS } from "../lib/timetable";
+import { CALLS, CALL_DAYS, JOURNEY_DURATION_WORDS, TIMETABLE_NOTICE } from "../lib/corridor";
 import "./Help.css";
 import InterestForm from "../components/ui/InterestForm";
+import { DATA_VERSION, RESET_CONFIRM, RESET_DESCRIPTION, resetOfflineData } from "../lib/appUpdate";
 
 /**
  * The practical page.
@@ -27,7 +29,7 @@ const ANSWERS: Answer[] = [
   },
   {
     q: "How long does it take?",
-    a: <>The published schedule is 28 hours and 10 minutes — 08:30 out of Pretoria, into Cape
+    a: <>The published schedule is {JOURNEY_DURATION_WORDS} — 08:30 out of Pretoria, into Cape
       Town at 12:40 the next day, through the Karoo overnight. Plan for longer. Delays
       of several hours are ordinary rather than exceptional on this line — long stands at
       stations, crew changes, freight given the road ahead of you. Nobody misses a connection
@@ -96,13 +98,44 @@ const ANSWERS: Answer[] = [
 ];
 
 export default function Help() {
+  const [resetting, setResetting] = useState(false);
+  const [resetNote, setResetNote] = useState<string | null>(null);
+
+  /**
+   * Clear the downloaded route and nothing else.
+   *
+   * `window.confirm` rather than a custom dialog: this is destructive, it is
+   * rare, and the browser's own confirmation is the one every passenger
+   * already recognises. The wording names exactly what goes and what stays.
+   */
+  const handleReset = async () => {
+    if (typeof window !== "undefined" && !window.confirm(RESET_CONFIRM)) return;
+    setResetting(true);
+    setResetNote(null);
+    try {
+      const result = await resetOfflineData(
+        typeof caches !== "undefined" ? caches : null,
+        typeof window !== "undefined" ? window.localStorage : null,
+      );
+      setResetNote(
+        result.caches.length === 0
+          ? "There was nothing stored to clear."
+          : `Cleared ${result.caches.length} stored ${result.caches.length === 1 ? "set" : "sets"} of route data. Download it again from the Offline section above.`,
+      );
+    } catch {
+      setResetNote("This browser would not let the app clear its stored data.");
+    } finally {
+      setResetting(false);
+    }
+  };
+
   return (
     <div className="help-page">
       <div className="container">
         <header className="section help-header">
           <p className="t-eyebrow">Before you board</p>
           <h1 className="t-display t-display--lg help-header__heading">
-            The practical<br />questions.
+            The practical{" "}<br />questions.
           </h1>
           <p className="t-body help-header__sub">
             What a 27-hour train actually asks of you — and what this app does when the
@@ -117,6 +150,7 @@ export default function Help() {
 
         <section className="help-section" aria-labelledby="timetable">
           <h2 id="timetable" className="t-heading t-heading--lg">The published schedule</h2>
+          <p className="help-notice" role="note">{TIMETABLE_NOTICE}</p>
           <p className="help-note">
             Southbound, Pretoria to Cape Town. Scheduled times only — this app does not receive
             live running information from the operator. The train calls at more places than the
@@ -139,6 +173,30 @@ export default function Help() {
               </tbody>
             </table>
           </div>
+        </section>
+
+        {/*
+          * Which build is on this phone, and how to start the download again.
+          *
+          * The first question when somebody reports a problem is always
+          * "which version are you on", and until now the only place that
+          * appeared was the credits page. The reset is next to it because the
+          * two go together: a passenger on an old build with a half-finished
+          * download needs both answers in one place.
+          */}
+        <section className="help-section" aria-labelledby="version">
+          <h2 id="version" className="t-heading t-heading--lg">This app</h2>
+          <p className="help-note">
+            Version <code>{__BUILD_ID__}</code>, offline data v{DATA_VERSION}.
+            {" "}Quote the version if you report something that looks wrong.
+          </p>
+          <p className="help-note">{RESET_DESCRIPTION}</p>
+          <button type="button" className="help-reset" onClick={handleReset} disabled={resetting}>
+            {resetting ? "Clearing…" : "Reset offline data"}
+          </button>
+          {resetNote && (
+            <p className="help-note help-reset__note" role="status">{resetNote}</p>
+          )}
         </section>
 
         <section className="help-section" aria-labelledby="questions">

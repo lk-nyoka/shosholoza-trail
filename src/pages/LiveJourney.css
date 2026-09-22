@@ -144,7 +144,8 @@
   padding: 18px 18px 14px;
   border-bottom: 1px solid rgba(255,250,240,0.07);
 }
-.live-nearby__header .t-eyebrow { color: var(--gold); margin-bottom: 4px; }
+/* The nearby list is a light card, not the dark map chrome. */
+.live-nearby__header .t-eyebrow { color: var(--gold-ink); margin-bottom: 4px; }
 .live-nearby__stop {
   font-family: var(--font-display);
   font-size: 26px; font-weight: 400;

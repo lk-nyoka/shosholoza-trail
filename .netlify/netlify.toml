@@ -9,7 +9,7 @@ plugins = []
 publish = "C:\\Users\\ASUS\\Desktop\\Coding Projects\\Build or Die\\Week 3\\Hackathon\\GKHack26\\ShosholozaTrail-Frontend\\dist"
 publishOrigin = "config"
 commandOrigin = "config"
-command = "npx vite build"
+command = "npm run build"
 
 [build.environment]
 
@@ -31,8 +31,8 @@ for = "/*"
 [headers.values]
 X-Content-Type-Options = "nosniff"
 Referrer-Policy = "strict-origin-when-cross-origin"
-Permissions-Policy = "camera=(), microphone=(), payment=(), usb=(), interest-cohort=()"
-X-Frame-Options = "SAMEORIGIN"
+Permissions-Policy = "camera=(), microphone=(), geolocation=(self), payment=(), usb=(), interest-cohort=()"
+X-Frame-Options = "DENY"
 
 [[headers]]
 for = "/assets/*"
@@ -88,7 +88,7 @@ Cache-Control = "public, max-age=86400"
 for = "/*"
 
 [headers.values]
-Content-Security-Policy-Report-Only = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://*.wikimedia.org https://tiles.openfreemap.org; connect-src 'self' https://server.arcgisonline.com https://s3.amazonaws.com https://tiles.openfreemap.org https://*.wikimedia.org https://*.supabase.co wss://*.supabase.co; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; worker-src 'self' blob:; manifest-src 'self'"
+Content-Security-Policy-Report-Only = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://*.wikimedia.org https://tiles.openfreemap.org; connect-src 'self' https://server.arcgisonline.com https://s3.amazonaws.com https://tiles.openfreemap.org https://*.wikimedia.org https://*.supabase.co wss://*.supabase.co; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; worker-src 'self' blob:; manifest-src 'self'"
 
 [[redirects]]
 from = "/robots.txt"

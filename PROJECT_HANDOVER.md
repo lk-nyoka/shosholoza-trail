@@ -25,7 +25,7 @@ The project currently contains:
 
 ### Journey map
 
-The main journey view displays the Pretoria-to-Cape Town corridor on a Leaflet map using OpenStreetMap tiles. The interface includes:
+The main journey view renders the Pretoria-to-Cape Town corridor as a Three.js scene: streamed satellite imagery (Esri World Imagery) draped over terrarium elevation tiles, with buildings and roads built from OpenFreeMap vector tiles. It is a 3D rail world, not a 2D slippy map; the Leaflet implementation described in earlier versions of this document was replaced and the dependency has since been removed from `package.json`. The interface includes:
 
 - A mapped railway line rather than a straight illustrative connection.
 - A dark remaining-route layer and amber travelled-route layer.
@@ -159,16 +159,17 @@ This is a graph-connected mapped candidate for passenger information and demonst
 
 The journey animation uses `requestAnimationFrame` rather than `setInterval`, allowing movement to follow the browser's rendering cycle. Elapsed frame time is used to update progress consistently across different refresh rates.
 
-Map stability work includes:
+Scene stability work includes:
 
-- A `ResizeObserver` watching the map container.
-- A browser resize listener.
-- An initial delayed Leaflet `invalidateSize()` call after layout settlement.
-- `invalidateSize({ pan: false, debounceMoveend: true })` to avoid unwanted map jumps.
+- A `ResizeObserver` watching the canvas container, with the renderer and camera
+  aspect updated together so the view never stretches.
+- A floating origin, so world coordinates stay small enough for `float32`
+  precision over a 1 568 km corridor.
+- Level-of-detail terrain rings, with the two sharpest rings skipped above
+  walking pace and in low-data mode.
 - Camera updates throttled separately from train movement.
-- Non-animated Leaflet `panTo` updates while follow mode is active.
-- CSS transitions explicitly disabled on the map container and Leaflet marker elements.
-- Decorative animation disabled on the moving train itself so it cannot fight Leaflet positioning.
+- Building footprints tested against the track corridor with polygon-to-segment
+  intersection, so nothing is ever drawn across the rails.
 
 Browser verification confirmed:
 
@@ -186,9 +187,10 @@ Browser verification confirmed:
 - React 18
 - TypeScript
 - Vite 7
-- Leaflet and React Leaflet
+- Three.js (the 3D rail world; there is no 2D map library)
+- Esri World Imagery, terrarium elevation tiles, OpenFreeMap vector tiles
 - Lucide icons
-- Vite PWA
+- Vite PWA (Workbox, `generateSW`)
 
 ### Important frontend files
 

@@ -19,7 +19,11 @@
   font-weight: 400;
 }
 .help-table thead th {
-  font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; opacity: .6; font-weight: 600;
+  font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600;
+  /* `opacity: .6` measured 3.97:1 - the column headings of the timetable, of
+     all things. Opacity fades towards the background and takes the contrast
+     with it; a colour does not. */
+  color: var(--muted);
 }
 .help-table__stop th[scope="row"] { font-weight: 600; }
 
@@ -35,3 +39,37 @@
 .help-answer p { margin: 0 0 16px; font-size: .93rem; line-height: 1.65; opacity: .88; }
 
 .help-source { margin-top: 34px; font-size: .82rem; opacity: .68; line-height: 1.6; max-width: 60ch; }
+
+/* The demonstration label that sits above the timetable. It is a caveat, not a
+   warning banner: visible and unmissable, without shouting over the table it
+   qualifies. */
+.help-notice {
+  margin: 0 0 12px;
+  padding: 9px 13px;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 7px 7px 0;
+  background: rgba(244, 189, 79, 0.1);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* The reset is destructive and rare, so it is styled as a plain, calm control
+   rather than a red alarm: alarming it would make it feel dangerous, and it is
+   not — it clears a download, and says so in the sentence above it. */
+.help-reset {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid rgba(13, 28, 46, 0.3);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--navy, #0d1c2e);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.help-reset:hover:not(:disabled) { border-color: var(--navy, #0d1c2e); background: rgba(13, 28, 46, 0.05); }
+.help-reset:disabled { opacity: 0.6; cursor: default; }
+.help-reset:focus-visible { outline: 2px solid var(--navy, #0d1c2e); outline-offset: 2px; }
+.help-reset__note { margin-top: 10px; }

@@ -60,6 +60,8 @@ export const tileSpanMetres = (zoom: number, lat: number) =>
  * used to happen here (South Africa's z4 tile is 9/9; the old code asked for
  * 11/8, i.e. the Bay of Bengal and the Southern Ocean).
  */
+import { countBytes } from "./dataUsage";
+
 export const esriImageryUrl = (tileX: number, tileY: number, zoom: number) =>
   `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${zoom}/${tileY}/${tileX}`;
 
@@ -147,6 +149,9 @@ export function loadImageSized(url: string): Promise<HTMLImageElement> {
       if (!response.ok) throw new Error(`Tile ${response.status}`);
       const blob = await response.blob();
       imageBytes.set(url, blob.size);
+      // Every tile that crosses the wire is counted, so the ride can report what
+      // it has cost - and stop before it costs more than the ticket.
+      countBytes(blob.size);
       const image = new Image();
       image.crossOrigin = "anonymous";
       const objectUrl = URL.createObjectURL(blob);

@@ -99,6 +99,21 @@ export class TerrainStreamer {
   /** At speed the near ring is dropped: you cannot resolve 1 m/px at 4 km/s. */
   private nearDetail = true;
   /**
+   * Low-data mode: skip the two sharp rings entirely.
+   *
+   * This is where half a gigabyte came from. A zoom-18 tile covers about 150 m
+   * of this corridor, so riding the full 1 568 km with the sharp rings on pulls
+   * on the order of thirty thousand images - several hundred megabytes, on a
+   * line whose whole point is that people are travelling through places where
+   * data is expensive and scarce.
+   *
+   * It turns itself on when the browser reports a metered or slow connection,
+   * and the passenger can force it. The scene still works: the 4.8 m/px ring
+   * carries the landscape, and at any speed above a crawl it is what you were
+   * looking at anyway.
+   */
+  private lowData = false;
+  /**
    * Tiles either side of centre on the sharpest ring. Two is 25 images, which
    * is the right spend when the train is doing 0.25 km/s and the rider can
    * actually see the ground; at 4x it is 25 images every few seconds for detail
@@ -116,6 +131,10 @@ export class TerrainStreamer {
 
   setNearDetail(enabled: boolean) {
     this.nearDetail = enabled;
+  }
+
+  setLowData(enabled: boolean) {
+    this.lowData = enabled;
   }
 
 
@@ -156,7 +175,12 @@ export class TerrainStreamer {
     let lonWest = 180;
     let lonEast = -180;
 
-    const levels = this.nearDetail ? TERRAIN_LEVELS : TERRAIN_LEVELS.slice(1);
+    // Low data drops both sharp rings; speed drops only the sharpest.
+    const levels = this.lowData
+      ? TERRAIN_LEVELS.slice(2)
+      : this.nearDetail
+        ? TERRAIN_LEVELS
+        : TERRAIN_LEVELS.slice(1);
     for (const level of levels) {
       const ring = level.zoom === TERRAIN_LEVELS[0].zoom ? this.nearRing : level.ring;
       const { x, y } = tileCoords(centre[0], centre[1], level.zoom);
@@ -556,6 +580,36 @@ export function createBallastRibbon(points: THREE.Vector3[], halfWidth = 2.8, dr
  * the old trees were 1.45 world units across, which at the old scale was a
  * canopy 1.1 km wide, one of the things that made the world read as a toy.
  */
+/**
+ * How far a point is from the sampled centreline, in metres, in plan.
+ *
+ * Exported because the tree belt needs it and so does its test: the whole
+ * point of the clearance rule is that it holds against the LINE, not against
+ * whichever sample happened to generate the tree.
+ */
+export function distanceToTrack(
+  x: number,
+  z: number,
+  samples: { x: number; z: number }[],
+): number {
+  if (samples.length === 0) return Infinity;
+  if (samples.length === 1) return Math.hypot(x - samples[0].x, z - samples[0].z);
+  let best = Infinity;
+  for (let i = 0; i < samples.length - 1; i += 1) {
+    const a = samples[i];
+    const b = samples[i + 1];
+    const vx = b.x - a.x;
+    const vz = b.z - a.z;
+    const lengthSq = vx * vx + vz * vz;
+    const t = lengthSq === 0 ? 0 : Math.max(0, Math.min(1, ((x - a.x) * vx + (z - a.z) * vz) / lengthSq));
+    const qx = a.x + t * vx;
+    const qz = a.z + t * vz;
+    const distance = Math.hypot(x - qx, z - qz);
+    if (distance < best) best = distance;
+  }
+  return best;
+}
+
 export function createTreeBelt(
   samples: THREE.Vector3[],
   material: THREE.MeshStandardMaterial,
@@ -568,6 +622,17 @@ export function createTreeBelt(
    * glitching.
    */
   seeds?: number[],
+  /**
+   * The direction of travel at each sample, normalised, y ignored.
+   *
+   * Without this the belt was offset along the WORLD X axis, which is only
+   * "beside the track" where the line happens to run north-south. Out of
+   * Pretoria the alignment swings through east-west more than once, and on
+   * those stretches side * offset pointed straight down the rails - so the
+   * jacarandas were planted ON the track. Same bug as the chase camera had:
+   * a fixed world offset standing in for a direction that rotates.
+   */
+  tangents?: THREE.Vector3[],
 ): THREE.InstancedMesh | null {
   const perSide = 2;
   const count = samples.length * perSide * 2;
@@ -578,19 +643,63 @@ export function createTreeBelt(
   const scale = new THREE.Vector3(1, 1, 1);
   const position = new THREE.Vector3();
   let index = 0;
+  /**
+   * The clearance is to the NEAREST FOLIAGE, not to the trunk. A billboard is
+   * as wide as zone.size[0] and centred on its position, so planting a 5.4 m
+   * jacaranda with its centre exactly on the 17 m line put leaves at 14.3 m.
+   */
+  const halfCanopy = zone.size[0] / 2;
+  const along = new THREE.Vector3();
+  const across = new THREE.Vector3();
+
   samples.forEach((point, sampleIndex) => {
+    // Perpendicular to the direction of travel, in the ground plane.
+    const tangent = tangents?.[sampleIndex];
+    if (tangent) {
+      along.copy(tangent).setY(0).normalize();
+    } else {
+      along.set(0, 0, 1);
+    }
+    across.set(-along.z, 0, along.x);
+
     for (let slot = 0; slot < perSide; slot += 1) {
       const side = slot % 2 ? -1 : 1;
       const seed = seeds?.[sampleIndex] ?? sampleIndex;
       const jitter = (((seed * 37 + slot * 11) % 23) + 23) % 23 - 11;
       // Never inside the swept corridor - rails, ballast, masts and the train
       // itself all live within about 8 m of the centreline.
-      const offset = Math.max(TRACK_CLEARANCE_M, zone.offset + jitter * 0.9);
-      position.set(
-        point.x + side * offset,
-        point.y + zone.size[1] / 2 - 0.4,
-        point.z + jitter * 1.5,
-      );
+      let offset = Math.max(TRACK_CLEARANCE_M + halfCanopy, zone.offset + jitter * 0.9);
+      position
+        .copy(point)
+        .addScaledVector(across, side * offset)
+        .addScaledVector(along, jitter * 1.5);
+
+      /*
+       * The offset above clears the track WHERE THIS SAMPLE IS, and then the
+       * jitter slides the tree up to 16.5 m along the tangent - a straight
+       * line, on a route that curves. On the tight curves out of Pretoria and
+       * through the Hex River pass the line bends back towards the tree while
+       * the tangent does not, so a tree placed 17 m clear of its own sample
+       * ended up inside the corridor a few metres further on. Measured on the
+       * real alignment, the worst case was 9.4 m - the train ran through the
+       * leaves.
+       *
+       * So the clearance is checked against the LINE rather than against one
+       * sample, and anything short is pushed straight out until it is not.
+       * Two passes: one measurement, one correction, one re-measurement. It
+       * is a handful of segment distances per tree and it runs once per
+       * corridor rebuild, not per frame.
+       */
+      const required = TRACK_CLEARANCE_M + halfCanopy;
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        const actual = distanceToTrack(position.x, position.z, samples);
+        if (actual >= required) break;
+        const push = required - actual + 0.5;
+        offset += push;
+        position.addScaledVector(across, side * push);
+      }
+
+      position.y = point.y + zone.size[1] / 2 - 0.4;
       for (const turn of [0, Math.PI / 2]) {
         quaternion.setFromAxisAngle(new THREE.Vector3(0, 1, 0), turn);
         matrix.compose(position, quaternion, scale);
@@ -663,7 +772,11 @@ export async function fetchBuildingsFromTiles(
                 // OSM occasionally carries a height in the wrong unit or from a
                 // mast on the roof. Anything over about forty storeys on a
                 // footprint this size is a data error, not a tower.
-                height: Math.min(rendered > 2.5 ? rendered : estimateHeight(ring), 150),
+                // 150 m used to be the ceiling, which decapitated the only
+                // skyline on the route: the Carlton Centre is 223 m and was
+                // being served at 150. Over 260 m on this corridor is a data
+                // error - a mast height, or metres entered as feet.
+                height: Math.min(rendered > 2.5 ? rendered : estimateHeight(ring), 260),
                 base: Number.isFinite(base) ? base : 0,
               });
             }
@@ -689,10 +802,30 @@ function estimateHeight(ring: LatLng[]): number {
     area += x1 * y2 - x2 * y1;
   }
   const footprint = Math.abs(area) / 2;
-  if (footprint < 60) return 3.2;
-  if (footprint < 250) return 5.5;
-  if (footprint < 1200) return 7.5;
-  return 10;
+  if (footprint < 60) return 3.2;    // outbuilding, shack, garage
+  if (footprint < 250) return 5.5;   // house
+  if (footprint < 800) return 7.5;   // shop, small block
+  if (footprint < 2500) return 12;   // warehouse, larger block
+  // A footprint this size with no height tag is a city block, not a shed. Four
+  // storeys was making the Johannesburg CBD read as a car park from the train.
+  return 18;
+}
+
+/**
+ * How far to look for buildings.
+ *
+ * 1 600 m everywhere was tuned for Karoo towns, where it is generous, and it
+ * quietly cut the only two skylines on the line in half: from the corridor
+ * through Braamfontein the Johannesburg CBD runs out past two kilometres, and
+ * the Cape Town City Bowl further still. Open country keeps the small radius,
+ * because fetching four kilometres of empty veld is pure cost.
+ */
+export function buildingRadiusAtKm(km: number): number {
+  if (km < 12) return 3200;                  // Pretoria
+  if (km >= 44 && km <= 78) return 4200;     // Johannesburg, Braamfontein to Park
+  if (km >= 1545) return 4200;               // Cape Town, the City Bowl
+  if (km >= 528 && km <= 552) return 2400;   // Kimberley
+  return 1600;
 }
 
 /**
@@ -759,16 +892,35 @@ export function createBuildings(
      */
     const count = geometry.attributes.position.count;
     const colours = new Float32Array(count * 3);
+    /**
+     * What the wall shader needs, per vertex: whether this is a wall at all,
+     * where the building's ground is, how tall it is, and a number of its own.
+     *
+     * It goes in an attribute rather than a uniform because every building in
+     * range is one merged mesh - that batching is what keeps a town from being
+     * twelve hundred draw calls, and it is not worth giving up for windows.
+     */
+    const facade = new Float32Array(count * 4);
+    const baseY = elevation.heightAt(centroidLat, centroidLon) + (footprint.base ?? 0);
+    // Stable per building, so a rebuild does not reshuffle every façade.
+    const seed = Math.abs(Math.sin(centroidLat * 12.9898 + centroidLon * 78.233) * 43758.5453) % 1;
+
     for (const part of geometry.groups) {
-      const colour = part.materialIndex === 0 ? roofColour : wallColour;
+      const isWall = part.materialIndex !== 0;
+      const colour = isWall ? wallColour : roofColour;
       const end = part.start + part.count;
       for (let index = part.start; index < end && index < count; index += 1) {
         colours[index * 3] = colour.r;
         colours[index * 3 + 1] = colour.g;
         colours[index * 3 + 2] = colour.b;
+        facade[index * 4] = isWall ? 1 : 0;
+        facade[index * 4 + 1] = baseY;
+        facade[index * 4 + 2] = footprint.height;
+        facade[index * 4 + 3] = seed;
       }
     }
     geometry.setAttribute("color", new THREE.BufferAttribute(colours, 3));
+    geometry.setAttribute("aFacade", new THREE.BufferAttribute(facade, 4));
     geometry.clearGroups();
     geometry.deleteAttribute("uv");
     parts.push(geometry);
@@ -779,10 +931,7 @@ export function createBuildings(
   for (const part of parts) part.dispose();
   if (!merged) return group;
 
-  const mesh = new THREE.Mesh(
-    merged,
-    new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.82, metalness: 0.04 }),
-  );
+  const mesh = new THREE.Mesh(merged, createFacadeMaterial());
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   group.add(mesh);
@@ -1488,4 +1637,221 @@ export function createTunnelPortals(track: THREE.Vector3[], runs: BrunnelRun[]):
 /** Is a given track sample inside a tunnel run? Used to darken the ride. */
 export function insideTunnel(runs: BrunnelRun[], sampleIndex: number): boolean {
   return runs.some(run => run.kind === "tunnel" && sampleIndex >= run.from && sampleIndex <= run.to);
+}
+
+/**
+ * Squared distance between two line segments in the ground plane.
+ *
+ * Used to keep buildings off the railway. Point-to-point is not enough: a wall
+ * running parallel to the rails five metres away has both endpoints far from
+ * every track sample, and slips through any test that only compares points.
+ */
+export function segmentDistanceSq(
+  ax: number, az: number, bx: number, bz: number,
+  cx: number, cz: number, dx: number, dz: number,
+): number {
+  const pointSegSq = (px: number, pz: number, sx: number, sz: number, tx: number, tz: number) => {
+    const vx = tx - sx;
+    const vz = tz - sz;
+    const lengthSq = vx * vx + vz * vz;
+    const t = lengthSq === 0 ? 0 : Math.max(0, Math.min(1, ((px - sx) * vx + (pz - sz) * vz) / lengthSq));
+    const qx = sx + t * vx;
+    const qz = sz + t * vz;
+    return (px - qx) ** 2 + (pz - qz) ** 2;
+  };
+
+  // Crossing segments are distance zero, and that is the case we most want to
+  // catch - the line passing straight through a wall.
+  const d1 = (dx - cx) * (az - cz) - (dz - cz) * (ax - cx);
+  const d2 = (dx - cx) * (bz - cz) - (dz - cz) * (bx - cx);
+  const d3 = (bx - ax) * (cz - az) - (bz - az) * (cx - ax);
+  const d4 = (bx - ax) * (dz - az) - (bz - az) * (dx - ax);
+  if (d1 * d2 < 0 && d3 * d4 < 0) return 0;
+
+  return Math.min(
+    pointSegSq(ax, az, cx, cz, dx, dz),
+    pointSegSq(bx, bz, cx, cz, dx, dz),
+    pointSegSq(cx, cz, ax, az, bx, bz),
+    pointSegSq(dx, dz, ax, az, bx, bz),
+  );
+}
+
+
+/**
+ * Does a building footprint come within `clearance` metres of the railway?
+ *
+ * Testing the ring's CORNERS is not enough, and that was the bug. A large
+ * polygon can have every corner comfortably outside the corridor while the line
+ * runs straight through its middle - which is the exact shape of a station
+ * building mapped over its own platforms. Extruded, that is a solid block
+ * standing on the rails with the train inside it.
+ *
+ * Three stages, cheapest first:
+ *   1. bounding box, expanded by the clearance - in open country this is the
+ *      whole cost, because no track sample is anywhere near
+ *   2. any track sample INSIDE the ring: the line goes through the middle
+ *   3. any ring EDGE within the clearance of any track SEGMENT - edge to
+ *      segment, so a wall running parallel to the rails is caught even when
+ *      its endpoints are far from every sample
+ *
+ * @param ringXZ  flat [x0, z0, x1, z1, ...] in local metres
+ * @param track   corridor samples in the same frame
+ */
+export function ringIntersectsCorridor(
+  ringXZ: number[],
+  track: { x: number; z: number }[],
+  clearance: number,
+): boolean {
+  const count = ringXZ.length / 2;
+  if (count < 3 || !track.length) return false;
+
+  let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+  for (let i = 0; i < count; i += 1) {
+    const x = ringXZ[i * 2];
+    const z = ringXZ[i * 2 + 1];
+    if (x < minX) minX = x;
+    if (x > maxX) maxX = x;
+    if (z < minZ) minZ = z;
+    if (z > maxZ) maxZ = z;
+  }
+  minX -= clearance; maxX += clearance;
+  minZ -= clearance; maxZ += clearance;
+
+  const near: number[] = [];
+  for (let i = 0; i < track.length; i += 1) {
+    const s = track[i];
+    if (s.x >= minX && s.x <= maxX && s.z >= minZ && s.z <= maxZ) near.push(i);
+  }
+  if (!near.length) return false;
+
+  // 2. A track sample inside the footprint - ray casting, odd/even rule.
+  for (const i of near) {
+    const px = track[i].x;
+    const pz = track[i].z;
+    let inside = false;
+    for (let a = 0, b = count - 1; a < count; b = a, a += 1) {
+      const az = ringXZ[a * 2 + 1];
+      const bz = ringXZ[b * 2 + 1];
+      if (az > pz !== bz > pz) {
+        const ax = ringXZ[a * 2];
+        const bx = ringXZ[b * 2];
+        if (px < ((bx - ax) * (pz - az)) / (bz - az) + ax) inside = !inside;
+      }
+    }
+    if (inside) return true;
+  }
+
+  // 3. An edge too close to a segment.
+  const limit = clearance * clearance;
+  for (const i of near) {
+    const j = Math.min(i + 1, track.length - 1);
+    if (j === i) continue;
+    const t0 = track[i];
+    const t1 = track[j];
+    for (let a = 0, b = count - 1; a < count; b = a, a += 1) {
+      const dist = segmentDistanceSq(
+        ringXZ[b * 2], ringXZ[b * 2 + 1], ringXZ[a * 2], ringXZ[a * 2 + 1],
+        t0.x, t0.z, t1.x, t1.z,
+      );
+      if (dist <= limit) return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * The wall shader: floor bands and windows, drawn rather than modelled.
+ *
+ * Johannesburg from the corridor is several hundred buildings. Giving each one
+ * real window geometry would be tens of thousands of extra faces and would undo
+ * the batching that makes a town render at all, so the windows are computed in
+ * the fragment shader from the wall's own position. Nothing is added to the
+ * mesh but one attribute.
+ *
+ * The horizontal coordinate comes from world position rather than UVs, choosing
+ * whichever of x or z runs across the wall - which is what the face normal
+ * tells us. Untextured grey boxes are what made the CBD read as a blockout; a
+ * band of glass every three metres is what makes it read as a city.
+ */
+export function createFacadeMaterial(): THREE.MeshStandardMaterial {
+  const material = new THREE.MeshStandardMaterial({
+    vertexColors: true,
+    roughness: 0.82,
+    metalness: 0.04,
+  });
+
+  material.onBeforeCompile = shader => {
+    shader.vertexShader = shader.vertexShader
+      .replace(
+        "#include <common>",
+        `#include <common>
+         attribute vec4 aFacade;
+         varying vec4 vFacade;
+         varying vec3 vWorldPos;`,
+      )
+      .replace(
+        "#include <begin_vertex>",
+        `#include <begin_vertex>
+         vFacade = aFacade;
+         vWorldPos = (modelMatrix * vec4(transformed, 1.0)).xyz;`,
+      );
+
+    shader.fragmentShader = shader.fragmentShader
+      .replace(
+        "#include <common>",
+        `#include <common>
+         varying vec4 vFacade;
+         varying vec3 vWorldPos;`,
+      )
+      .replace(
+        "#include <color_fragment>",
+        `#include <color_fragment>
+         if (vFacade.x > 0.5) {
+           float baseY  = vFacade.y;
+           float height = max(vFacade.z, 3.0);
+           float seed   = vFacade.w;
+
+           // Storey height between about 3.0 and 4.2 m, fixed per building, so
+           // the floors line up with themselves all the way round.
+           float storey = 3.0 + fract(seed * 7.13) * 1.2;
+           float up     = max(vWorldPos.y - baseY, 0.0);
+
+           // Ground floor is taller and has no window band - shopfronts and
+           // entrances read as a solid base, which is what stops a tower
+           // looking like it is floating.
+           float above  = max(up - storey * 1.35, 0.0);
+           float floorT = fract(above / storey);
+
+           // Across the wall: pick whichever horizontal axis the face is most
+           // square to, so windows run along the wall rather than smearing.
+           vec3 n = normalize(vNormal);
+           float acrossCoord = abs(n.x) > abs(n.z) ? vWorldPos.z : vWorldPos.x;
+           float bay     = 2.4 + fract(seed * 3.77) * 1.4;
+           float bayT    = fract(acrossCoord / bay);
+
+           // A window is a band in both directions, with a mullion between.
+           float win = smoothstep(0.16, 0.26, floorT) * (1.0 - smoothstep(0.66, 0.78, floorT))
+                     * smoothstep(0.18, 0.30, bayT)  * (1.0 - smoothstep(0.64, 0.80, bayT));
+
+           // Fade the detail out with distance: at a kilometre this is smaller
+           // than a pixel and would only shimmer.
+           float dist = length(vWorldPos - cameraPosition);
+           win *= 1.0 - smoothstep(320.0, 900.0, dist);
+
+           // Glass is darker and cooler than the wall it sits in.
+           vec3 glass = diffuseColor.rgb * 0.42 + vec3(0.05, 0.07, 0.10);
+           diffuseColor.rgb = mix(diffuseColor.rgb, glass, win * 0.85);
+
+           // A faint horizontal line at every floor, so even a wall turned away
+           // from the sun still shows its scale.
+           float band = 1.0 - smoothstep(0.0, 0.06, abs(floorT - 0.92));
+           diffuseColor.rgb *= 1.0 - band * 0.10 * (1.0 - smoothstep(200.0, 600.0, dist));
+         }`,
+      );
+  };
+
+  // Anything that changes the compiled shader needs its own program key.
+  material.customProgramCacheKey = () => "shosholoza-facade-v1";
+  return material;
 }

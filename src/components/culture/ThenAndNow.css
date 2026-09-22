@@ -1,0 +1,224 @@
+/* Shosholoza: Then and Now.
+   Two players side by side on a desktop, stacked on a phone. The players are
+   the loudest thing on the page and everything under them reads as a quiet
+   explanation, because the point of the section is to get somebody to listen
+   twice rather than to read an essay. */
+
+.tan {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 28px 0 8px;
+}
+
+.tan__head { display: flex; flex-direction: column; gap: 8px; }
+.tan__lead { max-width: 60ch; margin: 0; color: var(--ink-muted, #55504a); line-height: 1.65; }
+
+.tan__players {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 18px;
+}
+
+/* ── A player ─────────────────────────────────────────────────────────── */
+
+.tan-player {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid var(--rule, #ddd4c6);
+  border-radius: 14px;
+  background: var(--paper, #fbf7f0);
+}
+.tan-player__title { margin: 0; font: 500 19px/1.25 var(--font-display, serif); }
+.tan-player__why { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-muted, #55504a); }
+
+.tan-player__stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--navy, #0d1c2e);
+}
+.tan-player__frame { width: 100%; height: 100%; border: 0; display: block; }
+
+/* The facade. Until this is pressed there is no iframe on the page, so
+   nothing has been requested from YouTube and nothing can start on its own. */
+.tan-player__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border: 0;
+  color: var(--hero-white, #fffaf0);
+  background: linear-gradient(160deg, #163353, #0b1a2c);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
+.tan-player__play small {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.72;
+}
+.tan-player__playicon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  color: var(--navy, #0d1c2e);
+  background: var(--gold, #f1b94d);
+  transition: transform 180ms;
+}
+.tan-player__play:hover .tan-player__playicon { transform: scale(1.06); }
+
+.tan-player__stop {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 250, 240, 0.25);
+  border-radius: 999px;
+  color: var(--hero-white, #fffaf0);
+  background: rgba(8, 18, 30, 0.78);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tan-player__offline {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  color: rgba(255, 250, 240, 0.85);
+  text-align: center;
+}
+.tan-player__offline p { margin: 0; font-size: 12.5px; line-height: 1.55; max-width: 32ch; }
+
+/* ── Credits ──────────────────────────────────────────────────────────── */
+
+.tan-credits { display: flex; flex-direction: column; gap: 2px; margin: 2px 0 0; }
+.tan-credit { display: flex; gap: 8px; font-size: 12px; line-height: 1.5; }
+.tan-credit dt { flex: none; width: 88px; color: var(--ink-muted, #55504a); font-weight: 600; }
+.tan-credit dd { margin: 0; }
+/* An unverified credit looks unverified. It is not styled to be overlooked. */
+/* "Not yet verified" is the most important text on this page - it is the
+   honesty guard - and it measured 4.39:1, just under AA. Darkened to 5.9:1. */
+.tan-credit--unknown { color: #6f5615; font-style: italic; }
+
+.tan-player__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ── Explanatory blocks ───────────────────────────────────────────────── */
+
+.tan__notice,
+.tan-block,
+.tan__foot {
+  border-radius: 12px;
+}
+
+.tan__notice {
+  margin: 0;
+  padding: 12px 15px;
+  border-left: 3px solid var(--gold, #f1b94d);
+  border-radius: 0 10px 10px 0;
+  background: rgba(244, 189, 79, 0.1);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.tan-block { display: flex; flex-direction: column; gap: 10px; }
+.tan-block__title { margin: 0; font: 500 18px/1.3 var(--font-display, serif); }
+.tan-block__body { margin: 0; max-width: 68ch; font-size: 14px; line-height: 1.7; }
+.tan-block__body--rail {
+  padding-left: 14px;
+  border-left: 2px solid var(--rule, #ddd4c6);
+  color: var(--ink-muted, #55504a);
+}
+.tan-block--absent .tan-block__body { color: var(--ink-muted, #55504a); font-style: italic; }
+
+.tan-langs { display: flex; gap: 8px; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; }
+.tan-langs li {
+  padding: 4px 11px;
+  border: 1px solid var(--rule, #ddd4c6);
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.tan-review { margin: 0; font-size: 12px; color: var(--ink-muted, #55504a); }
+
+.tan-translation { display: flex; flex-direction: column; gap: 8px; margin: 0; padding-left: 20px; }
+.tan-translation__en { display: block; color: var(--ink-muted, #55504a); font-size: 13px; }
+
+.tan-compare { display: flex; flex-direction: column; gap: 10px; margin: 0; }
+.tan-compare__row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule, #ddd4c6);
+}
+.tan-compare__row:last-child { border-bottom: 0; padding-bottom: 0; }
+.tan-compare__row dt { font-weight: 700; font-size: 13.5px; }
+.tan-compare__row dd { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-muted, #55504a); }
+
+/* ── The creative prompt ──────────────────────────────────────────────── */
+
+.tan-block--prompt {
+  padding: 18px;
+  border: 1px solid var(--rule, #ddd4c6);
+  border-radius: 14px;
+  background: var(--paper, #fbf7f0);
+}
+.tan-prompt__label { font-size: 13px; font-weight: 600; }
+.tan-prompt__input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid var(--rule, #ddd4c6);
+  border-radius: 9px;
+  background: var(--page, #fff);
+  color: inherit;
+  font: inherit;
+  font-size: max(16px, 1rem);
+  line-height: 1.6;
+  resize: vertical;
+}
+.tan-prompt__note { margin: 0; font-size: 11.5px; color: var(--ink-muted, #55504a); }
+
+.tan__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule, #ddd4c6);
+}
+.tan__foot p { margin: 0; font-size: 11.5px; line-height: 1.6; color: var(--ink-muted, #55504a); }
+
+@media (max-width: 560px) {
+  .tan-compare__row { grid-template-columns: 1fr; gap: 3px; }
+  .tan-credit dt { width: 78px; }
+}

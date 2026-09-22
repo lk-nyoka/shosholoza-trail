@@ -62,3 +62,40 @@
 .start__actions .btn { justify-content: center; gap: 7px; }
 .btn--ghost { background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; color: inherit; padding: 10px 4px; }
 .start__foot { margin: 0; font-size: .78rem; opacity: .7; }
+
+/* ── Choosing how to travel ─────────────────────────────────────────────────
+   Multi-select, and it looks like it: a tick box, not a radio. The three modes
+   are the thing this project was selected on, so they are asked about before
+   boarding rather than discovered somewhere on the ride. */
+.modepick { display: flex; flex-direction: column; gap: 10px; margin: 4px 0 18px; }
+.modepick__card {
+  display: flex; gap: 13px; align-items: center;
+  width: 100%; padding: 15px 16px;
+  border: 1.5px solid var(--rule, #ddd4c6); border-radius: 13px;
+  background: var(--surface, #fff); color: inherit;
+  font: inherit; text-align: left; cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+.modepick__card--on { border-color: var(--gold, #b07c14); background: rgba(241, 185, 77, 0.07); }
+.modepick__card:focus-visible { outline: 2px solid var(--gold, #b07c14); outline-offset: 2px; }
+
+.modepick__icon {
+  display: grid; place-items: center; flex: none;
+  width: 40px; height: 40px; border-radius: 11px; color: #fff;
+}
+.modepick__icon--adventure  { background: #2f6b8f; }
+.modepick__icon--creative   { background: #9a5b2f; }
+.modepick__icon--networking { background: #3f7a52; }
+
+.modepick__text { display: flex; flex: 1 1 auto; flex-direction: column; gap: 3px; min-width: 0; }
+.modepick__text b     { font-size: 15px; font-weight: 700; }
+.modepick__text small { font-size: 12.5px; line-height: 1.5; color: var(--ink-muted, #6b6154); }
+
+.modepick__tick {
+  display: grid; place-items: center; flex: none;
+  width: 22px; height: 22px; border: 1.5px solid var(--rule, #ddd4c6); border-radius: 6px;
+  color: #fff;
+}
+.modepick__card--on .modepick__tick { border-color: #2f6b3f; background: #2f6b3f; }
+
+@media (prefers-reduced-motion: reduce) { .modepick__card { transition: none; } }

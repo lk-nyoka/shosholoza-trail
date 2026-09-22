@@ -20,6 +20,17 @@ npm run preview
 
 This frontend is intentionally standalone and does not modify or depend on the existing `Prototype` folder. Recommendation and service-status content is currently labelled demo data and can later be replaced with Supabase or another API.
 
+
+## Current hackathon release behavior
+
+The current Netlify target is a **frontend-only public demo**. Its `/api/*` route intentionally returns a JSON `503` instead of letting SPA fallback HTML masquerade as an API response. The core ride, stop discovery, journey setup, offline corpus guide, local reservations and PWA experience remain usable without that service. Crowdsourced telemetry, server journey status and other FastAPI-backed features require the API to be deployed separately and `VITE_API_BASE_URL` to point at it.
+
+The **AI Guide is an offline deterministic retrieval system**, not a generative LLM. It uses TF-IDF scoring over a curated route corpus so it can answer without signal and refuse questions outside what the team has supplied rather than inventing facts.
+
+For a rehearsed stage demonstration, open the deployed build with `?demo=1`. Demo mode is visibly labelled and uses deterministic simulated position data so a venue's Wi-Fi or location-permission prompt cannot derail the presentation.
+
+For the 19 September release audit, verified fixes and the route matrix, see [`HACKATHON_RELEASE_AUDIT.md`](./HACKATHON_RELEASE_AUDIT.md).
+
 ## Implemented product capabilities
 
 - Cinematic train-follow camera with playback speeds and route scrubbing

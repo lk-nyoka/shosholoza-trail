@@ -159,6 +159,16 @@ export async function downloadJourney(onProgress: (p: DownloadProgress) => void)
     }
   };
   await Promise.all(Array.from({ length: 6 }, worker));
+
+  // Record what this package holds and which build wrote it, so the panel can
+  // tell the passenger whether it is still current rather than only that it
+  // exists.
+  writeManifest({
+    storedAt: new Date().toISOString(),
+    buildId: typeof __BUILD_ID__ === "string" ? __BUILD_ID__ : "unknown",
+    photos: photos.length,
+    tiles: tiles.length,
+  });
 }
 
 export async function isJourneyStored(): Promise<boolean> {
@@ -202,4 +212,147 @@ export async function clearStoredJourney(): Promise<void> {
   } catch {
     /* nothing stored */
   }
+  try {
+    window.localStorage.removeItem(MANIFEST_KEY);
+  } catch {
+    /* nothing to forget */
+  }
+}
+
+// ── What is in the package, how big it is, and how old ────────────────────
+
+/**
+ * The offline package was a yes/no: either photographs were cached or they
+ * were not. That is not enough to act on.
+ *
+ * A passenger about to lose signal for nine hours needs three things the old
+ * panel could not tell them: what is actually in there, how much of the phone
+ * it is using, and whether it is still current. The third matters most and was
+ * missing entirely — a download taken in July, against a route file that has
+ * since been corrected, looks exactly like one taken this morning.
+ */
+const MANIFEST_KEY = "st.offline.manifest.v1";
+
+export interface OfflineManifest {
+  /** When the download finished, as an ISO instant. */
+  storedAt: string;
+  /** The build that wrote it, so a route correction can invalidate it. */
+  buildId: string;
+  photos: number;
+  tiles: number;
+}
+
+/**
+ * How old a package may be before the panel says so.
+ *
+ * Thirty days. The timetable is a published schedule that changes rarely, the
+ * photographs not at all, and the route geometry only when we correct it —
+ * which the build ID catches immediately regardless of age. Thirty days is
+ * about "this is from a previous trip", which is the case worth flagging.
+ */
+export const STALE_AFTER_DAYS = 30;
+
+export interface PackageState {
+  present: boolean;
+  storedAt: Date | null;
+  ageDays: number | null;
+  /** True when it is old, or was written by a different build. */
+  stale: boolean;
+  /** Why it is stale, in words, or null. */
+  staleReason: string | null;
+  photos: number;
+  tiles: number;
+  megabytes: number | null;
+}
+
+function readManifest(): OfflineManifest | null {
+  try {
+    const raw = window.localStorage.getItem(MANIFEST_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<OfflineManifest>;
+    if (typeof parsed.storedAt !== "string" || Number.isNaN(Date.parse(parsed.storedAt))) return null;
+    return {
+      storedAt: parsed.storedAt,
+      buildId: typeof parsed.buildId === "string" ? parsed.buildId : "unknown",
+      photos: Number(parsed.photos) || 0,
+      tiles: Number(parsed.tiles) || 0,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function writeManifest(manifest: OfflineManifest): void {
+  try {
+    window.localStorage.setItem(MANIFEST_KEY, JSON.stringify(manifest));
+  } catch {
+    /* Private mode. The download still works; only the label is lost. */
+  }
+}
+
+/**
+ * Decide staleness from a manifest, a build and a clock.
+ *
+ * Pure, and exported for the test: "is this download still good" is exactly
+ * the kind of judgement that must not be decided by reading the code.
+ */
+export function assessPackage(
+  manifest: OfflineManifest | null,
+  currentBuild: string,
+  now: Date,
+): Pick<PackageState, "storedAt" | "ageDays" | "stale" | "staleReason" | "photos" | "tiles"> {
+  if (!manifest) {
+    return {
+      storedAt: null,
+      ageDays: null,
+      stale: false,
+      staleReason: null,
+      photos: 0,
+      tiles: 0,
+    };
+  }
+  const storedAt = new Date(manifest.storedAt);
+  const ageDays = Math.floor((now.getTime() - storedAt.getTime()) / 86_400_000);
+
+  // A download from a different build may hold a route we have since
+  // corrected, and that is worth saying before the age is.
+  if (manifest.buildId !== currentBuild && manifest.buildId !== "unknown") {
+    return {
+      storedAt,
+      ageDays,
+      stale: true,
+      staleReason: "The app has been updated since this was downloaded.",
+      photos: manifest.photos,
+      tiles: manifest.tiles,
+    };
+  }
+  if (ageDays >= STALE_AFTER_DAYS) {
+    return {
+      storedAt,
+      ageDays,
+      stale: true,
+      staleReason: `This was downloaded ${ageDays} days ago.`,
+      photos: manifest.photos,
+      tiles: manifest.tiles,
+    };
+  }
+  return { storedAt, ageDays, stale: false, staleReason: null, photos: manifest.photos, tiles: manifest.tiles };
+}
+
+/** Everything the offline panel needs, in one call. */
+export async function packageState(currentBuild: string, now = new Date()): Promise<PackageState> {
+  const assessment = assessPackage(readManifest(), currentBuild, now);
+  const [present, megabytes] = await Promise.all([isJourneyStored(), storedMegabytes()]);
+  return { ...assessment, present, megabytes };
+}
+
+/** What a fresh download would contain, before it is taken. */
+export function packageContents(): { photos: number; tiles: number; estimatedMb: number } {
+  const photos = journeyMedia().length;
+  const tiles = corridorTiles().length;
+  return {
+    photos,
+    tiles,
+    estimatedMb: Math.ceil(photos * MB_PER_PHOTO + tiles * MB_PER_TILE),
+  };
 }

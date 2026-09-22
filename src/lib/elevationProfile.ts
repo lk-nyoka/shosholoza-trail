@@ -3,7 +3,7 @@
  *
  * Sampled from the same Mapzen terrarium DEM the 3D terrain uses, but at a much
  * lower zoom: a profile only needs the shape of the climb, and z9 tiles cover
- * roughly 78 km each, so the entire 1,582 km corridor costs a couple of dozen
+ * roughly 78 km each, so the entire 1 568 km corridor costs a couple of dozen
  * tiles instead of thousands.
  *
  * This is the part of the journey the map cannot show you. Pretoria sits at

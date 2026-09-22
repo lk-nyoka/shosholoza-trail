@@ -5,7 +5,7 @@ import {
   distanceFrom, distanceLabel, GROUP_LABEL, groupOf, KIND_LABEL, NEARBY,
   type NearbyGroup,
 } from "../../data/nearby";
-import { REACH_LABEL, reachOf } from "../../lib/timetable";
+import { REACH_LABEL, reachOf } from "../../lib/corridor";
 import type { Stop } from "../../types";
 import "./NearbyList.css";
 

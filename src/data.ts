@@ -28,7 +28,7 @@ const railNodesRaw: RailNode[] = [
   { name: "Worcester",     km: 1425, lat: -33.6464, lon: 19.4487, station: true  },
   { name: "Wellington",    km: 1488, lat: -33.6398, lon: 19.0112                 },
   { name: "Bellville",     km: 1560, lat: -33.8943, lon: 18.6294                 },
-  { name: "Cape Town",     km: 1582, lat: -33.9249, lon: 18.4241, station: true  },
+  { name: "Cape Town",     km: 0,    lat: -33.9249, lon: 18.4241, station: true  },
 ];
 
 /**
@@ -122,7 +122,7 @@ const stopsRaw: Stop[] = [
   },
   {
     id: "cape-town", name: "Cape Town", province: "Western Cape",
-    km: 1582, lat: -33.9249, lon: 18.4241,
+    km: 0, lat: -33.9249, lon: 18.4241,
     teaser: "Mountain, ocean and a city alive with creativity.",
     places: [
       { id: "table",     name: "Table Mountain",  category: "Nature",         type: "attraction", distance: "6.8 km", rating: 4.9, blurb: "Ride the cableway or hike to an unforgettable panorama.",          image: img("Cape Town (ZA), Table Mountain -- 2024 -- 2821.jpg"), featured: true },

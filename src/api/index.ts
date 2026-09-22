@@ -2,9 +2,34 @@ import type { JourneyStatus, PingAccepted, Stop, Place } from "../types";
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api/v1";
 
+/**
+ * Whether this build has an API to talk to at all.
+ *
+ * The public deployment has none: Netlify answers /api/* with a 503 so that a
+ * JSON caller gets an honest refusal instead of the SPA's HTML. That gate is
+ * right, but the app was still making the calls, so every page opened with a
+ * row of red 503s in the console for requests it already knew would fail.
+ *
+ * Offline-first means not asking. With no VITE_API_BASE_URL configured, these
+ * functions reject immediately and every call site takes the path it takes on
+ * a train in the Karoo — which is the path it was always going to take.
+ */
+export const apiConfigured = Boolean(
+  (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim(),
+);
+
+/** Thrown instead of a request when no API is configured. */
+export class ApiUnavailableError extends Error {
+  constructor() {
+    super("No journey service is configured for this build.");
+    this.name = "ApiUnavailableError";
+  }
+}
+
 // ── Core fetch helper ────────────────────────────────────
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  if (!apiConfigured) throw new ApiUnavailableError();
   const headers: Record<string, string> = { Accept: "application/json" };
   if (init?.body) headers["Content-Type"] = "application/json";
   const res = await fetch(`${API_BASE}${path}`, {

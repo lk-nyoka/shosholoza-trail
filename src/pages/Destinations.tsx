@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { Compass, Heart, Search, Star, Store } from "lucide-react";
 import PlaceCard from "../components/ui/PlaceCard";
 import { stops, stopHero } from "../data";
-import { DEFAULT_STOP_MINUTES, STOP_MINUTE_CHOICES, scheduleLabel } from "../lib/timetable";
+import { DEFAULT_STOP_MINUTES, STOP_MINUTE_CHOICES, scheduleLabel } from "../lib/corridor";
 import TripSetup from "../components/ui/TripSetup";
 import NearbyList from "../components/ui/NearbyList";
 import PhotoCarousel from "../components/ui/PhotoCarousel";
@@ -21,7 +22,15 @@ const HERO_IMAGES: Record<string, string> = Object.fromEntries(
 
 export default function Destinations() {
   const [active, setActive]   = useState<Stop>(stops[0]);
-  const [saved, setSaved]     = useState<string[]>([]);
+  const [saved, setSaved]     = useState<string[]>(() => {
+    try {
+      const stored = window.localStorage.getItem("shosholoza.saved-places.v1");
+      const parsed = stored ? JSON.parse(stored) : [];
+      return Array.isArray(parsed) && parsed.every(item => typeof item === "string") ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
   const [filter, setFilter]   = useState<"all" | "attraction" | "vendor">("all");
   const [query, setQuery]     = useState("");
   /**
@@ -33,6 +42,14 @@ export default function Destinations() {
   const [stopMinutes, setStopMinutes] = useState(DEFAULT_STOP_MINUTES);
   const [trip, setTrip]       = useState<Trip | null>(() => savedTrip());
   const [editingTrip, setEditingTrip] = useState(false);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem("shosholoza.saved-places.v1", JSON.stringify(saved));
+    } catch {
+      // Storage can be unavailable in private browsing; saving remains optional.
+    }
+  }, [saved]);
 
   /**
    * Where you board or get off, the train leaving is not a deadline you are
@@ -102,6 +119,9 @@ export default function Destinations() {
             {active.name}
           </h1>
           <p className="destinations-hero__teaser">{active.teaser}</p>
+          <Link className="destinations-hero__hub-link" to={`/stops/${active.id}`}>
+            Open the {active.name} stop hub <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </div>
 

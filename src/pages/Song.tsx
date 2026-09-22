@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ThenAndNow from "../components/culture/ThenAndNow";
 import "./Song.css";
 
 /**
@@ -44,7 +45,7 @@ export default function Song() {
             that steam train.
           </p>
           <blockquote className="song-quote">
-            <p lang="zu">Shosholoza<br />Kulezo ntaba<br />Stimela siphume South Africa</p>
+            <p lang="zu">Shosholoza{" "}<br />Kulezo ntaba{" "}<br />Stimela siphume South Africa</p>
             <p className="song-quote__gloss">
               Go forward · on those mountains · the train comes from South Africa
             </p>
@@ -100,12 +101,22 @@ export default function Song() {
           </figure>
         </section>
 
+        <section className="song-section" aria-label="Shosholoza: Then and Now">
+          <ThenAndNow />
+        </section>
+
         <section className="song-section song-section--note">
-          <h2 className="t-heading t-heading--md">About a recording</h2>
+          <h2 className="t-heading t-heading--md">About these recordings</h2>
           <p>
-            There is no recording on this page. We would rather carry a version sung by people
-            along this route, recorded and licensed properly, than a track we have no right to
-            play. That is the next thing to add here.
+            Both recordings above play from YouTube, on your tap, and belong to their
+            performers and publishers. We have not licensed either of them for offline
+            use, so neither is part of the journey download and neither will play
+            without a connection.
+          </p>
+          <p>
+            What we would still rather have is a version sung by people along this
+            route, recorded and licensed properly, that a passenger could carry
+            through the Karoo with no signal. That is the next thing to add here.
           </p>
         </section>
 
@@ -115,6 +126,8 @@ export default function Song() {
             Wikimedia Commons
           </a>{" "}
           — see <Link to="/credits">credits</Link>. Where accounts differ, this page says so.
+          Recording credits are shown with each recording, and are marked as unverified
+          until somebody has checked them against the video page itself.
         </p>
       </div>
     </div>

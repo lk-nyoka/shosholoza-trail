@@ -81,7 +81,7 @@ export default function Stories() {
         <header className="stories-header section">
           <p className="t-eyebrow">Stories</p>
           <h1 className="t-display t-display--lg stories-header__heading">
-            Long reads from<br />the corridor.
+            Long reads from{" "}<br />the corridor.
           </h1>
           <p className="t-body stories-header__sub">
             Original writing from the communities, landscapes and histories along the

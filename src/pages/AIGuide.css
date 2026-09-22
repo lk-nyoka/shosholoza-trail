@@ -274,3 +274,20 @@
   margin: 10px 0 0; font-size: .78rem; line-height: 1.55; opacity: .72;
   padding-top: 9px; border-top: 1px solid rgba(13, 28, 46, .12);
 }
+
+/* Provenance under every answer. Quiet — it is a footnote, not a headline —
+   but always there, because the page promises it. */
+.ai-message__body { min-width: 0; }
+.ai-message__sources {
+  margin: 8px 0 0;
+  padding: 8px 0 0;
+  border-top: 1px solid rgba(13, 28, 46, 0.12);
+  list-style: none;
+  font-size: 11.5px;
+  line-height: 1.5;
+  opacity: 0.78;
+}
+.ai-message__sources li { margin: 0; }
+.ai-message__sources li + li { margin-top: 2px; }
+.ai-message__sources a { text-decoration: underline; }
+.ai-message__docs { font-style: italic; opacity: 0.85; }

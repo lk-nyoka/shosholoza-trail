@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { CloudDownload, CheckCircle2, WifiOff } from "lucide-react";
 import {
   clearStoredJourney, corridorTiles, downloadJourney, isJourneyStored, journeyMedia,
-  storedMegabytes, storedTileCount,
+  packageContents, packageState, storedMegabytes, storedTileCount,
+  type PackageState,
 } from "../../lib/offlineJourney";
+import { pendingCount } from "../../lib/backend/outbox";
 import "./OfflineJourney.css";
 
 /**
@@ -21,6 +23,8 @@ export default function OfflineJourney() {
   const [tiles, setTiles]     = useState(0);
   const [error, setError]     = useState<string | null>(null);
   const [online, setOnline]   = useState(() => navigator.onLine);
+  const [pkg, setPkg]         = useState<PackageState | null>(null);
+  const [pending, setPending] = useState(0);
 
   const total = journeyMedia().length;
   const tileTotal = corridorTiles().length;
@@ -29,6 +33,10 @@ export default function OfflineJourney() {
     isJourneyStored().then(setStored);
     storedMegabytes().then(setMb);
     storedTileCount().then(setTiles);
+    packageState(typeof __BUILD_ID__ === "string" ? __BUILD_ID__ : "unknown")
+      .then(setPkg)
+      .catch(() => setPkg(null));
+    setPending(pendingCount());
   };
 
   useEffect(() => {
@@ -57,6 +65,7 @@ export default function OfflineJourney() {
   };
 
   const percent = stageTotal ? Math.round((done / stageTotal) * 100) : 0;
+  const contents = packageContents();
 
   return (
     <section className="offline-card" aria-labelledby="offline-title">
@@ -103,8 +112,40 @@ export default function OfflineJourney() {
           </div>
           <div>
             <dt>On this device</dt>
-            <dd>{mb === null ? "Not reported by this browser" : `${mb} MB`}</dd>
+            <dd>
+              {mb === null ? "Not reported by this browser" : `${mb} MB`}
+              {!stored && ` · about ${contents.estimatedMb} MB to download`}
+            </dd>
           </div>
+          {/*
+            * When the download was taken.
+            *
+            * The panel used to say only whether something was stored. A
+            * download taken in July, against a route file that has since been
+            * corrected, looked exactly like one taken this morning — so a
+            * passenger with a stale package had no way to know, and the one
+            * place it would have mattered is nine hours from a signal.
+            */}
+          {pkg?.storedAt && (
+            <div>
+              <dt>Downloaded</dt>
+              <dd>
+                {pkg.ageDays === 0
+                  ? "Today"
+                  : pkg.ageDays === 1
+                    ? "Yesterday"
+                    : `${pkg.ageDays} days ago`}
+              </dd>
+            </div>
+          )}
+          {pending > 0 && (
+            <div>
+              <dt>Waiting to send</dt>
+              <dd>
+                {pending} {pending === 1 ? "item" : "items"} — they go out when you have signal
+              </dd>
+            </div>
+          )}
           <div>
             <dt>Connection</dt>
             <dd className={online ? "" : "offline-card__off"}>
@@ -112,6 +153,13 @@ export default function OfflineJourney() {
             </dd>
           </div>
         </dl>
+      )}
+
+      {pkg?.stale && !busy && (
+        <p className="offline-card__stale" role="note">
+          {pkg.staleReason} Download it again before you board so the route and the
+          photographs match this version of the app.
+        </p>
       )}
 
       {error && <p className="offline-card__error">{error}</p>}

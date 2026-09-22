@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ArrowRight, X } from "lucide-react";
 import { stops } from "../../data";
-import { durationLabel, scheduleLabel, scheduledMinutesBetween } from "../../lib/timetable";
+import { TIMETABLE_NOTICE, durationLabel, scheduleLabel, scheduledMinutesBetween } from "../../lib/corridor";
 import type { Trip } from "../../lib/trip";
 import "./TripSetup.css";
 
@@ -88,7 +88,7 @@ export default function TripSetup({ initial, onSave, onClose }: Props) {
         </div>
 
         <p className="trip__foot">
-          Times are the published schedule, not live running times. Kept on this device only.
+          {TIMETABLE_NOTICE} Kept on this device only.
         </p>
       </div>
     </div>

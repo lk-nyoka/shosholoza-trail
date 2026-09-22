@@ -10,7 +10,7 @@ import { ROUTE_KM_LABEL, stops } from "../data";
 import type { JourneyStatus, PlaybackSpeed, Stop } from "../types";
 import { useTrainPlayback } from "../hooks/useTrainPlayback";
 import { TOTAL_KM } from "../lib/routeIndex";
-import { durationLabel, scheduledMinutesBetween } from "../lib/timetable";
+import { durationLabel, scheduledMinutesBetween } from "../lib/corridor";
 import { DEMO } from "../lib/demo";
 import "./Journey.css";
 

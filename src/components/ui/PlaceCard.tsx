@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Clock, Footprints, Heart, MapPin, Star, Ticket } from "lucide-react";
 import type { Place } from "../../types";
-import { REACH_LABEL, reachOf } from "../../lib/timetable";
+import { REACH_LABEL, reachOf } from "../../lib/corridor";
 import {
   cancelReservation, PENDING_NOTE, requestReservation, reservationFor,
   setReservationState, STATE_LABEL, type Reservation,
@@ -99,7 +99,7 @@ export default function PlaceCard({ place, saved, onToggleSave, window: stopWind
             {place.rating.toFixed(1)}
           </span>
         </div>
-        <h4 className="place-card__name">{place.name}</h4>
+        <h3 className="place-card__name">{place.name}</h3>
         <p className="place-card__blurb">{place.blurb}</p>
         {place.price && <span className="place-card__price">{place.price}</span>}
 

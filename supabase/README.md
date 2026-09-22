@@ -11,11 +11,12 @@ passwords and keys — that's yours, and it should stay that way.
 ## 1. Create the project (5 minutes)
 
 1. Go to supabase.com and create a project.
-2. **Region:** pick a South African region if one is offered. At the time of
-   writing there isn't one, so choose **EU (Frankfurt or Ireland)**. POPIA
-   section 72 allows transfer to a country with comparable protection, and the
-   EU qualifies — that's a defensible answer if a judge asks. A US region is
-   harder to defend.
+2. **Region: Central EU (Frankfurt), `eu-central-1`.** Supabase has no African
+   region — checked against their published region list, which covers the
+   Americas, Europe and Asia-Pacific only. POPIA section 72 permits transfer to
+   a country with comparable protection and the EU qualifies, so Frankfurt is
+   the defensible choice if a judge asks where South African passengers' data
+   would live. A US region is harder to defend and no faster from here.
 3. Name it `shosholoza-trail`. Save the database password somewhere safe; you
    will almost never need it.
 
@@ -40,7 +41,8 @@ npx esbuild scripts/seed-sql.ts --bundle --platform=node --format=cjs \
 
 ## 3. Turn on anonymous sign-in
 
-**Authentication → Sign In / Providers → Anonymous sign-ins → enable.**
+**Authentication → Sign In / Providers** (`/auth/providers` in the dashboard
+URL) **→ Anonymous sign-ins → enable.**
 
 This is what lets a passenger have a real account without a form, a password or
 an email. If you leave it off, the app silently stays device-local — which is
@@ -48,23 +50,31 @@ exactly what it did before, so nothing breaks.
 
 ## 4. Point the app at it
 
-Copy the **Project URL** and the **anon / publishable key** from
-**Project Settings → API** into `.env`:
+Copy the **Project URL** and the **publishable key** from
+**Settings → API Keys** into `.env`:
 
 ```
 VITE_SUPABASE_URL=https://xxxxxxxx.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJ...
+VITE_SUPABASE_ANON_KEY=sb_publishable_...
 ```
+
+Supabase renamed these: the browser-safe key is now called **publishable**
+(`sb_publishable_…`) and the older **anon** key (a long `eyJ…` JWT) is being
+retired at the end of 2026. Either works here — our variable is still named
+`ANON_KEY` because renaming it would break nothing and confuse everyone — but
+take the publishable one if the dashboard offers both, so this does not need
+revisiting.
 
 Then set the same two variables in **Netlify → Site settings → Environment
 variables**, and redeploy.
 
-> The anon key belongs in the bundle. It is public by design, and Row Level
-> Security decides what it can see.
+> The publishable key belongs in the bundle. Supabase's own documentation calls
+> it safe to expose in a web page, and Row Level Security decides what it can
+> reach.
 >
-> The **service_role key must never** go in `.env`, in the repo, in Netlify, or
-> in a message. It bypasses RLS completely. If it ever leaks, rotate it
-> immediately in Project Settings → API.
+> The **secret key** (`sb_secret_…`, formerly `service_role`) must never go in
+> `.env`, in the repo, in Netlify, or in a message. It bypasses RLS completely.
+> If it ever leaks, rotate it immediately in Settings → API Keys.
 
 ## 5. Make yourself an operator
 

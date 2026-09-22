@@ -4,11 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight, Compass, MessageCircleQuestion, Ticket, TrainFront, MapPin,
 } from "lucide-react";
-import { greeting, passenger, signOut, type Passenger } from "../lib/passenger";
+import { greeting, passenger, type Passenger } from "../lib/passenger";
 import { tripStops } from "../lib/trip";
-import { durationLabel, scheduleLabel, scheduledMinutesBetween } from "../lib/timetable";
+import { durationLabel, scheduleLabel, scheduledMinutesBetween } from "../lib/corridor";
 import { reservations, STATE_LABEL, type Reservation } from "../lib/reserve";
 import OfflineJourney from "../components/ui/OfflineJourney";
+import { eraseEverything } from "../lib/erase";
 import "./Trip.css";
 
 /**
@@ -27,14 +28,11 @@ export default function Trip() {
   useEffect(() => { setHeld(reservations()); }, []);
   /**
    * Someone arriving here without a journey is not lost — they simply have not
-   * told us which part of the line is theirs yet. Say that, and send them on,
-   * rather than bouncing them to a different page with no explanation.
+   * told us which part of the line is theirs yet. Say that and offer the way
+   * on. An automatic redirect used to fire 1.4 seconds later, which is less
+   * time than it takes to read the sentence explaining what happened, and it
+   * took the choice away from somebody who opened "My Journey" on purpose.
    */
-  useEffect(() => {
-    if (me) return;
-    const timer = window.setTimeout(() => navigate("/start", { replace: true }), 1400);
-    return () => window.clearTimeout(timer);
-  }, [me, navigate]);
 
   if (!me) {
     return (
@@ -56,7 +54,11 @@ export default function Trip() {
   const minutes = scheduledMinutesBetween(me.trip.boardId, me.trip.alightId);
   const intermediate = legs.slice(1, -1);
 
-  const forget = () => { signOut(); setMe(null); };
+  const forget = async () => {
+    await eraseEverything();
+    setMe(null);
+    navigate("/start", { replace: true });
+  };
 
   return (
     <div className="trip-page">

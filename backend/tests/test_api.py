@@ -33,6 +33,16 @@ def test_stop_place_filter():
     assert all(place["type"] == "vendor" for place in response.json())
 
 
+def test_timetable_contract_exposes_calls():
+    with TestClient(app) as client:
+        response = client.get("/api/v1/timetable")
+    body = response.json()
+    assert response.status_code == 200
+    assert isinstance(body["calls"], list)
+    assert body["calls"]
+    assert {"stop_id", "stop_name", "km"}.issubset(body["calls"][0])
+
+
 def test_ping_is_snapped_and_updates_status():
     payload = {"journey_id":"pretoria-cape-town","session_id":"test-session-123","latitude":-25.7641,"longitude":28.1948,"accuracy_metres":10,"speed_kmh":64}
     with TestClient(app) as client:

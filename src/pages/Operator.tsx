@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Building2, Eye, LineChart, Lock, Store, Ticket } from "lucide-react";
 import { stops } from "../data";
 import { NEARBY } from "../data/nearby";
-import { scheduleLabel } from "../lib/timetable";
+import { scheduleLabel } from "../lib/corridor";
 import "./Operator.css";
 
 /**

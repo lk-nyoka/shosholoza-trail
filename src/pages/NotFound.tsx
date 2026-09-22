@@ -15,12 +15,9 @@ export default function NotFound() {
     tag.name = "robots";
     tag.content = "noindex";
     document.head.appendChild(tag);
-    const title = document.title;
-    document.title = "Page not found — Shosholoza Trail";
-    return () => {
-      tag.remove();
-      document.title = title;
-    };
+    // The page title is set centrally in Layout; this effect only has to keep
+    // an unknown address out of search results.
+    return () => tag.remove();
   }, []);
 
   return (

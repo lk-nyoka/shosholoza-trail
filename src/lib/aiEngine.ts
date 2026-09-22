@@ -23,6 +23,8 @@
  *    top-K results sorted by descending score.
  */
 
+import { TIMETABLE_SOURCE } from "./corridor";
+
 // ── Types ────────────────────────────────────────────────────────────────────
 
 export type DocType = "factual" | "historical" | "food" | "nature" | "booking" | "transit";
@@ -44,6 +46,30 @@ export interface SearchResult {
 // ── Corpus ───────────────────────────────────────────────────────────────────
 
 export const CORPUS: CorpusDoc[] = [
+  {
+    id: "app-what-is-it",
+    stopId: "all",
+    type: "factual",
+    title: "What Shosholoza Trail is",
+    text: "Shosholoza Trail is a travel companion for the 1 568 km Pretoria\u2013Cape Town railway. It turns the long hours of the trip into something to watch and take part in: a 3D view of the line as the train moves along it, stories and activities that unlock at the kilometre they belong to, and guides to the towns at each of the eight stops. It is built to keep working with no signal, because most of the Karoo has none. It is an independent project by team 4GeeksSakes, not an official PRASA or Shosholoza Meyl service.",
+    tags: ["shosholoza trail", "shosholozatrail", "what is this", "what is the app", "about", "who made", "purpose"],
+  },
+  {
+    id: "app-journey-modes",
+    stopId: "all",
+    type: "factual",
+    title: "Journey modes",
+    text: "You choose how you want to travel and the app shows you different things at the same place. Adventure gives you stories, quizzes and challenges along the line. Creative gives you prompts to photograph and write as the country goes past; anything you write stays on your own phone. Networking points you at fellow travellers and local experiences near the stops. You can have any combination on at once, including none, and you can change your mind mid-journey from the mode switch on the ride screen.",
+    tags: ["mode", "modes", "adventure", "creative", "networking", "choose a mode", "which mode", "personalise"],
+  },
+  {
+    id: "app-where-am-i",
+    stopId: "all",
+    type: "transit",
+    title: "Knowing where you are",
+    text: "This guide does not know where the train is \u2014 it answers from a fixed set of route documents so it still works with no signal. For your actual position, open Live GPS, which uses your device location to place you on the corridor and name the next stop, or open The Ride to scrub along the line yourself. Neither reads a live feed from the operator, so treat arrival times as the published schedule rather than a live prediction.",
+    tags: ["where am i", "next stop", "my position", "how far", "locate", "current location", "which stop"],
+  },
   // ── Pretoria ──────────────────────────────────────────────────────────────
   {
     id: "pretoria-overview", stopId: "pretoria", type: "factual",
@@ -74,7 +100,7 @@ export const CORPUS: CorpusDoc[] = [
   {
     id: "joburg-overview", stopId: "johannesburg", type: "historical",
     title: "Johannesburg overview",
-    text: "Johannesburg, 69 km from Pretoria, is South Africa's largest city and financial capital, built on the gold rush of 1886. The city is reinventing itself with world-class arts precincts, restaurants and contemporary architecture.",
+    text: "Johannesburg, 57 km from Pretoria, is South Africa's largest city and financial capital, built on the gold rush of 1886. The city is reinventing itself with world-class arts precincts, restaurants and contemporary architecture.",
     tags: ["johannesburg", "joburg", "gold", "city", "gauteng"],
   },
   {
@@ -100,7 +126,7 @@ export const CORPUS: CorpusDoc[] = [
   {
     id: "kimberley-overview", stopId: "kimberley", type: "historical",
     title: "Kimberley overview",
-    text: "Kimberley, 552 km from Pretoria, is the diamond capital of South Africa. The city was founded in 1871 after diamonds were discovered at Colesberg Kopje. The Big Hole is one of the largest hand-dug excavations in the world at 463 m wide and 240 m deep.",
+    text: "Kimberley, 540 km from Pretoria, is the diamond capital of South Africa. The city was founded in 1871 after diamonds were discovered at Colesberg Kopje. The Big Hole is one of the largest hand-dug excavations in the world at 463 m wide and 240 m deep.",
     tags: ["kimberley", "diamond", "history", "northern cape", "big hole"],
   },
   {
@@ -120,7 +146,7 @@ export const CORPUS: CorpusDoc[] = [
   {
     id: "de-aar-overview", stopId: "de-aar", type: "historical",
     title: "De Aar overview",
-    text: "De Aar, 788 km from Pretoria, is one of South Africa's most important railway junctions. The name means 'the vein' in Afrikaans, referring to an underground water source. The town sits in the vast semi-arid Karoo under skies almost entirely free of light pollution.",
+    text: "De Aar, 776 km from Pretoria, is one of South Africa's most important railway junctions. The name means 'the vein' in Afrikaans, referring to an underground water source. The town sits in the vast semi-arid Karoo under skies almost entirely free of light pollution.",
     tags: ["de aar", "junction", "railway", "karoo", "northern cape", "sky", "stars"],
   },
   {
@@ -140,7 +166,7 @@ export const CORPUS: CorpusDoc[] = [
   {
     id: "beaufort-overview", stopId: "beaufort", type: "nature",
     title: "Beaufort West overview",
-    text: "Beaufort West, 1 047 km from Pretoria, is the largest town in the Karoo and the gateway to the Karoo National Park. The area is famous for fossil beds, diverse reptile life and extraordinarily clear night skies rated among the best stargazing sites in the southern hemisphere.",
+    text: "Beaufort West, 1 036 km from Pretoria, is the largest town in the Karoo and the gateway to the Karoo National Park. The area is famous for fossil beds, diverse reptile life and extraordinarily clear night skies rated among the best stargazing sites in the southern hemisphere.",
     tags: ["beaufort west", "karoo", "fossils", "stars", "stargazing", "western cape"],
   },
   {
@@ -160,7 +186,7 @@ export const CORPUS: CorpusDoc[] = [
   {
     id: "matjies-overview", stopId: "matjies", type: "historical",
     title: "Matjiesfontein overview",
-    text: "Matjiesfontein, 1 277 km from Pretoria, is a single-street Victorian village perfectly preserved since the 1880s. James Douglas Logan built a health resort here in 1884 and the town served as a military base during the Anglo-Boer War. The station is a national monument.",
+    text: "Matjiesfontein, 1 264 km from Pretoria, is a single-street Victorian village perfectly preserved since the 1880s. James Douglas Logan built a health resort here in 1884 and the town served as a military base during the Anglo-Boer War. The station is a national monument.",
     tags: ["matjiesfontein", "victorian", "village", "history", "1880", "boer war", "karoo"],
   },
   {
@@ -180,7 +206,7 @@ export const CORPUS: CorpusDoc[] = [
   {
     id: "worcester-overview", stopId: "worcester", type: "nature",
     title: "Worcester overview",
-    text: "Worcester, 1 425 km from Pretoria, sits in the Breede River Valley surrounded by the Hex River Mountains. The valley produces some of South Africa's best table grapes and stone fruit. Winemaking is a major industry with over 20 cellars within 30 km.",
+    text: "Worcester, 1 394 km from Pretoria, sits in the Breede River Valley surrounded by the Hex River Mountains. The valley produces some of South Africa's best table grapes and stone fruit. Winemaking is a major industry with over 20 cellars within 30 km.",
     tags: ["worcester", "breede", "valley", "wine", "vineyard", "western cape", "fruit"],
   },
   {
@@ -316,10 +342,18 @@ export function query(text: string, topK = 3): SearchResult[] {
       const termIdf = INDEX_IDF.get(qt) ?? Math.log((CORPUS.length + 1) / 1);
       score += termTf * termIdf;
     }
-    // Exact tag match bonus — rewards very specific queries
+    /**
+     * Exact tag match bonus — rewards very specific queries.
+     *
+     * A multi-word tag is weighted far higher than a single word: "where am i"
+     * appearing verbatim is a deliberate signal from whoever wrote the corpus,
+     * while one shared word is often coincidence. Without that split, the
+     * document tagged for exactly this question could tie with one that merely
+     * shares a common noun, and the tie broke the wrong way.
+     */
     const lower = text.toLowerCase();
     for (const tag of doc.tags) {
-      if (lower.includes(tag)) score += 0.25;
+      if (lower.includes(tag)) score += tag.includes(" ") ? 0.75 : 0.25;
     }
     return { doc, score };
   });
@@ -332,10 +366,213 @@ export function query(text: string, topK = 3): SearchResult[] {
 
 // ── Answer synthesiser ────────────────────────────────────────────────────────
 
-export function answer(userInput: string): string {
+/**
+ * Questions this guide must never answer from the tourism corpus.
+ *
+ * TF-IDF always has a best match, and a best match is not the same as an
+ * answer. Asked "is the train safe at night?" the retriever used to return the
+ * De Aar heritage walk, because both mention night. On a product about
+ * physical travel that is the one failure mode that actually matters, so these
+ * intents are intercepted before retrieval runs and answered honestly \u2014 with
+ * what the app does know, and where the real answer lives.
+ */
+const GUARDED: { test: (q: string) => boolean; reply: string }[] = [
+  {
+    test: q => /\b(safe|safety|dangerous|danger|crime|mugg|rob|theft|assault|security)\b/i.test(q),
+    reply:
+      "I can't advise on safety \u2014 I have no live information about conditions on any train or at any station, and guessing would be worse than saying nothing. For that, ask the train manager on board or station staff, and follow the operator's own announcements. Before You Board has the practical passenger notes this project can stand behind.",
+  },
+  {
+    test: q => /\b(delay|delayed|late|cancel|cancelled|on time|running|platform|which train|departure time today|arriv(al|ing) time today)\b/i.test(q),
+    reply:
+      "I don't have live running information. Nothing in this app reads an operator feed, so I can't tell you whether a train is late, cancelled or which platform it leaves from \u2014 check with Shosholoza Meyl or station staff for that. What I can give you is the published schedule and what is at each stop.",
+  },
+  {
+    test: q => /\b(emergency|accident|injured|medical|ambulance|police|fire)\b/i.test(q),
+    reply:
+      "If this is an emergency, contact the train manager or station staff immediately, or call South Africa's emergency number 10111 (112 from a mobile). This app is a travel companion and has no connection to any emergency service.",
+  },
+  {
+    /**
+     * Only the operator's tickets. "Can I book a room at Lord Milner Hotel?" is
+     * one of this page's own suggested questions and the guide answers it, so a
+     * bare /book/ would have broken a documented flow — it did, until this test
+     * asked for rail context and stood aside for anything about a room, a table
+     * or a place to stay.
+     */
+    test: q => {
+      if (/\b(room|hotel|accommodation|guesthouse|stay|table|restaurant|tour|seat at)\b/i.test(q)) return false;
+      if (/\b(ticket|tickets|fare|fares|refund)\b/i.test(q)) return true;
+      return /\b(book|booking|reserve|buy)\b/i.test(q)
+        && /\b(train|rail|shosholoza meyl|prasa|journey|trip|travel|seat|berth|coupe)\b/i.test(q);
+    },
+    reply:
+      "You can't book or pay for a train ticket here \u2014 this app doesn't sell them and isn't connected to the operator's booking system. Tickets for the Pretoria\u2013Cape Town service come from Shosholoza Meyl directly. The reservations in this app are only for the local places along the route, and they are a prototype.",
+  },
+];
+
+/**
+ * How good a retrieval has to be before it counts as an answer.
+ *
+ * Measured, not guessed: across the corpus, questions the guide genuinely
+ * covers score 0.31 and above, while questions it does not cover top out at
+ * 0.25. The old floor of 0.005 let a single incidental word through, which is
+ * how a question about safety came back with a heritage walk.
+ */
+const ANSWER_FLOOR = 0.28;
+
+const FALLBACK =
+  "I can answer questions about any of the eight stops on the Shosholoza Trail \u2014 Pretoria, Johannesburg, Kimberley, De Aar, Beaufort West, Matjiesfontein, Worcester and Cape Town \u2014 as well as the journey itself, the travel modes and how the app works offline. I answer from a fixed set of route documents rather than making anything up, so if I don't have it, I'll say so.";
+
+// ── Where each answer comes from ────────────────────────────────────────────
+
+/**
+ * Provenance, stated honestly rather than dressed up.
+ *
+ * The guide answered with bare prose and no indication of where any of it
+ * came from — which, for an app whose whole pitch is "verified route
+ * information, nothing invented", is the one thing it could not afford. A
+ * passenger reading "De Aar is one of South Africa's most important railway
+ * junctions" had no way to tell whether that was measured, published, or
+ * written by us.
+ *
+ * The temptation here is to attach a citation to every document, and that
+ * temptation must be refused: most of this corpus is our own editorial
+ * writing, and inventing a source for it would be worse than having none.
+ * So the sources are the ones we can actually stand behind:
+ *
+ *   measured   derived from the route geometry this app ships and measures
+ *   timetable  the published schedule, with the source already named in
+ *              corridor.ts
+ *   places     the app's own places dataset
+ *   app        a description of this app, whose source is this app
+ *   editorial  written by the team; not sourced from a document, and it says
+ *              so rather than pretending otherwise
+ */
+export type SourceKind = "measured" | "timetable" | "places" | "app" | "editorial";
+
+export interface AnswerSource {
+  kind: SourceKind;
+  /** What to show the passenger. */
+  label: string;
+  /** A link, where there genuinely is one. Never invented. */
+  url: string | null;
+}
+
+export const SOURCE_LABELS: Record<SourceKind, AnswerSource> = {
+  measured: {
+    kind: "measured",
+    label: "Measured from the route geometry in this app",
+    url: null,
+  },
+  timetable: {
+    kind: "timetable",
+    label: `Published timetable — ${TIMETABLE_SOURCE.name}, checked ${TIMETABLE_SOURCE.checked}`,
+    url: TIMETABLE_SOURCE.url,
+  },
+  places: {
+    kind: "places",
+    label: "The app's own places dataset for this stop",
+    url: null,
+  },
+  app: {
+    kind: "app",
+    label: "How this app works",
+    url: null,
+  },
+  editorial: {
+    kind: "editorial",
+    label: "Written by the 4GeeksSake team — not quoted from a source",
+    url: null,
+  },
+};
+
+/**
+ * Which source a document draws on.
+ *
+ * By document id, explicitly, rather than by a rule over types: a rule would
+ * quietly mis-attribute the next document somebody adds, and the test below
+ * asserts that every document in the corpus is listed here.
+ */
+export const DOC_SOURCES: Record<string, SourceKind> = {
+  "app-what-is-it": "app",
+  "app-journey-modes": "app",
+  "app-where-am-i": "app",
+  "journey-offline": "app",
+  "journey-boarding": "app",
+  "journey-duration": "timetable",
+};
+
+/** Food, booking and place documents come from the places dataset. */
+const PLACE_TYPES: DocType[] = ["food", "booking"];
+
+export function sourceFor(doc: CorpusDoc): AnswerSource {
+  const named = DOC_SOURCES[doc.id];
+  if (named) return SOURCE_LABELS[named];
+  if (PLACE_TYPES.includes(doc.type)) return SOURCE_LABELS.places;
+  if (doc.type === "transit") return SOURCE_LABELS.timetable;
+  // Everything else is our own writing about a place, and says so.
+  return SOURCE_LABELS.editorial;
+}
+
+export interface GroundedAnswer {
+  text: string;
+  /** Every document the answer drew on, de-duplicated. */
+  sources: AnswerSource[];
+  /** The documents themselves, for anything that wants to show the titles. */
+  used: CorpusDoc[];
+  /** How confident the retrieval was, 0-1, or null when nothing was retrieved. */
+  score: number | null;
+  /** True when this is a guard or the fallback rather than a retrieved answer. */
+  grounded: boolean;
+}
+
+/**
+ * The same answer, with its provenance attached.
+ *
+ * `answer()` remains for callers that only want the prose. This is what the
+ * guide page uses, so every claim on screen can say where it came from.
+ */
+export function answerWithSources(userInput: string): GroundedAnswer {
+  for (const guard of GUARDED) {
+    if (guard.test(userInput)) {
+      // A guard is the app speaking about itself, not a retrieved document.
+      return { text: guard.reply, sources: [SOURCE_LABELS.app], used: [], score: null, grounded: false };
+    }
+  }
+
   const results = query(userInput, 2);
-  if (results.length === 0 || results[0].score < 0.005) {
-    return "I can answer questions about any of the eight stops on the Shosholoza Trail: Pretoria, Johannesburg, Kimberley, De Aar, Beaufort West, Matjiesfontein, Worcester and Cape Town. Try asking about food, history, attractions, accommodation or the journey itself.";
+  if (results.length === 0 || results[0].score < ANSWER_FLOOR) {
+    return { text: FALLBACK, sources: [], used: [], score: results[0]?.score ?? null, grounded: false };
+  }
+
+  const top = results[0].doc;
+  const second = results[1];
+  const merged = Boolean(second && second.doc.stopId === top.stopId && second.score > results[0].score * 0.6);
+  const used = merged && second ? [top, second.doc] : [top];
+  const sources: AnswerSource[] = [];
+  for (const doc of used) {
+    const source = sourceFor(doc);
+    if (!sources.some(existing => existing.kind === source.kind)) sources.push(source);
+  }
+
+  return {
+    text: used.map(doc => doc.text).join("\n\n"),
+    sources,
+    used,
+    score: results[0].score,
+    grounded: true,
+  };
+}
+
+export function answer(userInput: string): string {
+  for (const guard of GUARDED) {
+    if (guard.test(userInput)) return guard.reply;
+  }
+
+  const results = query(userInput, 2);
+  if (results.length === 0 || results[0].score < ANSWER_FLOOR) {
+    return FALLBACK;
   }
   // If top two docs are from the same stop / same type, merge them for richer context
   const top = results[0].doc;

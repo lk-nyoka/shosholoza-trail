@@ -63,7 +63,7 @@ export default function Plan() {
         <div className="container plan-page__hero-inner">
           <p className="t-eyebrow">Plan Your Trip</p>
           <h1 className="t-display t-display--lg plan-page__heading">
-            Map your journey<br />before you board.
+            Map your journey{" "}<br />before you board.
           </h1>
           <p className="t-body plan-page__sub">
             Tell us where you're starting, where you're heading and what matters to you.

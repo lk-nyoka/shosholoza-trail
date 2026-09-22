@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Send, Sparkles, AlertCircle, Database } from "lucide-react";
-import { answer, CORPUS } from "../lib/aiEngine";
+import { answer, CORPUS, answerWithSources, type AnswerSource } from "../lib/aiEngine";
 import { stops } from "../data";
 import "./AIGuide.css";
 
@@ -10,6 +10,16 @@ interface Message {
   text: string;
   /** doc type badge shown on assistant messages */
   badge?: string;
+  /**
+   * Where the answer came from.
+   *
+   * The guide's own welcome line has always claimed "every answer comes from
+   * documents written and checked for this route" - and then showed the
+   * answer with nothing to back that up. A claim about provenance that the
+   * interface cannot support is the one claim this app must not make.
+   */
+  sources?: AnswerSource[];
+  used?: { id: string; title: string }[];
 }
 
 const SUGGESTED = [
@@ -64,10 +74,16 @@ export default function AIGuide() {
 
     // Slight delay simulates retrieval latency, keeps UX honest
     setTimeout(() => {
-      const replyText = answer(text);
+      const reply = answerWithSources(text);
       setMessages(prev => [
         ...prev,
-        { id: crypto.randomUUID(), role: "assistant", text: replyText },
+        {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          text: reply.text,
+          sources: reply.sources,
+          used: reply.used,
+        },
       ]);
       setLoading(false);
       // focus back to input after reply
@@ -95,7 +111,7 @@ export default function AIGuide() {
             <div>
               <p className="t-eyebrow">AI Guide</p>
               <h1 className="t-display t-display--sm ai-page__heading">
-                Ask the<br />corridor.
+                Ask the{" "}<br />corridor.
               </h1>
             </div>
           </header>
@@ -191,9 +207,29 @@ export default function AIGuide() {
                   <Sparkles size={13} />
                 </span>
               )}
-              <p className="ai-message__text" style={{ whiteSpace: "pre-line" }}>
-                {msg.text}
-              </p>
+              <div className="ai-message__body">
+                <p className="ai-message__text" style={{ whiteSpace: "pre-line" }}>
+                  {msg.text}
+                </p>
+                {msg.sources && msg.sources.length > 0 && (
+                  <ul className="ai-message__sources" aria-label="Where this answer comes from">
+                    {msg.sources.map(source => (
+                      <li key={source.kind}>
+                        {source.url ? (
+                          <a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a>
+                        ) : (
+                          source.label
+                        )}
+                      </li>
+                    ))}
+                    {msg.used && msg.used.length > 0 && (
+                      <li className="ai-message__docs">
+                        From: {msg.used.map(doc => doc.title).join(" · ")}
+                      </li>
+                    )}
+                  </ul>
+                )}
+              </div>
             </div>
           ))}
 

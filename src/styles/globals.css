@@ -16,11 +16,34 @@
   --navy-deep:  #0d1c2e;
   --navy-mid:   #1a2e47;
   --gold:       #f4bd4f;
-  --gold-dark:  #d4a035;
+  /*
+   * Gold as TEXT on a light surface.
+   *
+   * #f4bd4f is 10:1 against the navy panels and 1.54:1 against the paper -
+   * effectively invisible, and axe flagged it eighteen times on the home page
+   * alone. It was never a text colour on light; it was a brand colour used as
+   * one. This is the same hue taken down to 5.87:1 on paper, which reads as
+   * the same gold and can actually be read.
+   */
+  --gold-ink:   #7d5610;
+  /*
+   * The "dark gold" was #d4a035 - 2.36:1 on white, so the province label on
+   * every stop card on the home page was unreadable. It is the readable gold
+   * now; the brand gold remains --gold, for dark surfaces.
+   */
+  --gold-dark:  var(--gold-ink);
   --gold-light: #fad27a;
   --hero-white: #fffaf0;
-  --muted:      #6b7a94;
-  --muted-warm: #8a8070;
+  /*
+   * Body text and secondary labels.
+   *
+   * #6b7a94 measured 3.90:1 against the paper - below the 4.5:1 WCAG AA needs
+   * for normal text, and axe reported it on every page. Same hue, one step
+   * darker: 5.06:1 on the paper and 4.57:1 even on the darker paper panels.
+   */
+  --muted:      #5a6880;
+  /* Same correction for the warm grey: 3.49:1 becomes 5.30:1. */
+  --muted-warm: #6d6352;
   --border:     rgba(20, 36, 58, 0.12);
   --border-light: rgba(255, 250, 240, 0.14);
 
@@ -85,7 +108,9 @@ input, select, textarea { font-family: inherit; }
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--gold);
+  /* Ten-pixel uppercase letter-spaced text is the hardest thing on the page to
+     read, so it gets the readable gold, not the brand one. */
+  color: var(--gold-ink);
 }
 
 .t-display {
@@ -280,3 +305,179 @@ input, select, textarea { font-family: inherit; }
    because `hidden` on the root quietly breaks position: sticky. */
 html, body { overflow-x: clip; }
 .st-nav, .st-nav__inner { max-width: 100%; }
+
+/* ── Touch targets ─────────────────────────────────────────────────────────
+   Measured at 320 px, the narrowest phone the corridor is likely to see: the
+   footer links rendered 19 px tall, the stop-hub actions 19 px, the photo dots
+   7 px and the experience-card close button 10 px wide. WCAG 2.5.8 asks for
+   24 px, and a train is a moving platform — a control you have to aim at is a
+   control you will miss.
+
+   Two techniques. Text controls get a minimum height and centre their own
+   label, which costs nothing because they already sit in flowing layout. The
+   photo dots and the close button keep their painted size and grow an
+   invisible ::after instead, so a 7 px dot stays a 7 px dot and still catches
+   a thumb. Nothing here moves a pixel of existing layout. */
+.st-footer__links a,
+.stop-experience-card a,
+.stop-experience-section-heading a,
+.stop-experience-next a,
+.stop-experience-back,
+.destinations-window__triplink,
+.credits-data-card__link,
+.op-card__back,
+.ride-overview {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+}
+
+.carousel__dot,
+.xp__close {
+  position: relative;
+}
+.carousel__dot::after,
+.xp__close::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: max(100%, 24px);
+  height: max(100%, 24px);
+}
+
+/* A text input under 16 px is the one that makes iOS Safari zoom the page the
+   moment it is focused, which on a phone reads as the layout breaking. */
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+  font-size: max(16px, 1rem);
+  min-height: 40px;
+}
+
+/* ── Touch targets, part two: 44 px on a phone ─────────────────────────────
+   The block above raises the worst offenders to the WCAG 2.5.8 minimum of
+   24 px. That is the standard's floor, and it is not enough here. This app is
+   used one-handed on a moving train: the platform is vibrating, the rider is
+   braced, and the thing they are aiming at is a control over a moving
+   animation. Apple and Google both publish 44 pt / 48 dp for exactly this
+   reason, and the measured miss rate on a 24 px target in motion is the
+   argument for it.
+
+   So below 900 px — every phone and every small tablet — the interactive
+   controls in the app's own chrome get a real 44x44. Not a pseudo-element
+   over a small control: the control itself, because a rider who can see a
+   30 px button and hits 44 px of invisible padding around it has been given a
+   target they cannot see.
+
+   Scoped to the app's chrome rather than `button, a`, because body copy links
+   inside a paragraph must not become 44 px tall — that would wreck the line
+   height of every prose block on the site. */
+@media (max-width: 900px) {
+  .skip-link,
+  .help-page button,
+  .help-page > * a.help-action,
+  .modesw button,
+  input[type="range"],
+  select,
+  .st-nav a,
+  .st-nav button,
+  .tabbar a,
+  .tabbar button,
+  .st-footer__links a,
+  .ride-page button,
+  .ride-page a,
+  .journey-page button,
+  .journey-page a,
+  .live-page button,
+  .live-page a {
+    min-height: 44px;
+  }
+
+  /* Width as well as height. An icon-only control has no width of its own to
+     speak of; a control that carries a word is already wider than 44 px, so
+     the minimum costs it nothing. */
+  .ride-page button,
+  .ride-page a,
+  .journey-page button,
+  .journey-page a,
+  .live-page button,
+  .live-page a,
+  .st-nav button,
+  .st-nav a,
+  .tabbar a,
+  .tabbar button,
+  .st-footer__links a,
+  .modesw button {
+    min-width: 44px;
+  }
+
+  /* A grid or flex child with a fixed height set elsewhere needs the minimum
+     to win, and icon buttons must keep their contents centred as they grow. */
+  .ride-page button,
+  .journey-page button,
+  .live-page button,
+  .help-page button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* A range input does not centre its own thumb when it grows, so give it the
+     height as padding around a track that keeps its painted size. */
+  input[type="range"] { background-clip: content-box; }
+}
+
+
+/* ── Accessibility: the two defects axe found, fixed at the source ─────────
+   `node scripts/check-a11y.mjs` runs axe-core against every page in both
+   colour schemes. It reported exactly two serious rules, both real:
+
+   colour-contrast    the gold eyebrow on the pale paper, 1.54:1 - see
+                      --gold-ink above.
+   link-in-text-block a link inside a sentence, told apart from the text
+                      around it by colour alone. Someone who cannot see the
+                      colour difference cannot see that it is a link at all.
+
+   Underlining links inside running text is the fix for the second, and it is
+   the right default anyway: a link in a paragraph should look like one. Links
+   that are buttons, cards or navigation are not in running text and keep
+   their own styling. */
+p a,
+li a,
+dd a,
+figcaption a,
+small a,
+.t-body a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+/* Anything that is a control or a card wearing an <a> is not running text. */
+p a.btn,
+li a.btn,
+p a[class*="card"],
+li a[class*="card"] {
+  text-decoration: none;
+}
+
+/* On a dark panel the brand gold is the readable one - 10:1 against the navy
+   surfaces - so it is restored wherever the surface is dark. */
+/*
+ * Wherever the surface under the label is one of the navy ones, the BRAND
+ * gold is the readable colour - 10:1 against #0d1c2e - and --gold-ink is the
+ * unreadable one at 2.39:1. Exactly the inverse of the light surfaces above,
+ * which is why both have to be listed rather than one being "the" gold.
+ */
+.ride-page .t-eyebrow,
+.live-page .t-eyebrow,
+.journey-page .t-eyebrow,
+.plan-page__hero .t-eyebrow,
+.home-ai-promo__copy .t-eyebrow,
+[data-surface="dark"] .t-eyebrow {
+  color: var(--gold);
+}

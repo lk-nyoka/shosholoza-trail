@@ -18,7 +18,12 @@
 }
 .offline-card__stats div { display: flex; flex-direction: column; gap: 2px; }
 .offline-card__stats dt {
-  font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; opacity: .6; font-weight: 600;
+  font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600;
+  /* `opacity: .6` on this label measured 4.04:1 against the card. Opacity is
+     the wrong tool for "quieter": it fades towards the background and takes
+     the contrast with it. A real colour, one step down from the body ink,
+     reads as quiet and stays legible. */
+  color: var(--muted);
 }
 .offline-card__stats dd { margin: 0; font-size: .9rem; font-variant-numeric: tabular-nums; }
 .offline-card__off { display: inline-flex; align-items: center; gap: 5px; color: #9b2f27; }
@@ -37,3 +42,15 @@
 .offline-card__error { margin: 0; font-size: .86rem; color: #9b2f27; }
 .offline-card__note { margin: 0; font-size: .8rem; opacity: .7; }
 .offline-card__actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* A stale download is a warning, not an error: the app still works, and the
+   passenger may have no signal to act on it. Amber, not red. */
+.offline-card__stale {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--gold, #f1b94d);
+  border-radius: 0 6px 6px 0;
+  background: rgba(244, 189, 79, 0.1);
+  font-size: 12.5px;
+  line-height: 1.5;
+}

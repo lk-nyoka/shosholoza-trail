@@ -113,10 +113,17 @@
   top: 0; left: 0; right: 0; bottom: 0;
   background: var(--navy-deep);
   transform: translateX(-100%);
-  transition: transform 0.38s var(--ease-out);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.38s var(--ease-out), visibility 0s linear 0.38s;
   overflow-y: auto;
 }
-.st-mobile-menu--open { transform: none; }
+.st-mobile-menu--open {
+  transform: none;
+  visibility: visible;
+  pointer-events: auto;
+  transition: transform 0.38s var(--ease-out), visibility 0s;
+}
 
 .st-mobile-menu__inner {
   padding: 96px 28px 48px;

@@ -195,7 +195,10 @@
   align-items: center;
 }
 
-.home-ai-promo__copy .t-eyebrow { color: var(--gold); }
+/* Measured: this block's surface is the navy #14243a, not the pale one it
+   looked like in the markup - so the BRAND gold is the readable choice here
+   and --gold-ink was 2.39:1. Set in globals.css with the other dark
+   surfaces, so the two golds stay in one place. */
 .home-ai-promo__heading {
   color: var(--hero-white);
   margin: 16px 0 20px;

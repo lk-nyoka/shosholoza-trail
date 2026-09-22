@@ -44,6 +44,10 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // The Ride's Three.js chunk is the largest precached file. Everything
+        // the passenger needs offline must fit, so the limit is raised just
+        // past it rather than left at Workbox's 2 MiB default.
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         // Precache the full app shell
         globPatterns: ["**/*.{js,css,html,png,svg,woff2}"],
 

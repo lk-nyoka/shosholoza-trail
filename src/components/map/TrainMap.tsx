@@ -22,6 +22,8 @@ import {
   brunnelRuns,
   createBridgeDecks,
   createTunnelPortals,
+  buildingRadiusAtKm,
+  ringIntersectsCorridor,
   fetchBuildingsFromTiles,
   fetchRoadsFromTiles,
   createRoads,
@@ -32,6 +34,7 @@ import {
 import { LANDMARKS, billboardOpacity } from "../../lib/landmarks";
 import { placesNear, type Place } from "../../lib/places";
 import { TOTAL_KM, positionAt, brunnelAtKm } from "../../lib/routeIndex";
+import { fallbackLighting, lightingAt, type LightingState } from "../../lib/sunSky";
 import "./TrainMap.css";
 
 const TRAIN_ASSET_PATH = "/assets/train.glb";
@@ -130,6 +133,11 @@ const LOOK_AHEAD_KM_AT_ONE_X = 0.25;
 const radians = (value: number) => (value * Math.PI) / 180;
 
 interface Props {
+  /**
+   * Skip the two sharp terrain rings. A zoom-18 tile covers about 150 m of this
+   * corridor, so the full route with them on is several hundred megabytes.
+   */
+  lowData?: boolean;
   km: number;
   follow: boolean;
   firstPerson?: boolean;
@@ -141,11 +149,51 @@ interface Props {
   stops: Stop[];
   onStopClick: (stop: Stop) => void;
   className?: string;
+  /**
+   * The instant the train is living in, from the passenger's itinerary.
+   *
+   * When it is absent the scene lights itself as mid-morning and says so —
+   * see `fallbackLighting`. It is never guessed from the device clock, because
+   * a rider replaying a journey at 16x is not where their phone thinks they
+   * are in time.
+   */
+  instant?: Date | null;
+  /** Cap on every light, 0-1, for reduced-motion or a low-power device. */
+  brightness?: number;
+  /**
+   * Told, in order, what the world is doing while it builds.
+   *
+   * The ride took several seconds to appear and showed nothing while it did,
+   * which on a phone reads as a hang. The stages are real - each one is
+   * reported when that piece of work actually starts - so the text on screen
+   * is never a made-up progress bar.
+   */
+  onStage?: (stage: RideStage) => void;
 }
+
+/** The stages of building the world, in the order they happen. */
+export type RideStage =
+  | { kind: "starting" }
+  | { kind: "ground" }
+  | { kind: "track" }
+  | { kind: "landscape" }
+  | { kind: "ready" }
+  | { kind: "failed"; reason: string };
+
+/** What each stage says on screen. Short, true, and about the railway. */
+export const STAGE_TEXT: Record<RideStage["kind"], string> = {
+  starting: "Preparing the corridor",
+  ground: "Reading the ground",
+  track: "Laying the track",
+  landscape: "Bringing in the landscape",
+  ready: "Ready",
+  failed: "The view could not be built",
+};
 
 export default function TrainMap({
   km,
   follow,
+  lowData = false,
   firstPerson = false,
   speed = 1,
   playing = false,
@@ -155,10 +203,17 @@ export default function TrainMap({
   stops,
   onStopClick,
   className = "",
+  instant = null,
+  brightness = 1,
+  onStage,
 }: Props) {
+  /** Read inside the render loop, so toggling does not rebuild the world. */
+  const lowDataRef = useRef(lowData);
+  lowDataRef.current = lowData;
+
   const mountRef = useRef<HTMLDivElement>(null);
-  const stateRef = useRef({ km, follow, firstPerson, speed, playing, viewYaw, viewPitch, activeStop, stops, onStopClick });
-  stateRef.current = { km, follow, firstPerson, speed, playing, viewYaw, viewPitch, activeStop, stops, onStopClick };
+  const stateRef = useRef({ km, follow, firstPerson, speed, playing, viewYaw, viewPitch, activeStop, stops, onStopClick, instant, brightness, onStage });
+  stateRef.current = { km, follow, firstPerson, speed, playing, viewYaw, viewPitch, activeStop, stops, onStopClick, instant, brightness, onStage };
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -236,7 +291,15 @@ export default function TrainMap({
      * This is fill light, not the bloom pass that was added and removed here
      * before: nothing is being brightened past what it should be.
      */
-    scene.add(new THREE.HemisphereLight(0xbcd8f2, 0x9c9482, 1.15));
+    /**
+     * The sky fill and the sun are now driven by `sunSky`, not by the two
+     * constants that used to sit here. The values below are only the first
+     * frame's; `applyLighting` overwrites them from the real solar position
+     * before anything is rendered, and keeps overwriting them as the journey
+     * runs. See the comment on `applyLighting` for why it is not per-frame.
+     */
+    const hemisphere = new THREE.HemisphereLight(0xbcd8f2, 0x9c9482, 1.15);
+    scene.add(hemisphere);
     const sun = new THREE.DirectionalLight(0xfff5ea, 1.45);
     sun.position.set(-320, 520, 280);
     sun.castShadow = true;
@@ -261,6 +324,98 @@ export default function TrainMap({
     sky.material.uniforms.sunPosition.value.copy(sun.position).normalize();
     scene.add(sky);
 
+    /**
+     * Carriage light.
+     *
+     * At night the inside of the train is the only lit thing the rider can
+     * see, and without it the whole frame goes to one flat dark blue. This is
+     * a warm point light riding with the consist, brought up as the sun goes
+     * down. It is not a real lamp model - it is the light a lit carriage
+     * throws onto the ballast and the nearest few metres of ground, which is
+     * what makes a night frame read as a moving train rather than a still.
+     */
+    const carriageLamp = new THREE.PointLight(0xffd9a0, 0, 260, 1.6);
+    carriageLamp.castShadow = false;
+    scene.add(carriageLamp);
+
+    /**
+     * Where the sun is, and everything that follows from it.
+     *
+     * Called when the journey's minute changes rather than every frame: the
+     * sun moves a quarter of a degree a minute, and at 16x playback that is
+     * still only four degrees a second, so recomputing it sixty times a second
+     * is sixty times the arithmetic for a difference nothing can see. The
+     * measured cost of one call is well under a tenth of a millisecond, but
+     * the colours it writes touch three materials and two uniforms, and those
+     * writes are not free.
+     *
+     * Everything it sets is interpolated from the solar elevation, so a phase
+     * boundary crossing is invisible - the phase NAME changes, the picture
+     * does not jump.
+     */
+    let lighting: LightingState = fallbackLighting({ brightness: stateRef.current.brightness });
+    let lastLightingMinute = Number.NaN;
+
+    const applyLighting = (state: LightingState) => {
+      lighting = state;
+      sun.color.setHex(state.sunColour);
+      sun.intensity = state.sunIntensity;
+      // Shadows cost a full depth pass and there is nothing to cast one after
+      // dusk, so the map is switched off rather than rendered black.
+      sun.castShadow = state.dayFactor > 0.08;
+      hemisphere.color.setHex(state.skyColour);
+      hemisphere.groundColor.setHex(state.groundColour);
+      hemisphere.intensity = state.hemisphereIntensity;
+      horizon.setHex(state.fogColour);
+      if (scene.fog instanceof THREE.Fog) {
+        scene.fog.color.setHex(state.fogColour);
+        scene.fog.near = state.fogNear;
+        scene.fog.far = state.fogFar;
+      }
+      (backdrop.material as THREE.MeshBasicMaterial).color
+        .setHex(state.groundColour)
+        .lerp(new THREE.Color(0x8a8a6e), state.dayFactor);
+      renderer.toneMappingExposure = state.exposure;
+      sky.material.uniforms.turbidity.value = state.turbidity;
+      sky.material.uniforms.rayleigh.value = state.rayleigh;
+      sky.material.uniforms.mieCoefficient.value = state.mieCoefficient;
+      sky.material.uniforms.mieDirectionalG.value = state.mieDirectionalG;
+      sky.material.uniforms.sunPosition.value.set(
+        state.sunDirection.x,
+        state.sunDirection.y,
+        state.sunDirection.z,
+      );
+      carriageLamp.intensity = state.interiorLight * 3.2 * Math.max(0.15, stateRef.current.brightness);
+      carriageLamp.visible = state.interiorLight > 0.01;
+    };
+
+    /**
+     * Recompute only when the journey's minute or the train's position has
+     * actually moved. `positionAt` is cheap, but the guard is what keeps this
+     * off the per-frame budget.
+     */
+    const refreshLighting = (routeKm: number) => {
+      const current = stateRef.current;
+      const at = current.instant;
+      const minute = at instanceof Date && !Number.isNaN(at.getTime())
+        ? Math.floor(at.getTime() / 60_000)
+        : Number.NaN;
+      // Position matters too: the corridor is 10 degrees of longitude wide, so
+      // a fast replay changes the sun's hour angle without the clock moving.
+      const bucket = Number.isNaN(minute) ? Math.round(routeKm / 25) : minute * 1000 + Math.round(routeKm / 25);
+      if (bucket === lastLightingMinute) return;
+      lastLightingMinute = bucket;
+      const [lat, lon] = positionAt(clamp(routeKm, 0, TOTAL_KM));
+      applyLighting(
+        at instanceof Date && !Number.isNaN(at.getTime())
+          ? lightingAt(at, lat, lon, { brightness: current.brightness })
+          : fallbackLighting({ brightness: current.brightness }),
+      );
+    };
+
+    // The first call is made once `backdrop` exists, below - everything this
+    // touches has to be constructed first.
+
     // ── World state, all in the local metric frame ──────────────────────────
     let origin: LatLng = positionAt(0);
     const terrain = new TerrainStreamer(origin);
@@ -283,6 +438,10 @@ export default function TrainMap({
     backdrop.rotation.x = -Math.PI / 2;
     backdrop.renderOrder = -1;
     scene.add(backdrop);
+
+    // Now that every light, material and uniform exists, light the scene for
+    // the instant the rider is actually in, before the first frame is drawn.
+    refreshLighting(stateRef.current.km);
 
     const corridor = new THREE.Group();
     scene.add(corridor);
@@ -737,6 +896,7 @@ export default function TrainMap({
        */
       const treeSamples: THREE.Vector3[] = [];
       const treeSeeds: number[] = [];
+      const treeTangents: THREE.Vector3[] = [];
       let lastBucket = Number.NaN;
       for (let index = 0; index < track.length; index += 1) {
         const bucket = Math.floor(((windowStartKm + index * stepKm) * 1000) / zone.spacing);
@@ -744,16 +904,25 @@ export default function TrainMap({
         lastBucket = bucket;
         treeSamples.push(track[index]);
         treeSeeds.push(bucket);
+        // Direction of travel here, from the neighbouring samples. The belt is
+        // laid out perpendicular to this; offsetting along world X instead is
+        // what put trees on the rails wherever the line ran east-west.
+        const before = track[Math.max(0, index - 1)];
+        const after = track[Math.min(track.length - 1, index + 1)];
+        treeTangents.push(new THREE.Vector3().subVectors(after, before));
       }
-      const trees = createTreeBelt(treeSamples, foliageMaterialFor(zone.kind), zone, treeSeeds);
+      const trees = createTreeBelt(
+        treeSamples, foliageMaterialFor(zone.kind), zone, treeSeeds, treeTangents,
+      );
       if (trees) corridor.add(trees);
     };
 
     /**
-     * Rough distance in metres from a lat/lon to the built corridor, measured
-     * against the window samples already in hand. Only every fourth sample is
-     * tested: this runs over a thousand footprints, and the answer only has to
-     * be good to a few metres.
+     * Rough distance in metres from a lat/lon to the built corridor.
+     *
+     * Only used by the road check now - a road is a polyline, so probing a few
+     * of its points is the right shape of test. Buildings are areas and get the
+     * polygon test below instead.
      */
     const trackProbe = new THREE.Vector3();
     const distanceToTrack = (point: LatLng) => {
@@ -770,24 +939,23 @@ export default function TrainMap({
     };
 
     /**
-     * The closest ANY corner of a footprint comes to the line.
+     * Does this footprint keep clear of the railway?
      *
-     * Testing one vertex was not enough and Park Station is the proof: its
-     * building is mapped as a single footprint several hundred metres long over
-     * the platforms, so its first corner sits well clear of the track while its
-     * body covers it completely. Extruded, that is a solid block standing on the
-     * line with the train inside it - which is what "underground in
-     * Johannesburg" turned out to be. Every corner gets tested now.
+     * The maths lives in railWorld so it can be tested on its own - see
+     * ringIntersectsCorridor. This only converts the ring into the local metric
+     * frame and hands it over.
      */
     const ringClearsTrack = (ring: LatLng[]) => {
-      const stride = Math.max(1, Math.floor(ring.length / 12));
-      for (let index = 0; index < ring.length; index += stride) {
-        if (distanceToTrack(ring[index]) <= TRACK_CLEARANCE_M) return false;
+      if (!windowPoints.length) return true;
+      const flat: number[] = [];
+      for (const point of ring) {
+        const local = toLocalMetres(point, origin);
+        flat.push(local.x, local.z);
       }
-      return true;
+      return !ringIntersectsCorridor(flat, windowPoints, TRACK_CLEARANCE_M);
     };
 
-    const refreshBuildings = (centre: LatLng) => {
+    const refreshBuildings = (centre: LatLng, atKm: number) => {
       // Refetch by distance moved, not by a rounded key: a key on three
       // decimals re-ran the whole vector-tile fetch every hundred metres.
       const key = `${centre[0].toFixed(2)}/${centre[1].toFixed(2)}`;
@@ -796,7 +964,7 @@ export default function TrainMap({
       buildingsController?.abort();
       buildingsController = new AbortController();
       const controller = buildingsController;
-      fetchBuildingsFromTiles(centre, 1600, controller.signal)
+      fetchBuildingsFromTiles(centre, buildingRadiusAtKm(atKm), controller.signal)
         .then(async footprints => {
           if (controller.signal.aborted) return;
           /**
@@ -901,7 +1069,8 @@ export default function TrainMap({
       if (streamingTerrain) return;
       streamingTerrain = true;
       const speed = stateRef.current.speed;
-      terrain.setNearDetail(speed <= 4);
+      terrain.setLowData(lowDataRef.current);
+      terrain.setNearDetail(speed <= 1);
       terrain.setNearRing(1);
       const lead = clamp(0.25 * Math.max(1, speed), 0.25, 1.2);
       try {
@@ -923,10 +1092,26 @@ export default function TrainMap({
      * the corridor does not depend on it, so that still streams afterwards and
      * fills in underneath.
      */
+    /**
+     * Report a stage, but only ever forwards and only during the first build.
+     *
+     * Every floating-origin shift calls `recentre`, and a rider two hundred
+     * kilometres down the line does not want "Laying the track" flashing up
+     * each time. The stages are the opening sequence, nothing else.
+     */
+    let booted = false;
+    const stage = (next: RideStage) => {
+      if (booted && next.kind !== "failed") return;
+      if (next.kind === "ready" || next.kind === "failed") booted = true;
+      stateRef.current.onStage?.(next);
+    };
+    stage({ kind: "starting" });
+
     const recentre = async (atKm: number) => {
       const nextOrigin = positionAt(atKm);
       const speed = stateRef.current.speed;
-      terrain.setNearDetail(speed <= 4);
+      terrain.setLowData(lowDataRef.current);
+      terrain.setNearDetail(speed <= 1);
       terrain.setNearRing(1);
 
       // The elevation tiles this window will sample, followed along the line
@@ -941,6 +1126,7 @@ export default function TrainMap({
        * moment for, but not worth freezing the ride over: if they do not come,
        * the corridor is built on what is cached and corrected on the next pass.
        */
+      stage({ kind: "ground" });
       try {
         await terrain.elevation.prefetchPath(demPath);
       } catch {
@@ -961,15 +1147,28 @@ export default function TrainMap({
 
       origin = nextOrigin;
       terrain.setOrigin(origin);
+      stage({ kind: "track" });
       rebuildCorridor(atKm);
       ready = true;
-      refreshBuildings(origin);
+      refreshBuildings(origin, atKm);
+      /*
+       * The rails are down and the camera has something to look at, so the
+       * ride is usable from here. The imagery streams in underneath, and the
+       * loading frame comes off now rather than waiting for it - a grey
+       * ground the rider can already move over beats a spinner over nothing.
+       */
+      stage({ kind: "landscape" });
       await streamTerrain(atKm);
+      stage({ kind: "ready" });
     };
 
-    void recentre(stateRef.current.km).catch(error =>
-      console.error("[ShosholozaTrail] ride world failed to build", error),
-    );
+    void recentre(stateRef.current.km).catch(error => {
+      console.error("[ShosholozaTrail] ride world failed to build", error);
+      stage({
+        kind: "failed",
+        reason: error instanceof Error ? error.message : "the world could not be built",
+      });
+    });
 
     // ── Train ───────────────────────────────────────────────────────────────
     const emu = createCommuterTrain(CAR_COUNT);
@@ -1137,9 +1336,18 @@ export default function TrainMap({
         });
       }
 
+      refreshLighting(current.km);
       sun.target.position.copy(trainPosition);
-      sun.position.copy(trainPosition).add(new THREE.Vector3(-320, 520, 280));
+      // The light rides with the train so the shadow frustum always contains
+      // it; only the DIRECTION comes from the sun's real position.
+      sun.position
+        .copy(trainPosition)
+        .addScaledVector(
+          new THREE.Vector3(lighting.sunDirection.x, lighting.sunDirection.y, lighting.sunDirection.z),
+          620,
+        );
       sky.position.copy(camera.position);
+      carriageLamp.position.copy(trainPosition).add(new THREE.Vector3(0, 6, 0));
 
       revealProgress = THREE.MathUtils.damp(revealProgress, current.playing ? 1 : 0.55, 2.4, deltaSeconds);
       foliageMaterials.forEach(material => { material.opacity = revealProgress; });

@@ -33,7 +33,7 @@ export default function Privacy() {
         <header className="section privacy-header">
           <p className="t-eyebrow">Privacy</p>
           <h1 className="t-display t-display--lg privacy-header__heading">
-            What we collect,<br />and what we don't.
+            What we collect,{" "}<br />and what we don't.
           </h1>
           <p className="t-body privacy-header__sub">
             Shosholoza Trail is designed to work with as little of your data as possible.
@@ -54,10 +54,12 @@ export default function Privacy() {
             passengers, and we do not sell or share it.
           </p>
           <p>
-            If you tap <b>I'm at this point</b>, one position reading is sent to our
+            If you tap <b>I'm at this point</b>, one position reading is sent to the
             journey service so the app can estimate how fast the train is actually
-            moving. It is attached to a random identifier generated in your browser,
-            not to you, and it is not linked to any other reading.
+            moving. It is attached to a random browser-session identifier rather than
+            your name or contact details. Readings from the same browser can be linked
+            to that pseudonymous session so the service can rate-limit reports and
+            calculate recent journey status.
           </p>
           <div className="privacy-control">
             <div>
@@ -81,9 +83,23 @@ export default function Privacy() {
         <section className="privacy-section" aria-labelledby="accounts">
           <h2 id="accounts" className="t-heading t-heading--lg">Accounts and saved items</h2>
           <p>
-            There are no accounts in this build. Nothing asks for your name, phone number
-            or email address. Places you save stay in your browser's storage on this
-            device and are not sent anywhere.
+            There is no required named account or password. Journey setup may ask for an
+            optional first name and contact detail; those fields stay in this browser's
+            storage and are not uploaded by this build. Saved places also stay on this device.
+          </p>
+          <p>
+            If the optional Supabase sync service is configured, the app may create an
+            anonymous backend session and mirror trip and reservation metadata so queued
+            actions can survive weak connectivity. That anonymous sync does not include the
+            name or contact detail stored in your local passenger record.
+          </p>
+          <p>
+            One form is different, and it says so where it stands: the “want this on your
+            next trip” sign-up. If you choose to type an email address or phone number
+            there, that contact detail is sent to the sync service so we can tell you once
+            when this runs on a real service. It only appears when a sync service is
+            configured, every field on it is optional, and leaving it blank still records
+            your interest.
           </p>
         </section>
 
@@ -114,10 +130,11 @@ export default function Privacy() {
           <h2 id="rights" className="t-heading t-heading--lg">Your rights</h2>
           <p>
             Under POPIA you may ask what personal information we hold about you, ask us to
-            correct or delete it, and object to how it is used. Because this build keeps
-            your data on your own device, clearing the site's data removes it. For the
-            position readings sent with <b>I'm at this point</b>, tell us the session
-            identifier shown on the live journey screen and we will delete those readings.
+            correct or delete it, and object to how it is used. The deletion control below
+            removes this app's local passenger data, trip, reservations, saved places,
+            telemetry session identifier and offline caches. If an optional backend service
+            has already received telemetry or synced trip/reservation metadata, local deletion
+            cannot erase that remote copy; contact us to request deletion of server-held data.
           </p>
           <p className="privacy-contact">
             <b>Responsible party:</b> 4GeeksSakes, entrant in the Geekulcha Annual
@@ -163,7 +180,7 @@ export default function Privacy() {
           </div>
         </section>
 
-        <p className="privacy-updated">Last updated 13 September 2026.</p>
+        <p className="privacy-updated">Last updated 20 September 2026.</p>
       </div>
     </div>
   );

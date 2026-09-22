@@ -6,14 +6,15 @@
  * button, not an email — telling somebody to "clear the site data in your
  * browser settings" is technically an answer and practically a refusal.
  *
- * This removes the trip, the passenger details, the reservations, the consent
- * record, the pending outbox and every cached photograph and map tile. It is
+ * This removes the trip, the passenger details, saved places, the telemetry
+ * session identifier, reservations, consent, the pending outbox and every
+ * cached photograph and map tile. It is
  * not reversible and it does not ask twice after the confirmation, because a
  * deletion control that leaves something behind is worse than none.
  */
 
 /** Everything this app writes under its own key prefix. */
-const PREFIXES = ["st."];
+const PREFIXES = ["st.", "shosholoza."];
 
 export interface EraseResult {
   keysRemoved: number;

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { ROUTE_KM_LABEL, stops, stopHero } from "../data";
 import { HERO, shotsFor } from "../data/gallery";
-import { durationLabel, scheduledMinutesBetween } from "../lib/timetable";
+import { durationLabel, scheduledMinutesBetween } from "../lib/corridor";
 import "./Home.css";
 
 const HERO_IMG = HERO.url;
@@ -40,8 +40,8 @@ export default function Home() {
             Pretoria → Cape Town · 8 Stops
           </p>
           <h1 className="t-display t-display--xl home-hero__headline">
-            The country goes<br />
-            past<br />
+            The country goes{" "}<br />
+            past{" "}<br />
             <em className="home-hero__italic">at window height.</em>
           </h1>
           <p className="home-hero__body">
@@ -133,7 +133,7 @@ export default function Home() {
                 className="t-display t-display--md home-ai-promo__heading"
                 id="ai-promo-heading"
               >
-                Every question answered<br />from the corridor itself.
+                Every question answered{" "}<br />from the corridor itself.
               </h2>
               <p className="home-ai-promo__body">
                 Ask about any stop, vendor or landscape. Every answer draws only

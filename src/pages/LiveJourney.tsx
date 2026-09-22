@@ -27,6 +27,17 @@ function duration(minutes: number) {
 }
 
 export default function LiveJourney() {
+  /**
+   * Live means live: this page is the one place where the device clock IS the
+   * journey clock, so the scene is lit for right now. Ticking every half
+   * minute is finer than the sun can move visibly and costs one render.
+   */
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 30_000);
+    return () => window.clearInterval(timer);
+  }, []);
+
   const [km, setKm]           = useState(stops[4].km);
   const [trackingPaused, setTrackingPaused] = useState(false);
   const [follow, setFollow]   = useState(true);
@@ -164,6 +175,7 @@ export default function LiveJourney() {
         activeStop={active}
         stops={stops}
         onStopClick={selectStop}
+        instant={now}
       />
       <div className="live-page__vignette" aria-hidden="true" />
 

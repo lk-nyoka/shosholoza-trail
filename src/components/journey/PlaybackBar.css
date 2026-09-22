@@ -52,8 +52,17 @@
   --progress: 0%;
   display: block;
   width: 100%;
-  height: 5px;
-  margin: 0;
+  /* The gold line you drag along stays 5 px — that is the design. The control
+     itself is 28 px so a thumb on a moving train can actually catch it; the
+     extra height is transparent padding around the painted track, and the
+     negative margin keeps the bar sitting exactly where it did before.
+     Scrubbing the journey is a headline interaction and it was a five-pixel
+     target at 320 px wide. */
+  height: 28px;
+  padding: 11.5px 0;
+  margin: -11.5px 0;
+  box-sizing: border-box;
+  background-clip: content-box;
   border-radius: 99px;
   outline: none;
   appearance: none;

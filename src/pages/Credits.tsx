@@ -68,7 +68,7 @@ export default function Credits() {
         <header className="section credits-header">
           <p className="t-eyebrow">Credits</p>
           <h1 className="t-display t-display--lg credits-header__heading">
-            Photography &<br />data attribution.
+            Photography &{" "}<br />data attribution.
           </h1>
           <p className="t-body credits-header__sub">
             Photographs of the towns along the route come from Wikimedia Commons, the

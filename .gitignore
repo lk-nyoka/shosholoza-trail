@@ -9,3 +9,9 @@ backend/data/*.db
 backend/data/*.db-shm
 backend/data/*.db-wal
 
+
+# Scratch: verification output, and a literal "~" directory that a shell
+# redirect created inside the repo. Neither belongs in history.
+_v.log
+_verify.log
+~/

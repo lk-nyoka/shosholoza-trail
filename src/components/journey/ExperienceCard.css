@@ -1,0 +1,98 @@
+/* One card, three modes. The colour is the only thing that changes, so the
+   passenger learns the shape once. */
+.xp {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  max-width: 420px;
+  padding: 16px 17px;
+  border: 1px solid var(--rule, #ddd4c6);
+  border-left: 3px solid var(--xp-accent, #b07c14);
+  border-radius: 12px;
+  background: var(--surface-raised, #fffdf9);
+  color: var(--ink, #1b1b1b);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+}
+.xp--adventure  { --xp-accent: #2f6b8f; }
+.xp--creative   { --xp-accent: #9a5b2f; }
+.xp--networking { --xp-accent: #3f7a52; }
+
+.xp__head { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+.xp__badge {
+  display: inline-flex; gap: 5px; align-items: center;
+  padding: 3px 9px; border-radius: 999px;
+  background: color-mix(in srgb, var(--xp-accent) 14%, transparent);
+  color: var(--xp-accent);
+  font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+}
+/* The sentence that turns a card appearing into a system behaving. */
+.xp__why   { flex: 1 1 auto; font-size: 11px; color: var(--ink-muted, #6b6154); }
+.xp__close {
+  border: 0; background: none; color: var(--ink-muted, #6b6154);
+  font-size: 19px; line-height: 1; cursor: pointer;
+}
+
+.xp__title   { margin: 0; font: 500 21px/1.2 var(--font-display, serif); }
+.xp__summary { margin: 0; font-size: 13.5px; line-height: 1.6; }
+.xp__story   { margin: 0; font-size: 13px; line-height: 1.7; white-space: pre-line; color: var(--ink-muted, #55504a); }
+.xp__matters { margin: 0; font-size: 12.5px; line-height: 1.6; }
+.xp__more {
+  align-self: flex-start; padding: 0; border: 0; background: none;
+  color: var(--xp-accent); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+  /* WCAG 2.5.8: this was 19 px tall. */
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.xp__prompt { display: flex; gap: 6px; align-items: flex-start; margin: 6px 0 2px; font-size: 13px; font-weight: 600; }
+.xp__quiz, .xp__write, .xp__look, .xp__room { display: flex; flex-direction: column; gap: 7px; }
+.xp__option {
+  padding: 10px 13px; border: 1px solid var(--rule, #ddd4c6); border-radius: 9px;
+  background: none; color: inherit; font: inherit; font-size: 13px; text-align: left; cursor: pointer;
+}
+.xp__option:disabled { cursor: default; }
+.xp__option--right { border-color: #2f6b3f; background: rgba(47, 107, 63, 0.10); font-weight: 700; }
+.xp__option--wrong { border-color: #9a2f2f; background: rgba(154, 47, 47, 0.08); }
+.xp__because { margin: 2px 0 0; font-size: 12.5px; line-height: 1.6; color: var(--ink-muted, #55504a); }
+
+.xp__write textarea {
+  width: 100%; padding: 10px 12px; font: inherit; font-size: 13.5px; line-height: 1.6;
+  border: 1px solid var(--rule, #ddd4c6); border-radius: 9px;
+  background: var(--surface, #fff); color: inherit; resize: vertical;
+}
+.xp__do {
+  align-self: flex-start; padding: 9px 17px; border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--xp-accent); color: #fff; font: inherit; font-size: 12.5px; font-weight: 700;
+}
+.xp__joined  { margin: 0; font-size: 12.5px; line-height: 1.6; }
+.xp__private { margin: 0; font-size: 11px; line-height: 1.55; color: var(--ink-muted, #6b6154); }
+
+.xp__foot {
+  display: flex; flex-direction: column; gap: 4px;
+  margin-top: 3px; padding-top: 9px; border-top: 1px solid var(--rule, #ddd4c6);
+  font-size: 10.5px; line-height: 1.5; color: var(--ink-muted, #6b6154);
+}
+.xp__stamp {
+  display: inline-flex; gap: 5px; align-items: center; align-self: flex-start;
+  padding: 3px 9px; border-radius: 999px;
+  background: rgba(47, 107, 63, 0.12); color: #2f6b3f;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.xp__source a { color: inherit; }
+
+@media (max-width: 560px) { .xp { max-width: none; } }
+
+/* The listen activity: a route to the song page, styled as the primary action
+   of its card without pretending to be a player. */
+.xp__listen { display: flex; flex-direction: column; gap: 8px; }
+.xp__do--listen {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  align-self: flex-start;
+  min-height: 38px;
+  padding: 0 16px;
+  text-decoration: none;
+}

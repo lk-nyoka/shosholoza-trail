@@ -17,13 +17,23 @@ import { stops } from "../data";
 import type { Stop } from "../types";
 import { enqueue, newKey } from "./backend/outbox";
 import { backendConfigured } from "./backend/client";
-import { DEFAULT_STOP_MINUTES } from "./timetable";
+import { DEFAULT_STOP_MINUTES, type Direction } from "./corridor";
 
 const KEY = "st.trip.v1";
 
 export interface Trip {
   boardId: string;
   alightId: string;
+  /**
+   * The SAST calendar date the passenger boards, "YYYY-MM-DD".
+   *
+   * Optional on read: trips saved before the journey clock existed have no
+   * date, and throwing those away would lose somebody's journey. They fall back
+   * to today, which is what they were implicitly assuming anyway.
+   */
+  date?: string;
+  /** Optional for the same reason. The published service is southbound. */
+  direction?: Direction;
 }
 
 function read(): Trip | null {
@@ -34,7 +44,14 @@ function read(): Trip | null {
     if (!parsed.boardId || !parsed.alightId) return null;
     if (!stops.some(s => s.id === parsed.boardId)) return null;
     if (!stops.some(s => s.id === parsed.alightId)) return null;
-    return { boardId: parsed.boardId, alightId: parsed.alightId };
+    return {
+      boardId: parsed.boardId,
+      alightId: parsed.alightId,
+      date: typeof parsed.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(parsed.date)
+        ? parsed.date : undefined,
+      direction: parsed.direction === "northbound" || parsed.direction === "southbound"
+        ? parsed.direction : undefined,
+    };
   } catch {
     return null;
   }

@@ -19,6 +19,7 @@ import Start       from "./pages/Start";
 import Trip        from "./pages/Trip";
 import Song        from "./pages/Song";
 import Operator    from "./pages/Operator";
+import StopExperience from "./pages/StopExperience";
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="journey"   element={<Journey />}      />
           <Route path="ride"      element={<Ride />}         />
           <Route path="destinations" element={<Destinations />} />
+          <Route path="stops/:stopId" element={<StopExperience />} />
           <Route path="stories"   element={<Stories />}      />
           <Route path="ai"        element={<AIGuide />}      />
           <Route path="plan"      element={<Plan />}         />

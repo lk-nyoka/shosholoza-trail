@@ -3,6 +3,7 @@
  * and provides helper to find the next upcoming stop from the current km.
  */
 import { useEffect, useState } from "react";
+import { apiConfigured } from "../api";
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api/v1";
 
@@ -16,22 +17,36 @@ export interface TimetableEntry {
   zone:      string;
 }
 
+interface TimetableResponse {
+  calls: TimetableEntry[];
+}
+
 export function useTimetable() {
   const [entries, setEntries]   = useState<TimetableEntry[]>([]);
   const [loading, setLoading]   = useState(true);
   const [error,   setError]     = useState<string | null>(null);
 
   useEffect(() => {
+    // No journey service in this build: say so without a request that is
+    // already known to come back 503.
+    if (!apiConfigured) {
+      setError("Timetable unavailable — this build runs without a journey service.");
+      setLoading(false);
+      return;
+    }
     const ctrl = new AbortController();
     fetch(`${API_BASE}/timetable`, { signal: ctrl.signal, headers: { Accept: "application/json" } })
       .then(r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json() as Promise<TimetableEntry[]>;
+        return r.json() as Promise<TimetableEntry[] | TimetableResponse>;
       })
-      .then(data => { setEntries(data); setLoading(false); })
+      .then(data => {
+        setEntries(Array.isArray(data) ? data : data.calls);
+        setLoading(false);
+      })
       .catch(err => {
         if ((err as Error).name !== "AbortError") {
-          setError("Timetable unavailable — showing cached data.");
+          setError("Timetable unavailable — live schedule data is offline.");
           setLoading(false);
         }
       });

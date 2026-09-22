@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Check, TrainFront } from "lucide-react";
+import { ArrowRight, BookOpen, Camera, Check, TrainFront, Users } from "lucide-react";
 import { stops } from "../data";
-import { durationLabel, scheduleLabel, scheduledMinutesBetween } from "../lib/timetable";
+import { durationLabel, scheduleLabel, scheduledMinutesBetween } from "../lib/corridor";
 import { createPassenger, passenger, save } from "../lib/passenger";
 import { saveTrip } from "../lib/trip";
+import { MODES, saveModes, savedModes, type Mode } from "../lib/modes";
 import "./Start.css";
 
 /**
@@ -16,6 +17,13 @@ import "./Start.css";
 export default function Start() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
+  /**
+   * How they want to travel, chosen before boarding rather than discovered on
+   * the ride. More than one at a time: somebody can want the history AND the
+   * notebook, and making that a radio button would be the app telling a
+   * passenger who they are.
+   */
+  const [modes, setModes] = useState<Mode[]>(() => savedModes());
   const [boardId, setBoardId]   = useState(() => passenger()?.trip.boardId ?? stops[0].id);
   const [alightId, setAlightId] = useState(() => passenger()?.trip.alightId ?? stops[stops.length - 1].id);
   /** Someone coming back to change their leg keeps their reference and name. */
@@ -53,7 +61,7 @@ export default function Start() {
     <div className="start-page">
       <div className="start">
         <ol className="start__steps" aria-label="Setup progress">
-          {["Welcome", "Your trip", "Your details"].map((label, i) => (
+          {["Welcome", "How you travel", "Your trip", "Your details"].map((label, i) => (
             <li key={label} className={i === step ? "active" : i < step ? "done" : ""}>
               <span aria-hidden="true">{i < step ? <Check size={11} /> : i + 1}</span>
               {label}
@@ -75,7 +83,7 @@ export default function Start() {
                 through the Karoo.</li>
               <li><b>Measured in minutes, not kilometres.</b> Every shop and sight is judged
                 against the time the train is standing.</li>
-              <li><b>Nothing leaves your phone.</b> No account, no tracking, no data sold.</li>
+              <li><b>Private by default.</b> No required account and no advertising tracking. Location is only read after you ask for live GPS, and optional sync is explained before it is used.</li>
             </ul>
             <div className="start__actions">
               <button className="btn btn--primary" onClick={() => setStep(1)}>
@@ -89,6 +97,62 @@ export default function Start() {
         )}
 
         {step === 1 && (
+          <section className="start__panel">
+            <h1 className="start__title">How do you want to experience the journey?</h1>
+            <p className="start__lede">
+              Pick as many as you like. This decides what the line offers you as you
+              pass it — and you can change it any time from the ride.
+            </p>
+
+            <div className="modepick">
+              {MODES.map(entry => {
+                const on = modes.includes(entry.id);
+                return (
+                  <button
+                    key={entry.id}
+                    type="button"
+                    className={on ? "modepick__card modepick__card--on" : "modepick__card"}
+                    onClick={() =>
+                      setModes(on ? modes.filter(m => m !== entry.id) : [...modes, entry.id])
+                    }
+                    aria-pressed={on}
+                  >
+                    <span className={`modepick__icon modepick__icon--${entry.id}`} aria-hidden="true">
+                      {entry.id === "adventure" ? <BookOpen size={17} />
+                        : entry.id === "creative" ? <Camera size={17} />
+                        : <Users size={17} />}
+                    </span>
+                    <span className="modepick__text">
+                      <b>{entry.label}</b>
+                      <small>{entry.blurb}</small>
+                    </span>
+                    <span className="modepick__tick" aria-hidden="true">
+                      {on ? <Check size={13} /> : null}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <p className="start__foot">
+              {modes.length === 0
+                ? "Nothing selected — you will get the route, the stops and what is outside, and nothing else. That is a fine way to travel."
+                : `${modes.length} of 3 selected.`}
+            </p>
+
+            <div className="start__actions">
+              <button
+                className="btn btn--primary"
+                onClick={() => { saveModes(modes); setStep(2); }}
+              >
+                Start my journey <ArrowRight size={15} aria-hidden="true" />
+              </button>
+              <button className="btn btn--ghost" onClick={() => setStep(0)}>Back</button>
+            </div>
+          </section>
+        )}
+
+        {step === 2 && (
           <section className="start__panel">
             <h1 className="start__title">Which part of the line is yours?</h1>
             <p className="start__lede">
@@ -125,22 +189,22 @@ export default function Start() {
                 : "Choose a stop further down the line than where you board."}
             </p>
             <div className="start__actions">
-              <button className="btn btn--primary" disabled={!legValid} onClick={() => setStep(2)}>
+              <button className="btn btn--primary" disabled={!legValid} onClick={() => setStep(3)}>
                 Continue <ArrowRight size={15} aria-hidden="true" />
               </button>
-              <button className="btn btn--ghost" onClick={() => setStep(0)}>Back</button>
+              <button className="btn btn--ghost" onClick={() => setStep(1)}>Back</button>
             </div>
           </section>
         )}
 
-        {step === 2 && (
+        {step === 3 && (
           <section className="start__panel">
             <h1 className="start__title">Who is travelling?</h1>
             <p className="start__lede">
-              A first name is enough. This build has no accounts: everything below stays on this
-              phone and is never uploaded. A contact detail is only useful once vendors can
-              confirm a collection, which needs a service that does not exist yet — until then
-              it sits here unused, and you can leave it blank.
+              A first name is enough. There is no required sign-in. Your name and contact detail
+              stay on this device in this build. If the optional sync service is configured, only
+              trip and reservation metadata is mirrored under an anonymous session; your name and
+              contact are not sent. You can leave both fields blank.
             </p>
             <div className="start__fields start__fields--stack">
               <label className="start__field">
@@ -163,7 +227,7 @@ export default function Start() {
               <button className="btn btn--primary" onClick={finish}>
                 {existing ? "Save my journey" : "Create my boarding pass"} <ArrowRight size={15} aria-hidden="true" />
               </button>
-              <button className="btn btn--ghost" onClick={() => setStep(1)}>Back</button>
+              <button className="btn btn--ghost" onClick={() => setStep(2)}>Back</button>
             </div>
             <p className="start__foot">
               Leave the name blank and your pass simply reads "Traveller". You can change or
