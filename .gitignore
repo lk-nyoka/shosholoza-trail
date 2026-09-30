@@ -15,3 +15,6 @@ backend/data/*.db-wal
 _v.log
 _verify.log
 ~/
+
+_to_delete/
+*.zip
