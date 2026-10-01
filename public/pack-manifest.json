@@ -1,0 +1,782 @@
+{
+  "version": 1,
+  "hash": "8a5aacd5d86976ed7ea24c6b3c60a51a8c8c5a46f86a88cf8b719e1ff0157e07",
+  "bytes": 13869683,
+  "assets": [
+    {
+      "url": "/animations/README.md",
+      "bytes": 1223,
+      "sha256": "4a7055f31c0cc68b6246be02d723ed3efb8e740090c2e13f1918ca7a54c4462f"
+    },
+    {
+      "url": "/animations/gallery.html",
+      "bytes": 1444,
+      "sha256": "6bd21520ccdaa84ec9d759a85b25db872e82e29fdf8503d55b8504e80c23ca94"
+    },
+    {
+      "url": "/animations/localized-scenes.css",
+      "bytes": 9116,
+      "sha256": "215af540c3efbb72fea106a496c2159ae35a4243b337e6b09c6f0ba13b605e8f"
+    },
+    {
+      "url": "/animations/localized-scenes.js",
+      "bytes": 18580,
+      "sha256": "8c34dcc8a43d47ad8a9c1d9ef753b4eca1435bed09dac299a573c58b4ba9eded"
+    },
+    {
+      "url": "/animations/scenes.v1.json",
+      "bytes": 2438,
+      "sha256": "0d3a07435463825f34cda0cd09727dca8a5e789cb223b34d2aeb466d1fdc7b5c"
+    },
+    {
+      "url": "/app-assets/AnimationRide-C7Z-QX6V.js",
+      "bytes": 65978,
+      "sha256": "65885fd18d94e6b9c4099745d76f9eb4aabd5528e2443704afec3d3a7464c236"
+    },
+    {
+      "url": "/app-assets/AnimationRide-uCGqn0-e.css",
+      "bytes": 232,
+      "sha256": "467d104a613adfd77ee5aef94b04088bbee4882732c9d0b0627504df2331f41e"
+    },
+    {
+      "url": "/app-assets/Buildings-D-5Q3gBu.js",
+      "bytes": 1637,
+      "sha256": "adc7c270c261948fd9e0b979176be41e2259d971374ec69b646a636522df64fc"
+    },
+    {
+      "url": "/app-assets/CapeTownFinale-DOAoXiJd.css",
+      "bytes": 4026,
+      "sha256": "29038053fe8a228dc8e0ca9c7e4aead820e00747aa26e549e1239638a812653d"
+    },
+    {
+      "url": "/app-assets/CapeTownFinale-so5Zm9W-.js",
+      "bytes": 32312,
+      "sha256": "3faf6354ec39b0a7b267ba754b35495b7df2429370177796904158fa6e16bc62"
+    },
+    {
+      "url": "/app-assets/ChapterNavigation-CcWgon9d.js",
+      "bytes": 8864,
+      "sha256": "aea2dc9455a353d4d235b46d44fa71e6a8e734a4b2a8189ac0e4059a2c580006"
+    },
+    {
+      "url": "/app-assets/CinematicCamera-CTyhv1Yx.js",
+      "bytes": 2308,
+      "sha256": "570429d999d3302d3934ea815e8f3cb9566c8830d2c55e4dba3f58a62504233c"
+    },
+    {
+      "url": "/app-assets/Corridor-CQnhCJRL.css",
+      "bytes": 2296,
+      "sha256": "9f17f4b9a66e87a6765721fd8dea5365af28ac994f150dfa5945f1fc5b511b16"
+    },
+    {
+      "url": "/app-assets/Corridor-CwkM1dMb.js",
+      "bytes": 5723,
+      "sha256": "19c2d3e808e05864a368d46f3a762c7acbb07c8e143550fa19c0daf8dd416182"
+    },
+    {
+      "url": "/app-assets/CorridorScene-CFDP4WCD.js",
+      "bytes": 8264,
+      "sha256": "f375bdd7c2ea1d8a3552ea1cefa4314bd71878acf26b066af5cdc66cbcb0fefb"
+    },
+    {
+      "url": "/app-assets/DeAar-BhDyj6GG.css",
+      "bytes": 2872,
+      "sha256": "9c84969a49e59889811caaf75eedbd364928e9e0732a815df7ca15731a47c454"
+    },
+    {
+      "url": "/app-assets/DeAar-C0vPDw1y.js",
+      "bytes": 9136,
+      "sha256": "edb16d51c50cbe5b71a2c0d1a3c4820cdbc6b4a176426da7ade5180fe1ba03e2"
+    },
+    {
+      "url": "/app-assets/JohannesburgScene-BDQFpvZL.js",
+      "bytes": 15938,
+      "sha256": "549a90b187163817693f5d57fa9bd76c8daa0cd83b5d338b63fdde6b80fd0abc"
+    },
+    {
+      "url": "/app-assets/MissingTownScene-DcEZHJXv.js",
+      "bytes": 8904,
+      "sha256": "eece55eaf7fe1f0430bd50091ab575264665747e9b14ea1fad1e95163dbe7b7a"
+    },
+    {
+      "url": "/app-assets/Passengers-CNalL9Iz.js",
+      "bytes": 3491,
+      "sha256": "41fe4e6448d40fd7a6977b5708bbc2752c9af2f15af192ca0244c7e067c38240"
+    },
+    {
+      "url": "/app-assets/RideCamera-2MdltXam.js",
+      "bytes": 27297,
+      "sha256": "c783863313c20eee2103b7ac131d6e195e94c264fcf32905e234af9f9e1a10dd"
+    },
+    {
+      "url": "/app-assets/SharedExperience-CIbph2NQ.js",
+      "bytes": 13517,
+      "sha256": "a366f248df68b5043b925fd5a1334de60d63234f65455feebb70eae5c7aa8327"
+    },
+    {
+      "url": "/app-assets/SharedExperience-Dm9-or3H.css",
+      "bytes": 2974,
+      "sha256": "66546b734525a41b0d432e13c2bd1a4d562af0838cafa2ada9757750a4da5f3d"
+    },
+    {
+      "url": "/app-assets/StationScene-DZH94M-x.js",
+      "bytes": 4597,
+      "sha256": "ed0c571280ed41568239888c75fbc28dfafa17b398ff090cd9f1455cc83bef4b"
+    },
+    {
+      "url": "/app-assets/TrainConsist-BLE6JEA1.js",
+      "bytes": 689791,
+      "sha256": "f968949b606d1c97e83fdca827b6ce58c25394178f9998ec996512c5ec4d65fd"
+    },
+    {
+      "url": "/app-assets/TrainSound-XFuzdLrq.js",
+      "bytes": 13659,
+      "sha256": "bbff665031ebeb6329758cd4db4747610f93d6f4c0f54bbd1164a11b7e958f82"
+    },
+    {
+      "url": "/app-assets/animation-ride-v-aEZJTt.css",
+      "bytes": 18565,
+      "sha256": "742137230685f382c5a33da1ee9d92627156b0b660b40e98b0c974738bf18ffe"
+    },
+    {
+      "url": "/app-assets/beaufortWest-B86y5jzY.js",
+      "bytes": 39229,
+      "sha256": "15cda73249b329484092ecad903f58fbf17a5961172f689c8f0cba5964a6b1d8"
+    },
+    {
+      "url": "/app-assets/johannesburg-CnmdXsyq.js",
+      "bytes": 15040,
+      "sha256": "a326d0eaffd643e1441787280cb398c44cc9b0a052b3ff45d99a160f1eb3e3b6"
+    },
+    {
+      "url": "/app-assets/kimberley-Bo5_0akp.js",
+      "bytes": 57901,
+      "sha256": "4fed5ab4f42bbbaaf30c7d10e0b941d51ca93d46a9991beab5ccc1ebe89868c9"
+    },
+    {
+      "url": "/app-assets/main-TOaa-2IY.js",
+      "bytes": 636817,
+      "sha256": "10f68c36f4602e6d0e7827676ced47ae53b48e627bc36a455d40be26b13e358b"
+    },
+    {
+      "url": "/app-assets/main-bpweZiEj.css",
+      "bytes": 52022,
+      "sha256": "1ce8928e93d1186dbb37d05e7eb1ce2fc3070fea21abb4b656dc83cf2d6c1b0f"
+    },
+    {
+      "url": "/app-assets/ride-model-BZumehKz.js",
+      "bytes": 1380,
+      "sha256": "bcdd8f2ec2d77056f68664eaf47409c3567a81192038acd1054f037a4aa70e7d"
+    },
+    {
+      "url": "/app-assets/train-model-Cn0yG7Z9.js",
+      "bytes": 5630,
+      "sha256": "c48f3db75c7df2ceaa35661f92c47e3720f1b2393d3e92efa4ac919a06581745"
+    },
+    {
+      "url": "/app.html",
+      "bytes": 3987,
+      "sha256": "92430e9fe90b8fff9d875300b75d68c4ababd15af47391c39f961bf158ea9b7a"
+    },
+    {
+      "url": "/app.js",
+      "bytes": 51645,
+      "sha256": "4e01b4ddda06a86a3e4dc43fac6f1aa43b2e65a367d5f17d9f19b2d20bcf8518"
+    },
+    {
+      "url": "/assets/models/people/boxman.glb",
+      "bytes": 757340,
+      "sha256": "3540a3dc0dcab22982be12a7f4f6132822f2abaac6f140dc4c08a312af49f8a9"
+    },
+    {
+      "url": "/assets/models/train/LICENSE.md",
+      "bytes": 710,
+      "sha256": "eb787fae80707be89b2ca9e2b4337051875a39d4ccf25f1b6f2fbd45b617f134"
+    },
+    {
+      "url": "/assets/models/train/quaternius-electric.glb",
+      "bytes": 172508,
+      "sha256": "23b80e398b9b8cbb282dd18cf6ba2b8270edc418819caefeb188294026dda28a"
+    },
+    {
+      "url": "/assets/models/train/quaternius-passenger.glb",
+      "bytes": 176948,
+      "sha256": "4650c81c64e5647d6473099a05ca56d719a9303d10c068eb4e03eb678f21c8c3"
+    },
+    {
+      "url": "/assets/photo-credits.json",
+      "bytes": 3869,
+      "sha256": "250788be39521e6d0975683e022eff47a0051b7330f9930ca7d92decb3def5e8"
+    },
+    {
+      "url": "/assets/photos/beaufort-west-depth.webp",
+      "bytes": 5704,
+      "sha256": "7f3326d2aa169d11e8a986aebb72cc8402f87bad5d3122f952ff8cf65d9b2b01"
+    },
+    {
+      "url": "/assets/photos/beaufort-west.webp",
+      "bytes": 234604,
+      "sha256": "aba82e70a48aa0dd0b4d4eaed0befbb1440232b0456f51c6d645e280a5aacb74"
+    },
+    {
+      "url": "/assets/photos/cape-town-depth.webp",
+      "bytes": 3840,
+      "sha256": "fa725eddbeada406ec153d7d1ba39f79c38adccd44eb99b52c5e2af9ccc6e9b6"
+    },
+    {
+      "url": "/assets/photos/cape-town.webp",
+      "bytes": 249800,
+      "sha256": "f6ec516c0b6f30bfee38549f070dee250235c31c02abbbdaa801746cf4c30ee2"
+    },
+    {
+      "url": "/assets/photos/de-aar-depth.webp",
+      "bytes": 5034,
+      "sha256": "ccd31f25692034769937533decf7d60eb8f812b94e961d751ed0882616d591ca"
+    },
+    {
+      "url": "/assets/photos/de-aar.webp",
+      "bytes": 36704,
+      "sha256": "3c9fdff60a7a4f1dc09ac6cc398824938879d9098b5acd184e36395d99e49c90"
+    },
+    {
+      "url": "/assets/photos/hero-train-depth.webp",
+      "bytes": 3872,
+      "sha256": "6faf47e4453a5722848bfb0c8461570aba90df04879386c2cd3703909ee086eb"
+    },
+    {
+      "url": "/assets/photos/hero-train.webp",
+      "bytes": 46606,
+      "sha256": "3ddc5cff99a2341957ba18c0b6a1d653d9088ec30317e8a5f01d42d914e9ea90"
+    },
+    {
+      "url": "/assets/photos/johannesburg-depth.webp",
+      "bytes": 8628,
+      "sha256": "ece65f8ae984d5b9d9baaab8307456300e6066bdb11d55b441dc4eedb7267a62"
+    },
+    {
+      "url": "/assets/photos/johannesburg.webp",
+      "bytes": 143920,
+      "sha256": "18b822aec67991afb3b265a999e79ec1feb47d0640313a2417f8919e44ace30e"
+    },
+    {
+      "url": "/assets/photos/kimberley-depth.webp",
+      "bytes": 7308,
+      "sha256": "1b5059ff433f0dccc17a1ab03fa56a082a7023f9c5b917110a2e566fc6013dd3"
+    },
+    {
+      "url": "/assets/photos/kimberley.webp",
+      "bytes": 268716,
+      "sha256": "a8890b807c43bf6783ffad7d45e62122f03c616642813595e8886a8725ed13dc"
+    },
+    {
+      "url": "/assets/photos/matjiesfontein-depth.webp",
+      "bytes": 10052,
+      "sha256": "708546e2ef212dfa5c33bcfb4c23710f6626808c228816469341e2a3d7f40310"
+    },
+    {
+      "url": "/assets/photos/matjiesfontein.webp",
+      "bytes": 220558,
+      "sha256": "9e2de3e06950c9d9a1a9d8acc37387efd9667445974679d217c9b649e0730320"
+    },
+    {
+      "url": "/assets/photos/pretoria-depth.webp",
+      "bytes": 17464,
+      "sha256": "f708683c62e7e9d82fb5ced34382ef49f1578ece5c8f09a868a0f254b62d09be"
+    },
+    {
+      "url": "/assets/photos/pretoria.webp",
+      "bytes": 249520,
+      "sha256": "f55b2c0b9761ac4aa63554c1432520c6b67a42e86a6ef401f5ed15ffb35cfe84"
+    },
+    {
+      "url": "/assets/photos/worcester-depth.webp",
+      "bytes": 6642,
+      "sha256": "43b804ed54b08ee62c96f0d5ef501df03ef7d16e8baa0a086ab09f0c6fd4ad59"
+    },
+    {
+      "url": "/assets/photos/worcester.webp",
+      "bytes": 264972,
+      "sha256": "2b773c1707ee202fe10564dd3509523041a4b22fd6f5033de56db330cbe2db0c"
+    },
+    {
+      "url": "/assets/sprites/aloe_ferox.png",
+      "bytes": 146040,
+      "sha256": "929db2d3d33973abafb2f80c54d02526b05a882635b356eafc7a7ec39fa0aeba"
+    },
+    {
+      "url": "/assets/sprites/jacaranda_full.png",
+      "bytes": 157797,
+      "sha256": "89d1350afbd77440fc9bc811af5abc4595cb3291ff8f39fba415b51339bfe3ee"
+    },
+    {
+      "url": "/assets/sprites/manifest.json",
+      "bytes": 870,
+      "sha256": "605ccaba882f33f3d0301d2b1d9683164b65bbf9b89d35ffc43e553d140164a8"
+    },
+    {
+      "url": "/assets/sprites/street_lamp.png",
+      "bytes": 98318,
+      "sha256": "22e9f10ec9796c068cf830599668d21a435c63025784b073db21281e67089371"
+    },
+    {
+      "url": "/assets/sprites/telegraph_pole.png",
+      "bytes": 99982,
+      "sha256": "44bbbc857dee7d9de451dc9e118e94142f48fda5d08f4c6b64a098fc3d12bf33"
+    },
+    {
+      "url": "/assets/sprites/windpump.png",
+      "bytes": 113827,
+      "sha256": "6cf8748755243da92190337fc28186da5abdcc5f2a111b3e40f29ad280876b9b"
+    },
+    {
+      "url": "/audio/train/brake_hiss.wav",
+      "bytes": 129644,
+      "sha256": "f23976109fb6ffc507e68ec329a808796f5d69f4052e075586f23603a294771b"
+    },
+    {
+      "url": "/audio/train/brake_squeal.wav",
+      "bytes": 158444,
+      "sha256": "4d45ddf9069e7b2e46f1eb5f0e3c5ff4e978591478ca61b45d10929e3d0706d0"
+    },
+    {
+      "url": "/audio/train/bridge_rumble.wav",
+      "bytes": 576044,
+      "sha256": "373197c960839df5561569066b6e626fa518c1af2c17c0ce8e9f60f981a308f0"
+    },
+    {
+      "url": "/audio/train/crossing_bell.wav",
+      "bytes": 100844,
+      "sha256": "1f5a50c0f67dd360c71208e70d792e9df4d3b817c230dcea7e4659a0250ee56e"
+    },
+    {
+      "url": "/audio/train/horn.wav",
+      "bytes": 235244,
+      "sha256": "1656f33754280cf8decb3604da2ab566bb4e06d13eca473dbda9f9297fe486de"
+    },
+    {
+      "url": "/audio/train/idle_hum.wav",
+      "bytes": 768044,
+      "sha256": "cea1bac00a1db6f3d796cd2c6bd7a6cedcf95521c508524c5243ba6d11acbb40"
+    },
+    {
+      "url": "/audio/train/metal_clank.wav",
+      "bytes": 46124,
+      "sha256": "b289d730d7b188bd0084d61eabec4b1ebf83093408afe0e9f7e184b42ad4bd72"
+    },
+    {
+      "url": "/audio/train/rail_joint.wav",
+      "bytes": 28844,
+      "sha256": "7d228a66c5b4dda86ecefafa3c41603fb7f8a6a40bfaafae1559f51c2139f575"
+    },
+    {
+      "url": "/auth.js",
+      "bytes": 6242,
+      "sha256": "3d71bd191c47d8948409f3b734ad3aaa5bdcfa7430d819e0329616a5d90b44c2"
+    },
+    {
+      "url": "/beaufort-west.html",
+      "bytes": 9734,
+      "sha256": "a280e28ee71e8c1574d45fbbd0f44e23650285e0d7e38a05aa33a03863382637"
+    },
+    {
+      "url": "/chapter-shell.css",
+      "bytes": 7687,
+      "sha256": "e6a36816ce35667c991e2b1f15c6e4813948ff207baa69079a0d2353ce2628e9"
+    },
+    {
+      "url": "/data/beaufort-west-buildings.json",
+      "bytes": 137979,
+      "sha256": "65971413d2fc860c452b29c3ed3da3285be53bd7cf60d0495af741804630fc13"
+    },
+    {
+      "url": "/data/beaufort-west-roads.json",
+      "bytes": 257172,
+      "sha256": "c3b5a36eec931ef9ca82b4b84cb1239ae0938312552c8cb956f407b98ee99120"
+    },
+    {
+      "url": "/data/beaufort-west-terrain.json",
+      "bytes": 530336,
+      "sha256": "349f34a2664d896e55bd424029a3e1617e29a508ebf9b66107f1c09eb74e5d00"
+    },
+    {
+      "url": "/data/beaufort-west-town.json",
+      "bytes": 27982,
+      "sha256": "3aacdc97e45e335d1d8a5d94ee993baffd077f86fd04d4a5387846a02a2d2e14"
+    },
+    {
+      "url": "/data/cape-town-rail.geojson",
+      "bytes": 3320,
+      "sha256": "b9284b0841a967e107b86d04c76c7a50c6b110c8baa11d8e427017ffeecb9987"
+    },
+    {
+      "url": "/data/deaar/v1/controls.geojson",
+      "bytes": 18220,
+      "sha256": "66f003e440516c829adfdf42a3d9a99b2071c422e0e70a04052af472ab768b57"
+    },
+    {
+      "url": "/data/deaar/v1/dataset-manifest.json",
+      "bytes": 1038,
+      "sha256": "b6feb65e1c40387225f917b75712fb74eb8fc5ac049f5eb4362f29258031a2c3"
+    },
+    {
+      "url": "/data/deaar/v1/graph.json",
+      "bytes": 488172,
+      "sha256": "76dbe74097a71a0e0470e6b1cc9c0e669fecea322d1856d49dfe41ce2b1aa0f5"
+    },
+    {
+      "url": "/data/deaar/v1/platforms.geojson",
+      "bytes": 1130,
+      "sha256": "26415d3d82687cab106ed93bf629e5e8d0f18146bfb2c2f1ce4586d625d8b4a7"
+    },
+    {
+      "url": "/data/deaar/v1/rail.geojson",
+      "bytes": 96104,
+      "sha256": "c6526278181ac74b9ecfeb5a0a664f9e857f13199f07741cbd61ea001f4d348e"
+    },
+    {
+      "url": "/data/deaar/v1/resolution.json",
+      "bytes": 7875,
+      "sha256": "8281eb821594bbef3cf412c9be685981d488c4b28045f8a52ce7989afb855071"
+    },
+    {
+      "url": "/data/hubs.json",
+      "bytes": 16977,
+      "sha256": "3a759e03786468b553eb4381ced3c144b1ce16b8d65c7c73c13548ddf50548c4"
+    },
+    {
+      "url": "/data/kimberley-buildings.json",
+      "bytes": 66627,
+      "sha256": "8a1279a4a8b8d2dc216dc20b93e77df93ffd4456b1b02e82f0e01986a6eed2c0"
+    },
+    {
+      "url": "/data/kimberley-heritage.json",
+      "bytes": 16308,
+      "sha256": "e2cbdcc50cee23203ad7607e08d7ee824d3009af9afbbfee59681c95e3147fee"
+    },
+    {
+      "url": "/data/kimberley-roads.json",
+      "bytes": 399708,
+      "sha256": "92838818b7482d8d1efe7a338a68f26db4992cbf12dcf35d532665049b0b9d05"
+    },
+    {
+      "url": "/data/kimberley-terrain.json",
+      "bytes": 377076,
+      "sha256": "0871875177f9b71e7b30797f4b1aead5115790fd065ab26e8f70499d8f83c63f"
+    },
+    {
+      "url": "/data/landmarks/fountains-valley.json",
+      "bytes": 2385,
+      "sha256": "eab8512227ce27668fa71a442a0fb408f21ae316fe55a9aa038bea75a163cbec"
+    },
+    {
+      "url": "/data/landmarks/freedom-park.json",
+      "bytes": 2245,
+      "sha256": "278083cfeb49d76d1d2645d6dbf81745a5f146b4ae9dd7cb5b72411224fdd13c"
+    },
+    {
+      "url": "/data/landmarks/union-buildings.json",
+      "bytes": 2068,
+      "sha256": "6f4867b4bc43ed4f9de28a93e2e1506fbb2d359d71e50780f3142cfac692e487"
+    },
+    {
+      "url": "/data/landmarks/voortrekker-monument.json",
+      "bytes": 2445,
+      "sha256": "f20c280b36875e0a38be3302bebc7c73f54ed239015c9da33fa72ab05cab9300"
+    },
+    {
+      "url": "/data/location-boundaries.geojson",
+      "bytes": 25186,
+      "sha256": "346cd475fc61449998ceadb31f4398d7820cab4d0cfa784822838e4115495455"
+    },
+    {
+      "url": "/data/pack.v1.json",
+      "bytes": 13971,
+      "sha256": "ee00400acd55f3bb49213f24444333014fb73aaa10d06e098f09e29a6644b3d2"
+    },
+    {
+      "url": "/data/pretoria-buildings.json",
+      "bytes": 78529,
+      "sha256": "2a3be05611726320c719a2300ee6d97f8e3ed467441e327021687fb9af70b812"
+    },
+    {
+      "url": "/data/pretoria-places.json",
+      "bytes": 1439,
+      "sha256": "ac082315a91ddf18b2b37c561859f3b99783384857e5f307650080479956c7ee"
+    },
+    {
+      "url": "/data/pretoria-roads.json",
+      "bytes": 153066,
+      "sha256": "7552dd03b0867fec90a7cad951450074295ef676605edc4070ca468698da9629"
+    },
+    {
+      "url": "/data/pretoria-terrain.json",
+      "bytes": 174507,
+      "sha256": "c66bf96559ebfcd6d1f713624ecede3ef31fb31eb486529c71cf179948dbf7b7"
+    },
+    {
+      "url": "/data/route-animation.geojson",
+      "bytes": 18742,
+      "sha256": "193e691f0ae0adfb98f70d4652ba0fff8ea093929c908c993e21b2b71dc77797"
+    },
+    {
+      "url": "/data/route-beaufort-west.geojson",
+      "bytes": 16942,
+      "sha256": "a7da2bf29b793e63ffc0cf9acf34ecc745ebbde6cb39ab6bef86f660b84535cd"
+    },
+    {
+      "url": "/data/route-gauteng.geojson",
+      "bytes": 77545,
+      "sha256": "317e9c45e26e5f5e1545dc11a708a0f2b757db765e6aeb445c4a8e7cb7710caa"
+    },
+    {
+      "url": "/data/route-kimberley.geojson",
+      "bytes": 16874,
+      "sha256": "802b7dc8e511c1a6dcce224a3feb79f147b21de55c3787839543930a816f5935"
+    },
+    {
+      "url": "/data/route-ride.geojson",
+      "bytes": 1601421,
+      "sha256": "4af7762f6552ce7c3e57911ca91c4ffca4cac3bdd061686687c6702ed6e401ac"
+    },
+    {
+      "url": "/data/route.geojson",
+      "bytes": 134350,
+      "sha256": "e887225116be84e810d0197d07043d7f7ef8fab9449f36d0c186ab1747c5a57c"
+    },
+    {
+      "url": "/data/sources.json",
+      "bytes": 11423,
+      "sha256": "8e12c80f52d9c7a5f0c0d0bec0ada78520bdbf139dd3bf4a526d4a993a4500db"
+    },
+    {
+      "url": "/data/traces/demo-corridor.json",
+      "bytes": 3543,
+      "sha256": "9567fca1c36c61d1266d93305f431295354748bb8505d6c056f67c27fa225055"
+    },
+    {
+      "url": "/engine/gps.js",
+      "bytes": 1341,
+      "sha256": "0c52fbe437c2dc4559a5176f68522b167bce11e79ef872aa1eb1f999b7f4c96e"
+    },
+    {
+      "url": "/engine/journey.js",
+      "bytes": 5481,
+      "sha256": "dbc17e1fe115ac17c72e59646ca93a61322bb2891c1711cc49f807df5a25811f"
+    },
+    {
+      "url": "/engine/replay.js",
+      "bytes": 1576,
+      "sha256": "c9c386b12049ee87aa58edfc7a85703f1489dab594aa504e905585183c6eee30"
+    },
+    {
+      "url": "/engine/state.js",
+      "bytes": 2519,
+      "sha256": "4d1bb3ce844d93e4288a4ce555a9393f97f6dfbd2dc8732bf379856aa379fecf"
+    },
+    {
+      "url": "/engine/triggers.js",
+      "bytes": 784,
+      "sha256": "f80778ffa0a80293232023882ccd0603604eb39d23514f376995720ace4eac70"
+    },
+    {
+      "url": "/fonts/fraunces-latin-400.woff2",
+      "bytes": 17968,
+      "sha256": "e558f39453a9c611908be04294b50dea5f21ae6c49b41c6e47f4115e91f90209"
+    },
+    {
+      "url": "/fonts/fraunces-latin-600.woff2",
+      "bytes": 18096,
+      "sha256": "3a1de7711d147bad4422825045f87597fd77cca72e7c96d3b0a81735d00dda82"
+    },
+    {
+      "url": "/fonts/fraunces-latin-700.woff2",
+      "bytes": 18212,
+      "sha256": "c38570d224b830056e69484bb9e768e1d3fa7ba4755c8891a3c6d366194d2ff3"
+    },
+    {
+      "url": "/fonts/outfit-latin-300.woff2",
+      "bytes": 13956,
+      "sha256": "ef88e74f63ce75b54cce4d5a4087c6f180750b9ebae6ab6e5bf2a9939bf6958f"
+    },
+    {
+      "url": "/fonts/outfit-latin-400.woff2",
+      "bytes": 14032,
+      "sha256": "71f028fd2349990b3f8aa643abe767e82e0f596be407ae66f0004ff164121bdb"
+    },
+    {
+      "url": "/fonts/outfit-latin-500.woff2",
+      "bytes": 13528,
+      "sha256": "fc9bff941def6d924a71632bd8a93190528872eae6414844f3c367ff948d92fd"
+    },
+    {
+      "url": "/fonts/outfit-latin-600.woff2",
+      "bytes": 14140,
+      "sha256": "8cfe15c2c6de6ef8efff3eedbd52a383ac9ef23d6c23f6cd9f9b838f5f37dc36"
+    },
+    {
+      "url": "/fonts/outfit-latin-700.woff2",
+      "bytes": 14060,
+      "sha256": "5d5e3734089a74707292ce8a3e186def34cd63e33879f9ac3689a8d8da9d0706"
+    },
+    {
+      "url": "/icon.svg",
+      "bytes": 232,
+      "sha256": "720be68ca4dda88e282c1b5bf2574e0c5fa3f69c50d3968141118f30517fb2d8"
+    },
+    {
+      "url": "/index.html",
+      "bytes": 778,
+      "sha256": "728515f918adad6cf09574fc3ede2b486dfdcbd4bb1982f2f951fc4c2dcbcd09"
+    },
+    {
+      "url": "/johannesburg.html",
+      "bytes": 5194,
+      "sha256": "fffd872a3c32106f77cdeb085ec32542adeb8d38f8a5ceb1ebff462a99f34e6d"
+    },
+    {
+      "url": "/journey.css",
+      "bytes": 13202,
+      "sha256": "bde9bc46c71e1dd39a18d121b7e1f5551f7720016fa376f3161e3c8e92eb37be"
+    },
+    {
+      "url": "/kimberley.html",
+      "bytes": 12047,
+      "sha256": "bc8dfb25ac7af90790e429867e819086d88a4054a0bfbc99e1762cf0212c328e"
+    },
+    {
+      "url": "/licenses/earth-drive-MIT.txt",
+      "bytes": 1089,
+      "sha256": "23ad24bc75ef7e8911c461c6ff65283dd9762fc3f360dece73f7532a28acef2e"
+    },
+    {
+      "url": "/licenses/racing-game-MIT.txt",
+      "bytes": 1078,
+      "sha256": "dbfc837816301db3290d6feba54b00172a787fd63e2a602332de052b01ce9d87"
+    },
+    {
+      "url": "/licenses/sketchbook-MIT.txt",
+      "bytes": 1064,
+      "sha256": "f9f0faf3551775a17e11b52d704130e28af652af54bab47b70b5a185693b005f"
+    },
+    {
+      "url": "/licenses/sketchbook-boxman.txt",
+      "bytes": 1549,
+      "sha256": "41cef77084901769a5e480546f182bdb8e74d968dcf6a9f0b3363f77026237e1"
+    },
+    {
+      "url": "/licenses/threex-proceduralcity-MIT.txt",
+      "bytes": 1078,
+      "sha256": "4a792bac5ec29cf38a4d98ed588a305b6b5c26a8b4cc4f0337533dda0fec2856"
+    },
+    {
+      "url": "/manifest.webmanifest",
+      "bytes": 253,
+      "sha256": "bb8baa93f4ff6e098786a270b828ab49869328846d542ea371d344298fb718f6"
+    },
+    {
+      "url": "/map/README.md",
+      "bytes": 3857,
+      "sha256": "d8c29b9e6ae7a317b97fdccf5818e8ad63db7e45409beeff294adafccf01f1c0"
+    },
+    {
+      "url": "/map/imhof-relief.js",
+      "bytes": 6621,
+      "sha256": "2a5611c8d61a8f520594ecc5655b38c3da65552faab04e224c16db574341c4ff"
+    },
+    {
+      "url": "/map/immersive-map.css",
+      "bytes": 6703,
+      "sha256": "e6ae3765d739191fcf61adb64675f2f6c4d61992cf9dfe24802b4de040f45889"
+    },
+    {
+      "url": "/map/immersive-map.js",
+      "bytes": 51481,
+      "sha256": "88381464d01cc0e90c7c4e646dd94fad253bf763bdb77cb885e2d5ff8d38f227"
+    },
+    {
+      "url": "/map/maplibre-bootstrap.js",
+      "bytes": 726,
+      "sha256": "de80382e6eaacddcd9bf880fe466002ef2f77cb494194da87179ca240160fd2c"
+    },
+    {
+      "url": "/map/overview-train.js",
+      "bytes": 4755,
+      "sha256": "336168beecb23a6f913e04c9b3b68b72555877de48083e7aa21b9939d42e207e"
+    },
+    {
+      "url": "/results/r10.json",
+      "bytes": 16763,
+      "sha256": "0baffe09adeac0e6e2b670ce65a63ed7e348c1968c6501fd7588e70c2b850283"
+    },
+    {
+      "url": "/results/r3-corridor.json",
+      "bytes": 4080,
+      "sha256": "e36b36a738cd3b116c6339cfb1bc31e8f5243e63414a08ca398d09cd2cc4d22d"
+    },
+    {
+      "url": "/results/r3.json",
+      "bytes": 160845,
+      "sha256": "0b15211e3ad6dc1872431e8bfc0d4a66e12dc5b3b1046e2f51f384bdb1744dec"
+    },
+    {
+      "url": "/storage/drafts.js",
+      "bytes": 2121,
+      "sha256": "194ccdf62625e8261916742f76b0501dee46f76613f79de8ac9eb9c79d148e71"
+    },
+    {
+      "url": "/storage/pack.js",
+      "bytes": 2602,
+      "sha256": "96dd28e7d197f1f853e9bbace70dcba3c6c1e5bde01c1e102577d523ce32f696"
+    },
+    {
+      "url": "/style.css",
+      "bytes": 10260,
+      "sha256": "a1849bfa5d3e53cf692e34f290e55b4110e17499adb88bcdc5a1e463e53f9d66"
+    },
+    {
+      "url": "/theme.css",
+      "bytes": 1543,
+      "sha256": "960200fccee0708779d326f9549419c406b4f6854c0d76a78c5473876560911c"
+    },
+    {
+      "url": "/vendor/SUNCALC-LICENSE",
+      "bytes": 1321,
+      "sha256": "9010b843aad8e450890fc18dae2dfec00e68c10da775515801c42878afbb0da1"
+    },
+    {
+      "url": "/vendor/TURF-LICENSE",
+      "bytes": 1073,
+      "sha256": "f9b32b82fd5a1d3a990526d86da97f42fb805d9f4d9f978125c4679b674fce44"
+    },
+    {
+      "url": "/vendor/maplibre-gl/LICENSE.txt",
+      "bytes": 5984,
+      "sha256": "ee5fc05a0677eaf69601d2c7db0d9ecd6cc27c3abc1d0733bc9ed34707cf8ef2"
+    },
+    {
+      "url": "/vendor/maplibre-gl/maplibre-gl-shared.mjs",
+      "bytes": 515868,
+      "sha256": "43110afea7c453d547855a562558f39e41d7abdc70e6853734bc8967974d716b"
+    },
+    {
+      "url": "/vendor/maplibre-gl/maplibre-gl-worker.mjs",
+      "bytes": 19063,
+      "sha256": "9b59b123156783b3abc6d2d83f1ff02699a87ffd058557bbf22a62123de4dcac"
+    },
+    {
+      "url": "/vendor/maplibre-gl/maplibre-gl.css",
+      "bytes": 83310,
+      "sha256": "d8617d8421930e3fc6185365400e788c374c1a5d9fbe87999998c0bc14a202d3"
+    },
+    {
+      "url": "/vendor/maplibre-gl/maplibre-gl.mjs",
+      "bytes": 588610,
+      "sha256": "ba262b95afed8ee89dbfdb8476f001c6ede2230660eb6edd6f453cb350c11f55"
+    },
+    {
+      "url": "/vendor/turf.js",
+      "bytes": 8254,
+      "sha256": "aa4718c3c6bc65cff5bf5c2f85202129295b01b3a028b7d2ecff251f6f00433e"
+    }
+  ]
+}

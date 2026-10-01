@@ -1,0 +1,105 @@
+{
+  "id": "freedom-park",
+  "name": "Freedom Park",
+  "place": "Salvokop, Pretoria",
+  "location": {
+    "lat": -25.7641,
+    "lon": 28.1873
+  },
+  "alongMetres": 260,
+  "offsetMetres": 465,
+  "triggerDistance": 190,
+  "releaseDistance": 700,
+  "scene": "freedom-park",
+  "provenance": {
+    "geometry": "approximate",
+    "cameraAnimation": "newly authored",
+    "note": "A simplified interpretation built from primitives, not a survey or a reconstruction. The hill, the wall and the reed field stand for Salvokop, Sikhumbuto and the Isivivane. No supplied 3D asset or camera path existed for this landmark; both are ours. See docs/deviations.md."
+  },
+  "tourism": {
+    "eyebrow": "02 / A PLACE ALONG THE LINE",
+    "title": "Freedom Park",
+    "body": "On Salvokop hill above the line, a memorial to those who died in the conflicts that shaped South Africa. The reeds of Sikhumbuto carry the names.",
+    "credit": "Approximate geometry · newly authored camera move"
+  },
+  "cameraAnimation": {
+    "duration": 14,
+    "loop": false,
+    "keyframes": [
+      {
+        "time": 0,
+        "position": [
+          -250,
+          132,
+          214
+        ],
+        "target": [
+          0,
+          62,
+          0
+        ],
+        "fov": 44
+      },
+      {
+        "time": 4.5,
+        "position": [
+          -118,
+          96,
+          142
+        ],
+        "target": [
+          0,
+          72,
+          0
+        ],
+        "fov": 40
+      },
+      {
+        "time": 8.5,
+        "position": [
+          -34,
+          90,
+          92
+        ],
+        "target": [
+          4,
+          84,
+          -8
+        ],
+        "fov": 36
+      },
+      {
+        "time": 11.5,
+        "position": [
+          44,
+          96,
+          66
+        ],
+        "target": [
+          0,
+          84,
+          -6
+        ],
+        "fov": 38
+      },
+      {
+        "time": 14,
+        "position": [
+          132,
+          124,
+          34
+        ],
+        "target": [
+          -10,
+          70,
+          -10
+        ],
+        "fov": 46
+      }
+    ]
+  },
+  "footprint": {
+    "inner": 132,
+    "outer": 210
+  }
+}

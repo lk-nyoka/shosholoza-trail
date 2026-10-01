@@ -1,54 +1,90 @@
-# Shosholoza Trail Frontend
+# ShosholozaTrail
 
-An original map-led discovery experience for attractions and local vendors along the Pretoria–Cape Town rail route.
+**An install-free, offline-first journey companion for the Pretoria–Cape Town rail corridor** — built for the Geekulcha GKHack26 hackathon.
 
-For the complete implementation, architecture, API and deployment handover, see [`PROJECT_HANDOVER.md`](./PROJECT_HANDOVER.md).
+[![Live demo](https://img.shields.io/badge/Live%20demo-Cloudflare%20Workers-F38020?logo=cloudflare&logoColor=white)](https://shosholozatrail.giftvundla22.workers.dev)
+![React](https://img.shields.io/badge/React-PWA-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Cloudflare D1](https://img.shields.io/badge/Cloudflare-Workers%20%2B%20D1-F38020?logo=cloudflare&logoColor=white)
+![MapLibre](https://img.shields.io/badge/MapLibre-OSM%20rail%20graph-396CB2)
 
-## Run locally
+### My role
+
+**Lindokuhle Nyoka — Solutionist (solution lead)** for the GKHack26 team.
+
+### Team
+
+Built together with [Gift Vundla](https://github.com/GIft-Vundla) and [ThandiAlgorithm](https://github.com/ThandiAlgorithm). Team repository: [GIft-Vundla/ShosholozaTrail](https://github.com/GIft-Vundla/ShosholozaTrail).
+
+### Highlights
+
+- Offline-first PWA you open from a QR code — no app install needed on the train
+- Rail map built from an OpenStreetMap rail graph: 76,536 coordinates, 1,582 km, eight mapped stations
+- Stories, activities, saved postcards and a waiting mode that still work with no signal
+- Optional, source-locked AI guide (Workers AI) that only answers from registered sources
+- Moderated community contributions with role-based admin access
+- 191 automated tests passing on the deployed release
+
+---
+
+ShosholozaTrail is an install-free, offline-first journey companion for the Pretoria–Cape Town story corridor. The pilot combines a foreground GPS or clearly labelled synthetic replay pipeline, locally packaged stories and activities, a truthful waiting mode, saved postcards, an online carriage board, a moderated contribution workflow, and an in-product evidence console.
+
+The current build is **working towards TRL 5; validation is incomplete**. It does not claim corridor field validation, physical-phone acceptance, operator integration, community endorsement, second-language readiness, or demonstrated tourism and income impact. The mapped rail candidate is graph-connected and source-backed, but the current or historic passenger itinerary still needs human or organiser review.
+
+## Pilot architecture
+
+The pilot uses a React PWA and a companion journey-engine shell with vendored MapLibre and Turf assets, Cloudflare Workers and D1. This differs intentionally from the React Native/Supabase scale architecture in the original team profile: the pilot favors install-free QR entry, HTTPS hosting, offline use and a low-cost deployment path. The native scale architecture remains roadmap work.
+
+AI remains optional. The `/ai` consultation page and chapter-level source finder use a clearly labelled, source-locked Workers AI mode while keeping the release-validation flag false. The guide keeps conversation history in the current page, links its cited source, and can only select an exact excerpt from one registered source; unsupported questions are declined and draft sources carry a human-review-pending label. Prepared stories, source passages, deterministic challenge answers, hints, journey triggers, waiting mode and saved work remain usable without it. The AI, room and moderation APIs are online-only and are explicitly excluded from service-worker caching.
+
+The overview and `/ride` use an automated OpenStreetMap rail-graph candidate with 76,536 detailed coordinates, seven connected station-to-station segments and eight mapped station anchors. Its measured length is 1,582.4 km. This establishes mapped geometric continuity; it must not be presented as a confirmed current service, timetable, live train position, permission to alight, or safety advice.
+
+## Run and verify locally
+
+Requirements: Node.js 22 or newer and a Cloudflare account for deployed Worker/D1 checks.
 
 ```bash
-npm install
+npm ci
+npm test
+npm run check
+npm run harness:r3
+node harness/run-corridor-traces.js
+npm run harness:ai
+npm run build
+npm run security:scan
 npm run dev
 ```
 
-## Production build
+Open the local URL printed by Wrangler. Use **Run labelled replay** for a conference-room demonstration; the UI labels this source as synthetic replay at all times. **Start live GPS** requests foreground browser geolocation and does not imply background or locked-screen support.
 
-```bash
-npm run build
-npm run preview
-```
+`npm run harness:r3` samples synthetic movement across every sourced story zone on the shipped curved OSM rail candidate and writes `results/r3.json`; it is not phone GPS or field evidence. `npm run harness:ai` without `--provider` verifies only the disabled fallback and keeps R10 at `NOT RUN`; the experimental binding does not turn that fallback run into provider evidence. `npm run security:scan` requires `dist/`, scans the working tree, public and built output, and Git patch history, and reports binary artifacts that still require manual review.
 
-This frontend is intentionally standalone and does not modify or depend on the existing `Prototype` folder. Recommendation and service-status content is currently labelled demo data and can later be replaced with Supabase or another API.
+## Deployment
 
+Configure the D1 binding and apply `migrations/0001.sql`, then deploy with Wrangler. The Workers AI binding uses the Cloudflare account directly and requires no provider secret. The experiment sets `AI_ENABLED=true`, `AI_EXPERIMENTAL=true`, and keeps `AI_VALIDATED=false`; this permits local source-locked testing without claiming the fixed 30/10/10 provider gate has passed. If another provider is used later, keep its credential in a Cloudflare Worker secret and never place it in `.dev.vars`, repository files, browser assets, screenshots or evidence exports.
 
-## Current hackathon release behavior
+Satellite imagery uses Esri as the keyless fallback. An optional free MapTiler account can raise configured satellite detail to native zoom 20: run `npx wrangler secret put MAPTILER_KEY`, paste the key only into Wrangler's protected prompt, and redeploy. The key is returned only inside uncached runtime map configuration and is never bundled. The current Cloudflare environment has no `MAPTILER_KEY`, so the deployed fallback remains Esri; hybrid labels come from keyless OpenFreeMap vector tiles.
 
-The current Netlify target is a **frontend-only public demo**. Its `/api/*` route intentionally returns a JSON `503` instead of letting SPA fallback HTML masquerade as an API response. The core ride, stop discovery, journey setup, offline corpus guide, local reservations and PWA experience remain usable without that service. Crowdsourced telemetry, server journey status and other FastAPI-backed features require the API to be deployed separately and `VITE_API_BASE_URL` to point at it.
+T1 passes only when all of the following are retained for the exact release:
 
-The **AI Guide is an offline deterministic retrieval system**, not a generative LLM. It uses TF-IDF scoring over a curated route corpus so it can answer without signal and refuse questions outside what the team has supplied rather than inventing facts.
+- the public HTTPS URL and `/api/health` response;
+- a clean built-output and repository-history secret scan;
+- a physical phone make/model, OS, browser, tested URL/build and observed result.
 
-For a rehearsed stage demonstration, open the deployed build with `?demo=1`. Demo mode is visibly labelled and uses deterministic simulated position data so a venue's Wi-Fi or location-permission prompt cannot derail the presentation.
+A desktop or local response does not complete the phone gate. Local work on later components is allowed while this remains pending, but it does not advance the ordered release gates.
 
-For the 19 September release audit, verified fixes and the route matrix, see [`HACKATHON_RELEASE_AUDIT.md`](./HACKATHON_RELEASE_AUDIT.md).
+## Evidence and source status
 
-## Implemented product capabilities
+- `evidence/acceptance.md` freezes requirements R1–R16 and records the release-gate policy.
+- `evidence/journey-design.md` defines the common GPS/replay engine contract and pre-test criteria.
+- `evidence/research-notes.md` records route/content provenance and review limits.
+- `results/r3.json` contains the primary synthetic trigger profiles sampled from the shipped mapped rail geometry, with failure classes and route hash.
+- `results/r10.json` keeps provider AI grounding at `NOT RUN` and separately identifies the local fallback check.
 
-- Cinematic train-follow camera with playback speeds and route scrubbing
-- Expanded 16-node rail corridor from Pretoria through Bellville to Cape Town
-- Graph-connected OpenStreetMap `railway=rail` geometry bundled as 7,049 offline points
-- Gold travelled-route wipe rendered over the remaining mapped rail corridor
-- Destination-aware attractions and local vendor discovery
-- Passenger ping and rolling-speed status prototype
-- Contextual disruption and interim shuttle guidance state
-- Installable PWA with offline app-shell, map-tile, and place-image caching
-- Responsive navigation, keyboard access, semantic landmarks, focus states, and reduced-motion support
+Every factual chapter points to `data/sources.json`. Entries are original paraphrases with attribution and rights notes, but human editorial approval remains pending. `data/route.geojson`, its provenance record and the trace headers distinguish the mapped candidate from synthetic movement and field evidence. Preserve those labels in screenshots, slides and exports.
 
-## Release checks
+## Scope limits
 
-Run `npm run build` and `npm audit --audit-level=moderate`. The checked-in dependency versions currently build successfully with zero known npm audit vulnerabilities.
+This pilot includes eight mapped ride arrivals, three deep sourced hubs (Kimberley, Beaufort West and Matjiesfontein), and four short sourced chapters (Pretoria, De Aar, Worcester/Zwelethemba and Cape Town). Johannesburg is a mapped arrival with overview copy and no source-backed chapter trigger. The `/ride` uses satellite, terrain and OpenFreeMap context online. Its verified 1.6 MB rail geometry, controls, discoveries, arrival photographs and a simplified local rail-world renderer are included in the offline pack; external imagery and terrain tiles are not bulk-downloaded. The pilot does not include bookings, payments, live operator or timetable feeds, automatic passenger matching, native builds, background geolocation, cached third-party tile archives, unlimited AI or unreviewed languages.
 
-## Rail geometry provenance
-
-`src/rail-geometry.ts` is generated by `scripts/fetch_osm_rail.py` from OpenStreetMap railway ways through the Overpass API. The generator performs a graph connectivity test between every corridor anchor and records endpoint gaps, segment lengths, source date, point counts, and OSM way counts. Data is © OpenStreetMap contributors and available under ODbL 1.0.
-
-The result is a mapped, graph-connected candidate for demonstration and navigation context. It is not an operator-certified train path and must not be used for railway operations or safety decisions without validation by PRASA/Transnet or the relevant infrastructure operator.
+The earlier `ShosholozaTrail_Interactive_HTML_Prototype.html` remains an art-direction storyboard. It contains simulated interactions and is not the pilot application or acceptance evidence. The working pilot is served from `public/` through the Worker.

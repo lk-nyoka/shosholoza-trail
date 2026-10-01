@@ -1,0 +1,32 @@
+{
+  "generator": "assets/blender/build_impostors.py",
+  "note": "Billboard impostors rendered from primitives. Orthographic, transparent, sized by real-world height. Interpretive props, not photographs of specific objects.",
+  "size": 512,
+  "sprites": [
+    {
+      "id": "jacaranda_full",
+      "file": "/assets/sprites/jacaranda_full.png",
+      "heightMetres": 10.0
+    },
+    {
+      "id": "windpump",
+      "file": "/assets/sprites/windpump.png",
+      "heightMetres": 8.0
+    },
+    {
+      "id": "telegraph_pole",
+      "file": "/assets/sprites/telegraph_pole.png",
+      "heightMetres": 8.0
+    },
+    {
+      "id": "aloe_ferox",
+      "file": "/assets/sprites/aloe_ferox.png",
+      "heightMetres": 2.0
+    },
+    {
+      "id": "street_lamp",
+      "file": "/assets/sprites/street_lamp.png",
+      "heightMetres": 6.0
+    }
+  ]
+}

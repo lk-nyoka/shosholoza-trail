@@ -1,0 +1,2 @@
+import { Link } from 'react-router-dom'; import {Home,TrainFront,Map,MapPin,Compass} from 'lucide-react';
+export function MobileTabBar(){const x=[['/','Home',Home],['/animation','Ride',TrainFront],['/journey','Map',Map],['/destinations','Stops',MapPin],['/plan','Plan',Compass]] as const;return <nav className="mobile-tabs">{x.map(([to,l,I])=><Link to={to} key={l}><I/><span>{l}</span></Link>)}</nav>}

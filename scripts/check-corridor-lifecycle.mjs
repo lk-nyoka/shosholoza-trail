@@ -1,0 +1,41 @@
+import { chromium } from '@playwright/test';
+import assert from 'node:assert/strict';
+const browser=await chromium.launch({headless:true});
+const base=process.env.CITY_BASE||'http://127.0.0.1:8791';
+try{
+  const page=await browser.newPage({reducedMotion:'reduce',serviceWorkers:'block'}),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(`${base}/corridor?position=12000`);
+  await page.waitForFunction(()=>document.querySelector('.corridor-canvas')?.dataset.ready==='true',null,{timeout:90000});
+  const frames=()=>page.locator('.corridor-canvas').getAttribute('data-rendered-frames');
+  await page.waitForTimeout(600);const idle=await frames();
+  await page.waitForTimeout(600);assert.equal(await frames(),idle,'paused scene keeps rendering');
+  await page.getByRole('button',{name:'Travel',exact:true}).click();await page.waitForTimeout(650);
+  assert.ok(Number(await frames())>Number(idle));
+  await page.getByRole('button',{name:'Pause',exact:true}).click();await page.waitForTimeout(400);
+  const paused=await frames();await page.waitForTimeout(500);assert.equal(await frames(),paused);
+  await page.getByRole('slider',{name:'Corridor distance'}).fill('25000');
+  await page.waitForTimeout(300);assert.ok(Number(await frames())>Number(paused),'seek must repaint');
+  await page.route('**/quaternius-electric.glb',route=>route.abort());
+  await page.reload();
+  await page.getByRole('status').filter({hasText:'could not load'}).waitFor({timeout:90000});
+  assert.equal(await page.locator('.corridor-canvas canvas').count(),0,'failed load mounted a renderer');
+  await page.unroute('**/quaternius-electric.glb');
+  await page.reload();
+  await page.waitForFunction(()=>document.querySelector('.corridor-canvas')?.dataset.ready==='true',null,{timeout:90000});
+  assert.equal(await page.locator('.corridor-canvas canvas').count(),1);
+  await page.route('**/quaternius-electric.glb',async route=>{
+    await new Promise(resolve=>setTimeout(resolve,700));
+    await route.continue().catch(()=>{});
+  });
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.getByRole('button',{name:'Satellite / map',exact:true}).click();
+  await page.waitForTimeout(1100);
+  assert.equal(await page.locator('.corridor-canvas canvas').count(),0,'cancelled load must not mount a hidden renderer');
+  await page.unroute('**/quaternius-electric.glb');
+  await page.getByRole('button',{name:'3D journey',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('.corridor-canvas')?.dataset.ready==='true',null,{timeout:90000});
+  assert.equal(await page.locator('.corridor-canvas canvas').count(),1);
+  assert.deepEqual(errors,[]);
+  console.log(JSON.stringify({idleRendering:'stopped',playPauseSeek:'passed',failedAssetRecovery:'passed',cancelledLoad:'passed',errors}));
+}finally{await browser.close();}

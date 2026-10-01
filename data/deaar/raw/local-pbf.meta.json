@@ -1,0 +1,10 @@
+{
+  "source": "OpenStreetMap / local Geofabrik PBF",
+  "sourceFile": "south-africa-260907.osm.pbf",
+  "sourceSha256": "e9d4356f41d3efea50e47cf0af1dd5c0f26d17614ba13158af8adcdb44bedb06",
+  "rawSha256": "812c0faa67a70c45240b28bff1d21d42d89c6914d6a61ee406f13ba1ce62251f",
+  "extractedAt": "2026-09-22T08:13:37.251202+00:00",
+  "snapshotDate": "2026-09-07",
+  "license": "ODbL-1.0",
+  "attribution": "\u00a9 OpenStreetMap contributors"
+}

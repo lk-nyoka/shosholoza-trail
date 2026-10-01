@@ -1,0 +1,20 @@
+import { chromium } from '@playwright/test';
+import { mkdir } from 'node:fs/promises';
+import path from 'node:path';
+
+const root = path.resolve(import.meta.dirname, '..');
+const baseUrl = process.env.BASE_URL || 'http://127.0.0.1:4173';
+await mkdir(path.join(root, 'evidence'), { recursive: true });
+const browser = await chromium.launch({ headless: true });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+const errors = [];
+page.on('pageerror', error => errors.push(error.message));
+page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+await page.goto(`${baseUrl}/ride?s=900000&time=dusk`, { waitUntil: 'domcontentloaded' });
+await page.waitForSelector('.ride[data-world-ready="true"]', { timeout: 30_000 });
+await page.waitForFunction(() => document.querySelector('.ride-world')?.dataset.imageryOpacity === '0.000', undefined, { timeout: 15_000 });
+await page.waitForTimeout(8_000);
+await page.screenshot({ path: path.join(root, 'evidence/legible-karoo-transit.png') });
+if (errors.length) throw new Error(`Phase 1 capture errors: ${errors.join(' | ')}`);
+await browser.close();
+console.log('Captured evidence/legible-karoo-transit.png with transit imagery opacity 0.000.');

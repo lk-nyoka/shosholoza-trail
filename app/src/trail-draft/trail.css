@@ -1,0 +1,16 @@
+.trail-draft{position:fixed;inset:0;background:#152c32;color:#fff5df;font-family:Outfit,system-ui;isolation:isolate}.trail-world{position:absolute;inset:0}.trail-world canvas{display:block;width:100%;height:100%}.trail-draft header{position:absolute;top:16px;left:20px;right:20px;display:flex;justify-content:space-between;gap:12px;align-items:center}.trail-draft a{color:#ffe1a0}.trail-draft header a,.trail-draft header strong{background:#132d35e8;padding:10px 14px;border-radius:20px}.trail-caption{position:absolute;top:85px;left:22px;max-width:330px;background:#112d35e8;border:1px solid #dccaa54a;padding:20px;border-radius:16px}.trail-caption h1{font:32px Georgia;margin:8px 0}.trail-caption p{line-height:1.45}.trail-caption small{color:#f5ce80}.trail-caption .trail-disclosure{font-size:12px;color:#c9d5ce}.trail-draft footer{position:absolute;bottom:0;left:0;right:0;background:#102b32ef;padding:16px 24px}.trail-draft button{background:#30474b;color:#fff2d6;border:1px solid #9aa99b;border-radius:8px;padding:9px 13px;cursor:pointer}.trail-draft button:disabled{opacity:.4;cursor:default}.trail-draft button[aria-current],.trail-actions button:first-child{background:#f4c467;color:#172f36}.trail-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.trail-draft input{width:100%;margin:14px 0;accent-color:#f4c467}.trail-draft nav{display:flex;gap:7px;overflow:auto}.trail-draft nav button{white-space:nowrap;font-size:12px}.trail-draft :focus-visible{outline:3px solid #fff;outline-offset:3px}@media(max-width:650px){.trail-draft header{left:10px;right:10px;font-size:11px}.trail-draft header strong{display:none}.trail-caption{top:65px;left:10px;padding:12px;max-width:245px}.trail-caption h1{font-size:24px}.trail-caption p{font-size:12px;margin:6px 0}.trail-draft footer{padding:12px}.trail-actions{gap:5px}.trail-actions button{font-size:12px;padding:8px}.trail-actions span{font-size:11px}}
+
+
+/* One persistent interface: location changes affect colour, never control placement. */
+.trail-draft{--trail-panel:#281f3e;--trail-accent:#d3b4ff;--trail-button:#443557}
+.trail-draft header a,.trail-draft header strong,.trail-caption,.trail-draft footer{background:var(--trail-panel);transition:background-color .7s ease,border-color .7s ease}
+.trail-draft a,.trail-caption small{color:var(--trail-accent);transition:color .7s ease}
+.trail-draft button{background:var(--trail-button);transition:background-color .7s ease,color .7s ease}
+.trail-draft button[aria-current],.trail-actions button:first-child{background:var(--trail-accent);color:#17232a}
+.trail-draft input{accent-color:var(--trail-accent)}
+.trail-caption{width:330px;border-color:var(--trail-accent)}
+.trail-caption h1{min-height:39px}.trail-caption>p:first-of-type{min-height:46px}
+.trail-detail-slot{min-height:24px;font-size:14px}.trail-detail-slot span{color:#d9dfe0}
+.trail-caption .trail-next{margin-bottom:0;font-size:12px;color:var(--trail-accent)}
+@media(prefers-reduced-motion:reduce){.trail-draft *{transition:none!important}}
+@media(max-width:650px){.trail-caption{width:245px}.trail-caption h1{min-height:29px}.trail-detail-slot{font-size:12px}}

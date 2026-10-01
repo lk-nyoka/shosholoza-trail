@@ -1,0 +1,100 @@
+{
+  "id": "union-buildings",
+  "name": "Union Buildings",
+  "location": {
+    "lat": -25.7405,
+    "lon": 28.212
+  },
+  "alongMetres": 0,
+  "triggerDistance": -1,
+  "releaseDistance": 999999,
+  "scene": "union-buildings",
+  "orientationRadians": 0,
+  "provenance": {
+    "geometry": "procedural approximation adapted from supplied train-tourism model",
+    "cameraAnimation": "adapted from supplied union-buildings shot list",
+    "note": "Optional off-route excursion north of the departure station. Not passed by the southbound train."
+  },
+  "tourism": {
+    "eyebrow": "PRETORIA / OPTIONAL LANDMARK VISIT",
+    "title": "Union Buildings",
+    "body": "An off-route camera visit to the twin towers, colonnade and gardens. Return to the same train journey when ready.",
+    "credit": "Supplied procedural massing adapted locally; approximate placement and gardens."
+  },
+  "cameraAnimation": {
+    "duration": 18,
+    "loop": false,
+    "keyframes": [
+      {
+        "time": 0,
+        "position": [
+          0,
+          45,
+          330
+        ],
+        "target": [
+          0,
+          20,
+          0
+        ],
+        "fov": 46
+      },
+      {
+        "time": 5,
+        "position": [
+          -100,
+          65,
+          170
+        ],
+        "target": [
+          0,
+          22,
+          0
+        ],
+        "fov": 46
+      },
+      {
+        "time": 10,
+        "position": [
+          90,
+          70,
+          90
+        ],
+        "target": [
+          96,
+          40,
+          -12
+        ],
+        "fov": 40
+      },
+      {
+        "time": 14,
+        "position": [
+          150,
+          110,
+          180
+        ],
+        "target": [
+          0,
+          24,
+          0
+        ],
+        "fov": 48
+      },
+      {
+        "time": 18,
+        "position": [
+          60,
+          160,
+          420
+        ],
+        "target": [
+          0,
+          18,
+          60
+        ],
+        "fov": 52
+      }
+    ]
+  }
+}

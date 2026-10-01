@@ -1,0 +1,15 @@
+{
+  "base": "http://127.0.0.1:8791",
+  "checks": [
+    "shared position loads paused",
+    "public landmark guide and light graphics",
+    "restart and slider do not count as travel",
+    "uncluttered view restores controls",
+    "search select save and GeoJSON export",
+    "undo removal",
+    "view side and graphics survive reload",
+    "live reduced-motion preference",
+    "mobile guide stays within viewport"
+  ],
+  "errors": []
+}

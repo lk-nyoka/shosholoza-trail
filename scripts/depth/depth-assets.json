@@ -1,0 +1,130 @@
+{
+  "model": "depth-anything/Depth-Anything-V2-Small-hf",
+  "revision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+  "license": "Apache-2.0",
+  "method": "local CPU relative inverse depth; per-image min/max normalized",
+  "encoding": "8-bit grayscale, white=near, black=far; not metric distance",
+  "sources": [
+    "https://github.com/DepthAnything/Depth-Anything-V2",
+    "https://huggingface.co/depth-anything/Depth-Anything-V2-Small-hf"
+  ],
+  "assets": [
+    {
+      "photo": "kimberley.webp",
+      "depth": "kimberley-depth.webp",
+      "width": 1024,
+      "height": 768,
+      "bytes": 7308,
+      "photo_sha256": "a8890b807c43bf6783ffad7d45e62122f03c616642813595e8886a8725ed13dc",
+      "depth_sha256": "1b5059ff433f0dccc17a1ab03fa56a082a7023f9c5b917110a2e566fc6013dd3",
+      "raw_range": [
+        0.618799,
+        10.00788
+      ]
+    },
+    {
+      "photo": "matjiesfontein.webp",
+      "depth": "matjiesfontein-depth.webp",
+      "width": 1024,
+      "height": 768,
+      "bytes": 10052,
+      "photo_sha256": "9e2de3e06950c9d9a1a9d8acc37387efd9667445974679d217c9b649e0730320",
+      "depth_sha256": "708546e2ef212dfa5c33bcfb4c23710f6626808c228816469341e2a3d7f40310",
+      "raw_range": [
+        -0.520978,
+        8.829939
+      ]
+    },
+    {
+      "photo": "beaufort-west.webp",
+      "depth": "beaufort-west-depth.webp",
+      "width": 1024,
+      "height": 683,
+      "bytes": 5704,
+      "photo_sha256": "aba82e70a48aa0dd0b4d4eaed0befbb1440232b0456f51c6d645e280a5aacb74",
+      "depth_sha256": "7f3326d2aa169d11e8a986aebb72cc8402f87bad5d3122f952ff8cf65d9b2b01",
+      "raw_range": [
+        -0.117269,
+        7.544913
+      ]
+    },
+    {
+      "photo": "cape-town.webp",
+      "depth": "cape-town-depth.webp",
+      "width": 1024,
+      "height": 680,
+      "bytes": 3840,
+      "photo_sha256": "f6ec516c0b6f30bfee38549f070dee250235c31c02abbbdaa801746cf4c30ee2",
+      "depth_sha256": "fa725eddbeada406ec153d7d1ba39f79c38adccd44eb99b52c5e2af9ccc6e9b6",
+      "raw_range": [
+        -0.002511,
+        10.952737
+      ]
+    },
+    {
+      "photo": "de-aar.webp",
+      "depth": "de-aar-depth.webp",
+      "width": 1024,
+      "height": 768,
+      "bytes": 5034,
+      "photo_sha256": "3c9fdff60a7a4f1dc09ac6cc398824938879d9098b5acd184e36395d99e49c90",
+      "depth_sha256": "ccd31f25692034769937533decf7d60eb8f812b94e961d751ed0882616d591ca",
+      "raw_range": [
+        -0.363688,
+        7.794988
+      ]
+    },
+    {
+      "photo": "hero-train.webp",
+      "depth": "hero-train-depth.webp",
+      "width": 1024,
+      "height": 495,
+      "bytes": 3872,
+      "photo_sha256": "3ddc5cff99a2341957ba18c0b6a1d653d9088ec30317e8a5f01d42d914e9ea90",
+      "depth_sha256": "6faf47e4453a5722848bfb0c8461570aba90df04879386c2cd3703909ee086eb",
+      "raw_range": [
+        -0.081253,
+        6.225826
+      ]
+    },
+    {
+      "photo": "johannesburg.webp",
+      "depth": "johannesburg-depth.webp",
+      "width": 1024,
+      "height": 683,
+      "bytes": 8628,
+      "photo_sha256": "18b822aec67991afb3b265a999e79ec1feb47d0640313a2417f8919e44ace30e",
+      "depth_sha256": "ece65f8ae984d5b9d9baaab8307456300e6066bdb11d55b441dc4eedb7267a62",
+      "raw_range": [
+        -0.060546,
+        6.072602
+      ]
+    },
+    {
+      "photo": "pretoria.webp",
+      "depth": "pretoria-depth.webp",
+      "width": 1024,
+      "height": 564,
+      "bytes": 17464,
+      "photo_sha256": "f55b2c0b9761ac4aa63554c1432520c6b67a42e86a6ef401f5ed15ffb35cfe84",
+      "depth_sha256": "f708683c62e7e9d82fb5ced34382ef49f1578ece5c8f09a868a0f254b62d09be",
+      "raw_range": [
+        -0.549061,
+        6.351309
+      ]
+    },
+    {
+      "photo": "worcester.webp",
+      "depth": "worcester-depth.webp",
+      "width": 1024,
+      "height": 683,
+      "bytes": 6642,
+      "photo_sha256": "2b773c1707ee202fe10564dd3509523041a4b22fd6f5033de56db330cbe2db0c",
+      "depth_sha256": "43b804ed54b08ee62c96f0d5ef501df03ef7d16e8baa0a086ab09f0c6fd4ad59",
+      "raw_range": [
+        -0.052232,
+        6.89594
+      ]
+    }
+  ]
+}

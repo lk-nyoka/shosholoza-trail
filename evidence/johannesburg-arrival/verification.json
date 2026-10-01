@@ -1,0 +1,26 @@
+{
+  "stats": {
+    "calls": 231,
+    "triangles": 210104,
+    "trainX": 0
+  },
+  "errors": [],
+  "external": [],
+  "checks": [
+    "local-only requests on desktop and mobile",
+    "train loaded",
+    "pause stops rendering",
+    "seek and stop",
+    "traffic continues after arrival",
+    "sound enabled by gesture and muted on pause",
+    "day/dusk toggle",
+    "street and concourse views",
+    "lightweight graphics",
+    "persisted page lifecycle retains canvas",
+    "city remains usable when train fails",
+    "restart",
+    "reduced motion",
+    "mobile overflow",
+    "idempotent cleanup"
+  ]
+}

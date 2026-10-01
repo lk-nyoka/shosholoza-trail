@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/chapter-shell.css">
+  <title>Kimberley · Rails to Diamonds | ShosholozaTrail</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #141f2a;
+      color: #f5eedb;
+      font: 15px system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+    }
+    canvas { display: block; width: 100vw; height: 100vh; }
+    #world { position: fixed; inset: 0; }
+    header {
+      position: absolute;
+      top: 20px;
+      left: 24px;
+      max-width: 580px;
+      pointer-events: none;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      z-index: 5;
+    }
+    small {
+      letter-spacing: 0.2em;
+      color: #ecc974;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+    h1 {
+      font: clamp(26px, 4.5vw, 44px) "Georgia", serif;
+      margin: 6px 0;
+      color: #fff6e0;
+    }
+    p { line-height: 1.5; margin: 6px 0; }
+    header nav {
+      pointer-events: auto;
+      margin: 6px 0 12px;
+      font-size: 13px;
+    }
+    a { color: #f7e1a3; text-underline-offset: 4px; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Cinematic Bars */
+    .cinematic-bar-top, .cinematic-bar-bottom {
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 9vh;
+      background: #000000;
+      z-index: 10;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cinematic-bar-top { top: 0; transform: translateY(-100%); }
+    /* Keep the chapter heading clear of the letterbox rather than under it. */
+    header { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    body.cinematic header { transform: translateY(9vh); }
+    .cinematic-bar-bottom { bottom: 0; transform: translateY(100%); }
+
+    /* Progress bar */
+    .journey-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      z-index: 20;
+    }
+    .journey-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #e5b741, #30c2c4);
+      transition: width 0.3s ease;
+    }
+
+    /* Phase badge */
+    .phase-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #1e3a47d0;
+      border: 1px solid #ecc974;
+      border-radius: 6px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: #ecc974;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    /* Footer & Controls */
+    footer {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      background: rgba(20, 32, 44, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid #d4af3755;
+      border-radius: 14px;
+      z-index: 15;
+      max-height: 45vh;
+      overflow-y: auto;
+    }
+    button, select {
+      font: inherit;
+      border: 1px solid #8e8061;
+      background: #253947;
+      color: #fff3d6;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #324c5e; border-color: #ecc974; }
+    button.active { background: #8f6d2b; border-color: #ffd87a; color: #fff; }
+    .btn-action { background: #885c21; border-color: #ecc974; font-weight: 600; }
+    .btn-action:hover { background: #aa742c; }
+
+    /* Time Machine Control */
+    .time-machine-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px;
+      background: rgba(15, 23, 31, 0.7);
+      border: 1px solid #7d653a;
+      border-radius: 8px;
+    }
+    .time-machine-box input[type=range] {
+      width: 140px;
+      accent-color: #e5b741;
+      cursor: pointer;
+    }
+
+    /* Cards & Modals */
+    .card-popup {
+      position: fixed;
+      right: 24px;
+      top: 100px;
+      width: min(360px, calc(100vw - 48px));
+      padding: 20px;
+      border: 1px solid #ecc974;
+      background: rgba(18, 28, 38, 0.95);
+      backdrop-filter: blur(14px);
+      border-radius: 14px;
+      z-index: 25;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+      transition: opacity 0.3s ease;
+    }
+    .card-popup h2, .card-popup h3 {
+      font: 22px "Georgia", serif;
+      margin: 4px 0 10px;
+      color: #faeed4;
+    }
+    .card-popup p { font-size: 13.5px; line-height: 1.55; color: #e2dbcd; }
+
+    /* Historical Descent Card */
+    .historical-card {
+      position: fixed;
+      left: 24px;
+      bottom: calc(var(--footer-h, 90px) + 20px);
+      width: min(340px, calc(100vw - 48px));
+      padding: 16px 20px;
+      background: rgba(16, 25, 34, 0.94);
+      border-left: 4px solid #ecc974;
+      border-radius: 0 12px 12px 0;
+      z-index: 25;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: none;
+    }
+    .historical-year {
+      font: bold 26px "Georgia", serif;
+      color: #ecc974;
+    }
+
+    /* Diamond Prompt */
+    .diamond-prompt {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 24px 30px;
+      background: radial-gradient(circle at center, #1b3846, #0e1e27);
+      border: 2px solid #a8e5ff;
+      border-radius: 16px;
+      text-align: center;
+      z-index: 30;
+      box-shadow: 0 0 45px rgba(80, 200, 255, 0.4);
+      display: none;
+    }
+    .diamond-prompt strong {
+      font: 22px "Georgia", serif;
+      color: #c9f0ff;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .diamond-prompt button {
+      margin: 10px 6px 0;
+      padding: 10px 18px;
+      font-weight: 600;
+    }
+
+    /* Passport Stamp Modal */
+    .passport-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 320px;
+      padding: 28px;
+      background: #18232e;
+      border: 3px double #ecc974;
+      border-radius: 16px;
+      text-align: center;
+      z-index: 35;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      display: none;
+    }
+    .passport-stamp-seal {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 14px;
+      border: 2px dashed #ecc974;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: 32px serif;
+      color: #ecc974;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      padding: 12px 18px;
+      background: #1f3640;
+      border: 1px solid #74c7b8;
+      border-radius: 8px;
+      color: #d8f5ef;
+      font-size: 13px;
+      z-index: 40;
+      display: none;
+    }
+
+    #status { margin-left: auto; color: #f5d89d; font-size: 13px; }
+
+    @media (max-width: 700px) {
+      header { top: 12px; left: 14px; right: 14px; }
+      footer { left: 8px; right: 8px; bottom: 8px; padding: 10px; gap: 6px; }
+      /* Measured, not guessed: the footer wraps to several rows on a phone. */
+      .card-popup { right: 12px; left: 12px; width: auto; top: auto; bottom: calc(var(--footer-h, 220px) + 14px); max-height: 32vh; overflow-y: auto; }
+      .historical-card { left: 12px; right: 12px; width: auto; top: calc(150px + 9vh); bottom: auto; }
+      .time-machine-box { flex-wrap: wrap; width: 100%; }
+      .time-machine-box input[type=range] { flex: 1; min-width: 90px; width: auto; }
+    }
+  </style>
+  <script type="module" crossorigin src="/app-assets/kimberley-Bo5_0akp.js"></script>
+  <link rel="modulepreload" crossorigin href="/app-assets/ChapterNavigation-CcWgon9d.js">
+  <link rel="modulepreload" crossorigin href="/app-assets/train-model-Cn0yG7Z9.js">
+  <link rel="modulepreload" crossorigin href="/app-assets/TrainConsist-BLE6JEA1.js">
+  <link rel="modulepreload" crossorigin href="/app-assets/ride-model-BZumehKz.js">
+  <link rel="modulepreload" crossorigin href="/app-assets/RideCamera-2MdltXam.js">
+  <link rel="modulepreload" crossorigin href="/app-assets/Buildings-D-5Q3gBu.js">
+  <link rel="modulepreload" crossorigin href="/app-assets/TrainSound-XFuzdLrq.js">
+</head>
+<body class="journey-chapter" data-location="kimberley">
+  <div class="cinematic-bar-top" id="cine-bar-top"></div>
+  <div class="cinematic-bar-bottom" id="cine-bar-bottom"></div>
+  <div class="journey-progress"><div class="journey-progress-fill" id="progress-fill"></div></div>
+
+  <main id="world" aria-label="Kimberley 3D railway, tram, and Big Hole scene"></main>
+
+  <header>
+    <nav aria-label="Corridor navigation">
+      <a href="/corridor">Rail Corridor</a> &middot;
+      <a href="/johannesburg.html">&larr; Johannesburg</a> &middot;
+      <span aria-current="page">Kimberley</span> &middot;
+      <a href="/de-aar">De Aar &rarr;</a> &middot;
+      <a href="/animation">Pretoria</a> &middot;
+      <a href="/">Home</a>
+    </nav>
+    <small>SHOSHOLOZA TRAIL · CHAPTER 03</small>
+    <div id="chapter-banner">
+      <h1>Kimberley</h1>
+      <p>Rails to Diamonds · Northern Cape</p>
+    </div>
+    <div class="phase-badge" id="phase-badge">APPROACH</div>
+  </header>
+
+  <footer>
+    <button id="btn-run-chapter" class="btn-action">▶ Play Chapter</button>
+    <button id="btn-pause">Pause</button>
+    <button id="btn-restart">Restart</button>
+
+    <div class="time-machine-box" id="time-machine-panel">
+      <small style="margin:0;">Time Machine</small>
+      <input type="range" id="time-machine-slider" min="0" max="1" step="0.02" value="0" aria-label="Era blend">
+      <span id="time-machine-label" style="font-size:12px; font-weight:600; color:#ecc974;">Present Day</span>
+    </div>
+
+    <!-- Director Panel -->
+    <button id="btn-dir-heritage">Heritage</button>
+    <button id="btn-dir-tram">Tram</button>
+    <button id="btn-dir-bighole">Big Hole</button>
+    <button id="btn-dir-fallback">Fallback</button>
+    <button id="btn-dir-reset">Reset</button>
+
+    <button id="btn-sound" aria-pressed="false">Sound off</button>
+    <label style="font-size:12px;">Quality
+      <select id="select-quality">
+        <option value="AUTO">Auto</option>
+        <option value="ULTRA">Ultra</option>
+        <option value="HIGH" selected>High</option>
+        <option value="MEDIUM">Medium</option>
+        <option value="LOW">Low</option>
+      </select>
+    </label>
+
+    <span id="status" role="status">Loading train & Kimberley...</span>
+  </footer>
+
+  <!-- Location Card -->
+  <section id="location-card" class="card-popup" style="display:none;" role="status">
+    <small>LOCATION DISCOVERY</small>
+    <h2 id="location-title">Kimberley Station</h2>
+    <p id="location-body">The rail journey transitions into Kimberley's diamond heritage story.</p>
+  </section>
+
+  <!-- Historical Depth Card -->
+  <section id="historical-card" class="historical-card" role="status">
+    <div class="historical-year" id="historical-year">1871</div>
+    <h3 id="historical-title" style="margin:4px 0 8px; font-size:16px; color:#fff2d4;">Colesberg Kopje Rush</h3>
+    <p id="historical-body" style="font-size:13px; line-height:1.5; color:#d8d2c4; margin:0;"></p>
+  </section>
+
+  <!-- Diamond Interaction Prompt -->
+  <section id="diamond-prompt" class="diamond-prompt" role="dialog" aria-modal="true"></section>
+  <section id="diamond-card" class="card-popup" style="display:none;"></section>
+
+  <!-- Rail Passport Stamp Modal -->
+  <section id="passport-modal" class="passport-modal" role="status">
+    <div class="passport-stamp-seal">💎</div>
+    <small style="letter-spacing:0.2em; color:#ecc974;">RAIL PASSPORT UNLOCKED</small>
+    <h2 style="font:22px Georgia; margin:10px 0 6px; color:#fff6e0;">Kimberley</h2>
+    <p id="passport-stamp" style="font-size:14px; font-weight:600; color:#e5b741; margin-bottom:14px;">✓ Rails to Diamonds</p>
+    <p style="font-size:12px; color:#b0b8bf; margin:0;">Heritage Tram · Big Hole · Kimberlite Discovery</p>
+  </section>
+
+  <div id="toast" class="toast" role="alert"></div>
+</body>
+</html>

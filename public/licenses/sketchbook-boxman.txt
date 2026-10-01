@@ -1,0 +1,32 @@
+Asset: public/assets/models/people/boxman.glb
+Source: Sketchbook by swift502 - build/assets/boxman.glb
+        https://github.com/swift502/Sketchbook
+Author: swift502
+Licence: MIT
+
+Use in this project: the file is reused unmodified (byte-for-byte copy of the
+original GLB, including its mesh, skeleton, texture and animation clips). The
+only change is made at runtime: each passenger gets its own clone of the
+material with a different colour tint (app/src/animation/Passengers.ts).
+
+MIT License
+
+Copyright (c) 2020 swift502
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

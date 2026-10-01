@@ -1,0 +1,27 @@
+{
+  "stats": {
+    "calls": 176,
+    "triangles": 500876,
+    "journeyEnd": 6300
+  },
+  "world": {
+    "halts": 2,
+    "passengers": 14,
+    "streetLights": 900,
+    "buildings": 509,
+    "places": 7,
+    "birds": 27
+  },
+  "errors": [],
+  "external": [],
+  "checks": [
+    "world built from local data: halts, passengers, lights, buildings, places, birds",
+    "passing places announce and clear by route position",
+    "landmark cinematic: enter, card, inert controls, return",
+    "orbit drag moves the camera",
+    "night lighting on, off again at midday",
+    "sound toggled by gesture",
+    "mobile: no overflow, reduced motion respected, slider works",
+    "missing person model and terrain degrade without breaking the page"
+  ]
+}

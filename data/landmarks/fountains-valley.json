@@ -1,0 +1,105 @@
+{
+  "id": "fountains-valley",
+  "name": "Fountains Valley",
+  "place": "Pretoria",
+  "location": {
+    "lat": -25.781432,
+    "lon": 28.196289
+  },
+  "alongMetres": 2591,
+  "offsetMetres": 372,
+  "triggerDistance": 2520,
+  "releaseDistance": 3200,
+  "scene": "fountains-valley",
+  "provenance": {
+    "geometry": "approximate",
+    "cameraAnimation": "newly authored",
+    "note": "An interpretation built from primitives, not a survey or a reconstruction. The valley floor, low ridges, spring pond, meandering stream and clumps of shade trees stand for the park; their positions and sizes are invented to read well, not measured. No supplied 3D asset or camera path existed for this landmark; both are ours."
+  },
+  "tourism": {
+    "eyebrow": "03 / A PLACE ALONG THE LINE",
+    "title": "Fountains Valley",
+    "body": "In a green valley between the ridges south of the city, springs well up where the Apies River rises. These springs once supplied Pretoria with its water; today the valley is a public park of lawns, water and old shade trees.",
+    "credit": "Approximate geometry · newly authored camera move"
+  },
+  "cameraAnimation": {
+    "duration": 12,
+    "loop": false,
+    "keyframes": [
+      {
+        "time": 0,
+        "position": [
+          -210,
+          78,
+          150
+        ],
+        "target": [
+          -100,
+          6,
+          0
+        ],
+        "fov": 46
+      },
+      {
+        "time": 3.5,
+        "position": [
+          -150,
+          44,
+          70
+        ],
+        "target": [
+          -100,
+          2,
+          4
+        ],
+        "fov": 42
+      },
+      {
+        "time": 6.5,
+        "position": [
+          -70,
+          26,
+          22
+        ],
+        "target": [
+          -10,
+          2,
+          0
+        ],
+        "fov": 38
+      },
+      {
+        "time": 9.5,
+        "position": [
+          10,
+          21,
+          8
+        ],
+        "target": [
+          80,
+          3,
+          -2
+        ],
+        "fov": 40
+      },
+      {
+        "time": 12,
+        "position": [
+          80,
+          22,
+          -6
+        ],
+        "target": [
+          150,
+          6,
+          10
+        ],
+        "fov": 46
+      }
+    ]
+  },
+  "footprint": {
+    "inner": 210,
+    "outer": 285
+  }
+}

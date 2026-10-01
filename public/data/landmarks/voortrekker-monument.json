@@ -1,0 +1,105 @@
+{
+  "id": "voortrekker-monument",
+  "name": "Voortrekker Monument",
+  "place": "Pretoria",
+  "location": {
+    "lat": -25.77636,
+    "lon": 28.1758
+  },
+  "alongMetres": 2366,
+  "offsetMetres": 1736,
+  "triggerDistance": 1850,
+  "releaseDistance": 2450,
+  "scene": "voortrekker-monument",
+  "provenance": {
+    "geometry": "approximate",
+    "cameraAnimation": "newly authored",
+    "note": "An interpretation built from primitives, not a survey, a reconstruction or a likeness. The near-cubic granite block with its rounded, stepped crown, the arched window on each face, the corner figures, the stepped terrace and the low ring wall of repeating wagon-like segments stand for the monument; their dimensions are rounded to read well from a distance, not measured, and the figures are stylised silhouettes. No supplied 3D asset or camera path existed for this landmark; both are ours."
+  },
+  "tourism": {
+    "eyebrow": "04 / A PLACE ALONG THE LINE",
+    "title": "Voortrekker Monument",
+    "body": "On a hill south of central Pretoria stands a granite monument completed in 1949. It commemorates the Voortrekkers, who left the Cape Colony in the 1830s and 1840s and moved into the interior of southern Africa.",
+    "credit": "Approximate geometry · newly authored camera move"
+  },
+  "cameraAnimation": {
+    "duration": 9.5,
+    "loop": false,
+    "keyframes": [
+      {
+        "time": 0,
+        "position": [
+          -240,
+          60,
+          -100
+        ],
+        "target": [
+          0,
+          24,
+          0
+        ],
+        "fov": 44
+      },
+      {
+        "time": 2.6,
+        "position": [
+          -222,
+          50,
+          92
+        ],
+        "target": [
+          0,
+          24,
+          0
+        ],
+        "fov": 42
+      },
+      {
+        "time": 5.2,
+        "position": [
+          -126,
+          40,
+          168
+        ],
+        "target": [
+          0,
+          23,
+          0
+        ],
+        "fov": 40
+      },
+      {
+        "time": 7.4,
+        "position": [
+          -36,
+          32,
+          172
+        ],
+        "target": [
+          0,
+          22,
+          0
+        ],
+        "fov": 38
+      },
+      {
+        "time": 9.5,
+        "position": [
+          0,
+          28,
+          150
+        ],
+        "target": [
+          0,
+          22,
+          0
+        ],
+        "fov": 38
+      }
+    ]
+  },
+  "footprint": {
+    "inner": 70,
+    "outer": 140
+  }
+}

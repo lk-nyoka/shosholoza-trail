@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Shosholoza Trail">
-  <rect width="512" height="512" rx="112" fill="#0a1724"/>
-  <path d="M92 362 252 104l168 258H92Z" fill="#173f35" stroke="#f1b94d" stroke-width="18" stroke-linejoin="round"/>
-  <path d="M255 142v106c0 38-78 34-78 91 0 32 38 48 79 48s79-16 79-48c0-51-71-55-78-84" fill="none" stroke="#f1b94d" stroke-width="30" stroke-linecap="round"/>
-  <path d="m205 191 50-50 50 50" fill="none" stroke="#f1b94d" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#183e36"/><path d="M22 10v44m20-44v44M22 18h20M22 30h20M22 42h20M16 54h32" stroke="#f3efe5" stroke-width="4" fill="none"/></svg>

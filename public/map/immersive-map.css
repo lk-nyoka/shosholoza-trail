@@ -1,0 +1,47 @@
+.maplibregl-map { font: inherit; }
+.maplibregl-ctrl-group { overflow: hidden; border: 1px solid rgba(255,255,255,.22); border-radius: 14px; box-shadow: 0 8px 26px rgba(4,18,15,.28); }
+.maplibregl-ctrl-group button { min-width: 29px; min-height: 29px; }
+.maplibregl-ctrl-attrib { font-size: 10px; background: rgba(255,255,255,.88) !important; }
+.immersive-train, .immersive-hub, .immersive-attraction { appearance: none; cursor: pointer; font: inherit; }
+.immersive-train { width: 26px; height: 26px; padding: 0; border: 0; border-radius: 50%; background: transparent; box-shadow: none; }
+.immersive-train:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.immersive-hub { position: relative; z-index: 5; width: 32px; min-width: 32px; height: 44px; display: block; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--cream); box-shadow: none; cursor: pointer; }
+.immersive-hub .station-pin { display: block; width: 32px; height: 44px; filter: drop-shadow(0 3px 3px #0005); }
+.immersive-hub strong { position: absolute; left: 50%; top: calc(100% + 7px); width: max-content; max-width: 150px; padding: 4px 8px; transform: translateX(-50%); border-radius: 8px; color: var(--cream); background: color-mix(in srgb,var(--ink) 86%,transparent); font-size: 11px; line-height: 1.1; letter-spacing: .03em; pointer-events: none; }
+.immersive-hub:hover .station-pin, .immersive-hub:focus-visible .station-pin { filter: drop-shadow(0 0 5px #fff); }
+.immersive-hub:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.immersive-hub--pulse { animation: immersive-hub-pulse 1.2s ease-in-out 2; }
+.immersive-attraction { z-index: 2; width: 30px; height: 30px; display: grid; place-items: center; padding: 0; border: 2px solid var(--cream); background: var(--gold2); color: var(--cream); transform: rotate(45deg); border-radius: 7px; box-shadow: 0 6px 16px color-mix(in srgb,var(--ink) 40%,transparent); }
+.immersive-attraction > span { transform: rotate(-45deg); }
+.immersive-attraction:hover, .immersive-attraction:focus-visible { filter: brightness(1.2); scale: 1.16; }
+.immersive-style-control { position: absolute; z-index: 4; right: 14px; bottom: 42px; display: grid; gap: 7px; padding: 8px; border: 1px solid rgba(255,255,255,.2); border-radius: 17px; background: color-mix(in srgb,var(--ink) 82%,transparent); box-shadow: 0 14px 32px color-mix(in srgb,var(--ink) 34%,transparent); backdrop-filter: blur(12px); }
+.immersive-style-button { width: 100%; min-width: 76px; padding: 5px 6px; display: grid; grid-template-columns: 24px 1fr; align-items: center; gap: 6px; border: 0; border-radius: 10px; color: var(--cream); background: transparent; font: 600 10px/1.1 inherit; text-align: left; cursor: pointer; }
+.immersive-style-button:hover, .immersive-style-button:focus-visible { background: rgba(255,255,255,.13); }
+.immersive-style-button[aria-pressed="true"] { color: var(--ink); background: var(--gold); box-shadow: 0 3px 11px rgba(0,0,0,.24); }
+.immersive-map-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.immersive-style-swatch { width: 24px; height: 24px; display: block; border: 1px solid rgba(255,255,255,.5); border-radius: 7px; background: #d8ded5 linear-gradient(135deg, transparent 45%, #809488 46% 54%, transparent 55%); }
+.immersive-style-swatch--outdoor { background: repeating-radial-gradient(ellipse at 80% 80%, #dfe8bd 0 3px, #738c5c 4px 5px, #c6d89c 6px 8px); }
+.immersive-style-swatch--dark { background: var(--ink) linear-gradient(135deg, transparent 42%, var(--gold) 44% 51%, transparent 53%); }
+.immersive-style-swatch--satellite { background: linear-gradient(135deg,#193c3a,#55764e 35%,#866a43 56%,#304a31); }
+.immersive-style-swatch--hybrid { background: linear-gradient(135deg,#193c3a,#55764e 35%,#866a43 56%,#304a31); box-shadow: inset 0 0 0 2px var(--gold); }
+@keyframes immersive-hub-pulse { 50% { filter: brightness(1.25); box-shadow: 0 0 0 13px rgba(255,214,107,.08), 0 8px 26px rgba(3,17,14,.5); } }
+@media (max-width: 640px) { .immersive-style-control { right: 8px; bottom: 36px; grid-template-columns: repeat(5, 44px); } .immersive-style-button { width: 44px; min-height: 44px; display: grid; grid-template-columns: 1fr; padding: 5px; } .immersive-style-button > span:last-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); } .immersive-style-swatch { width: 34px; height: 34px; } }
+@media (prefers-reduced-motion: reduce) { .immersive-hub--pulse { animation: none; } .immersive-hub { position: relative; z-index: 5; width: 32px; min-width: 32px; height: 44px; display: block; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--cream); box-shadow: none; cursor: pointer; }
+.immersive-hub .station-pin { display: block; width: 32px; height: 44px; filter: drop-shadow(0 3px 3px #0005); } }
+
+/* Hub buttons are focus targets only; the map draws the visible pins. Shown on keyboard focus so the focused stop is obvious. */
+/* !important: MapLibre writes an inline opacity on every marker. */
+.immersive-hub--focus-only { opacity: 0 !important; pointer-events: none; }
+.immersive-hub--focus-only:focus-visible { opacity: 1 !important; }
+
+/* Only MapLibre may transform the geographic anchor. Visual styling belongs inside it. */
+.immersive-hub-anchor{position:absolute;top:0;left:0;width:var(--pin-width,32px);height:var(--pin-height,44px);z-index:5}
+.immersive-hub-anchor .immersive-hub{position:relative;width:100%;min-width:0;height:100%;margin:0}
+.immersive-hub-anchor .station-pin{width:100%;height:100%}
+
+/* A persistent Google-style selected-place pin and label. The corresponding
+   red dotted boundary is drawn in the MapLibre canvas beneath it. */
+.immersive-selected-place{position:relative;z-index:8;width:32px;height:44px;pointer-events:none}
+.immersive-selected-place-pin{position:absolute;left:2px;bottom:8px;width:27px;height:27px;border:2px solid #fff;border-radius:50% 50% 50% 0;background:#ea4335;box-shadow:0 4px 12px rgba(0,0,0,.38);transform:rotate(-45deg)}
+.immersive-selected-place-pin::after{content:"";position:absolute;inset:8px;border-radius:50%;background:#fff}
+.immersive-selected-place strong{position:absolute;left:50%;bottom:52px;width:max-content;max-width:min(230px,65vw);padding:7px 11px;overflow:hidden;border:1px solid rgba(255,255,255,.42);border-radius:10px;background:rgba(24,30,33,.92);box-shadow:0 6px 18px rgba(0,0,0,.3);color:#fff;font:700 12px/1.15 Outfit,system-ui,sans-serif;text-align:center;text-overflow:ellipsis;white-space:nowrap;transform:translateX(-50%)}

@@ -1,0 +1,285 @@
+{
+  "status": "captured",
+  "baseUrl": "http://127.0.0.1:4173",
+  "routeSha256": "4af7762f6552ce7c3e57911ca91c4ffca4cac3bdd061686687c6702ed6e401ac",
+  "curve": {
+    "chainage": 56500,
+    "articulation": 11.384778185571918
+  },
+  "captures": [
+    {
+      "name": "train-hero-pretoria",
+      "s": 600,
+      "time": "midday",
+      "shot": "hero",
+      "url": "http://127.0.0.1:4173/ride?s=600&time=midday&shot=hero&train=1",
+      "state": {
+        "shot": "hero",
+        "chainage": 600,
+        "motionState": "idle",
+        "worldSpeed": 0,
+        "presentationTimeScale": 1,
+        "mapZoom": 18.2,
+        "mapCenter": [
+          28.192660418800642,
+          -25.763331865011196
+        ],
+        "mapCenterElevation": 2443.051076954995,
+        "trainScreen": [
+          [
+            594.6932110706218,
+            491.2234120940897
+          ],
+          [
+            640.6578756703999,
+            458.59173750796873
+          ],
+          [
+            679.9610747139619,
+            446.2069171338921
+          ],
+          [
+            712.8848535746608,
+            445.7773662355393
+          ],
+          [
+            735.8874270693664,
+            443.564336402718
+          ],
+          [
+            751.5745605059586,
+            433.72664055654735
+          ],
+          [
+            757.9617094345247,
+            419.27141107834404
+          ],
+          [
+            765.9539191540373,
+            401.92634040061733
+          ],
+          [
+            770.5361153780934,
+            391.99736719778844
+          ],
+          [
+            773.7288873864924,
+            381.71290942781354
+          ],
+          [
+            778.6744203418414,
+            376.15297106036604
+          ],
+          [
+            781.7488286304223,
+            374.1844461020074
+          ],
+          [
+            786.2086159456426,
+            367.2368384394239
+          ],
+          [
+            789.3362909056598,
+            349.9706518250881
+          ],
+          [
+            792.3817915832241,
+            342.04469192152544
+          ],
+          [
+            795.9110362394988,
+            339.37663991862496
+          ],
+          [
+            797.5421189995941,
+            341.3656250838687
+          ],
+          [
+            800.4159326369681,
+            338.2591414246353
+          ]
+        ],
+        "renderedTrainFeatures": 0,
+        "vehicles": [
+          {
+            "id": 0,
+            "kind": "locomotive",
+            "heading": 156.51304940838867,
+            "pitch": 0,
+            "roll": 0.17989245959563732,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "locomotive"
+          },
+          {
+            "id": 1,
+            "kind": "locomotive",
+            "heading": 154.2861598470885,
+            "pitch": 0,
+            "roll": -0.008477461020225108,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "locomotive"
+          },
+          {
+            "id": 2,
+            "kind": "coach",
+            "heading": 151.5757918883353,
+            "pitch": 0,
+            "roll": -0.10221729288933258,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "turquoise"
+          },
+          {
+            "id": 3,
+            "kind": "coach",
+            "heading": 148.50963176336668,
+            "pitch": 0,
+            "roll": 0.14334278064798017,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "yellow"
+          },
+          {
+            "id": 4,
+            "kind": "coach",
+            "heading": 146.6761860536498,
+            "pitch": 0,
+            "roll": -0.18221021941456567,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "violet"
+          },
+          {
+            "id": 5,
+            "kind": "coach",
+            "heading": 139.59679273533806,
+            "pitch": 0,
+            "roll": 0.21820733851501745,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "turquoise"
+          },
+          {
+            "id": 6,
+            "kind": "coach",
+            "heading": 141.11942488735508,
+            "pitch": 0,
+            "roll": -0.2507670828236096,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "yellow"
+          },
+          {
+            "id": 7,
+            "kind": "coach",
+            "heading": 139.18519416251263,
+            "pitch": 0,
+            "roll": 0.27937654546435237,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "violet"
+          },
+          {
+            "id": 8,
+            "kind": "coach",
+            "heading": 137.99367159077744,
+            "pitch": 0,
+            "roll": -0.30358504752626514,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "turquoise"
+          },
+          {
+            "id": 9,
+            "kind": "coach",
+            "heading": 140.00730130335745,
+            "pitch": 0,
+            "roll": 0.3230112375144688,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "yellow"
+          },
+          {
+            "id": 10,
+            "kind": "coach",
+            "heading": 137.99359612359075,
+            "pitch": 0,
+            "roll": -0.33734909870092034,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "violet"
+          },
+          {
+            "id": 11,
+            "kind": "coach",
+            "heading": 140.09498450835036,
+            "pitch": 0,
+            "roll": 0.3463727697422439,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "turquoise"
+          },
+          {
+            "id": 12,
+            "kind": "coach",
+            "heading": 139.5365941613691,
+            "pitch": 0,
+            "roll": -0.34994010262646796,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "yellow"
+          },
+          {
+            "id": 13,
+            "kind": "coach",
+            "heading": 138.85690393516154,
+            "pitch": 0,
+            "roll": 0.34799490190107546,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "violet"
+          },
+          {
+            "id": 14,
+            "kind": "coach",
+            "heading": 140.0948715511912,
+            "pitch": 0,
+            "roll": -0.3405678099082727,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "turquoise"
+          },
+          {
+            "id": 15,
+            "kind": "coach",
+            "heading": 138.4432387313971,
+            "pitch": 0,
+            "roll": 0.3277758240825476,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "yellow"
+          },
+          {
+            "id": 16,
+            "kind": "coach",
+            "heading": 140.28835647218892,
+            "pitch": 0,
+            "roll": -0.3098204539144349,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "violet"
+          },
+          {
+            "id": 17,
+            "kind": "coach",
+            "heading": 138.3703820467843,
+            "pitch": 0,
+            "roll": 0.28698454661344935,
+            "wheelAngle": 1304.3478260869565,
+            "livery": "turquoise"
+          }
+        ],
+        "litWindowCount": 0,
+        "unlitWindowCount": 468,
+        "reducedMotion": false,
+        "glbReady": false,
+        "glbTriangles": 0,
+        "railElevationSampleCount": 57,
+        "railElevation": 2444.738887714143,
+        "frameWidthFraction": 0.1428630010877405,
+        "heroWidthTarget": [
+          0.3,
+          0.35
+        ],
+        "heroWidthPass": false
+      },
+      "errors": []
+    }
+  ],
+  "visualAcceptance": "Human review required: screenshot aesthetics, chord kinks, terrain clearance and comparison to reference."
+}

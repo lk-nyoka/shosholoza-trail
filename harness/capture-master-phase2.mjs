@@ -1,0 +1,22 @@
+import { chromium } from '@playwright/test';
+import { mkdir } from 'node:fs/promises';
+import path from 'node:path';
+
+const root = path.resolve(import.meta.dirname, '..');
+const baseUrl = process.env.BASE_URL || 'http://127.0.0.1:4173';
+await mkdir(path.join(root, 'evidence'), { recursive: true });
+const browser = await chromium.launch({ headless: true });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+const errors = [];
+page.on('pageerror', error => errors.push(error.message));
+page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+await page.goto(`${baseUrl}/ride?s=550500&time=dusk`, { waitUntil: 'domcontentloaded' });
+await page.waitForSelector('.ride[data-world-ready="true"]', { timeout: 30_000 });
+await page.waitForSelector('.ride-landmark-label', { timeout: 15_000 });
+await page.waitForTimeout(7_000);
+const labels = await page.locator('.ride-landmark-label').allTextContents();
+if (!labels.some(label => /actual distance|location not mapped/i.test(label))) throw new Error(`Approach disclosure missing: ${labels.join(' | ')}`);
+await page.screenshot({ path: path.join(root, 'evidence/legible-hub-approach.png') });
+if (errors.length) throw new Error(`Phase 2 capture errors: ${errors.join(' | ')}`);
+await browser.close();
+console.log(JSON.stringify({ screenshot: 'evidence/legible-hub-approach.png', labels }));

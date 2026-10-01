@@ -1,1 +1,0 @@
-"""Shosholoza Trail API."""

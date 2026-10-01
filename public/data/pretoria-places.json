@@ -1,0 +1,73 @@
+{
+ "generator": "scripts/fetch-osm-places.mjs",
+ "source": "OpenStreetMap contributors, ODbL 1.0, via Overpass API",
+ "note": "Named places within 420 m of the animation slice, in route order. Names are OSM's, unedited.",
+ "fetched": "2026-09-21",
+ "corridorMetres": 420,
+ "count": 7,
+ "places": [
+  {
+   "name": "Pretoria",
+   "kind": "Station",
+   "lon": 28.189221,
+   "lat": -25.759489,
+   "alongMetres": 22,
+   "offsetMetres": 26,
+   "side": -1
+  },
+  {
+   "name": "NZASM",
+   "kind": "Historic site",
+   "lon": 28.190113,
+   "lat": -25.757545,
+   "alongMetres": 22,
+   "offsetMetres": 256,
+   "side": -1
+  },
+  {
+   "name": "Pretoria Gautrain Station",
+   "kind": "Station",
+   "lon": 28.190451,
+   "lat": -25.759557,
+   "alongMetres": 87,
+   "offsetMetres": 104,
+   "side": -1
+  },
+  {
+   "name": "//Hapo Museum",
+   "kind": "Attraction",
+   "lon": 28.188627,
+   "lat": -25.764218,
+   "alongMetres": 362,
+   "offsetMetres": 372,
+   "side": 1
+  },
+  {
+   "name": "Fountains Valley",
+   "kind": "Open space",
+   "lon": 28.196289,
+   "lat": -25.781432,
+   "alongMetres": 2591,
+   "offsetMetres": 372,
+   "side": -1
+  },
+  {
+   "name": "Fonteine",
+   "kind": "Station",
+   "lon": 28.192989,
+   "lat": -25.783495,
+   "alongMetres": 2799,
+   "offsetMetres": 6,
+   "side": 1
+  },
+  {
+   "name": "Kloofsig",
+   "kind": "Station",
+   "lon": 28.201164,
+   "lat": -25.813389,
+   "alongMetres": 6240,
+   "offsetMetres": 8,
+   "side": -1
+  }
+ ]
+}
